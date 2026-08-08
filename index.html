@@ -23,26 +23,6 @@
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   }
 
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --canvas: #09090b; --surface: #18181b; --muted: #27272a;
-      --fg: #fafafa; --fg-2: #a1a1aa; --fg-3: #71717a;
-      --line: #27272a; --line-2: #3f3f46; --ring: #52525b;
-      --primary: #fafafa; --primary-fg: #18181b;
-      --ok: #4ade80; --ok-bg: #14261a;
-      --warn: #fbbf24; --warn-bg: #271b09; --warn-line: #4a3411;
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --canvas: #09090b; --surface: #18181b; --muted: #27272a;
-    --fg: #fafafa; --fg-2: #a1a1aa; --fg-3: #71717a;
-    --line: #27272a; --line-2: #3f3f46; --ring: #52525b;
-    --primary: #fafafa; --primary-fg: #18181b;
-    --ok: #4ade80; --ok-bg: #14261a;
-    --warn: #fbbf24; --warn-bg: #271b09; --warn-line: #4a3411;
-  }
-
   * { box-sizing: border-box; }
 
   body {
@@ -280,6 +260,15 @@
 
   /* ---------- checks ---------- */
 
+  .stagebar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
+
+  .sample { display: flex; align-items: center; gap: 14px; }
+  .sample .field { flex-direction: row; align-items: center; gap: 7px; }
+  .sample .fieldlabel { color: var(--fg-3); font-weight: 400; white-space: nowrap; }
+  .sample select { inline-size: auto; }
+  .sample .hint { display: none; }
+  .sample .checkline { color: var(--fg-2); white-space: nowrap; }
+
   .checks { display: flex; flex-direction: column; gap: 6px; }
 
   .check {
@@ -340,22 +329,6 @@
 
   .code pre { margin: 0; padding: 16px 18px; font-family: var(--mono); font-size: 12px; line-height: 1.65; color: var(--fg); }
 
-  .handoff {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 16px 18px;
-  }
-
-  .handoff h2 { font-size: 13px; font-weight: 600; margin: 0 0 8px; }
-  .handoff ol, .handoff ul { margin: 0; padding-inline-start: 18px; color: var(--fg-2); font-size: 12.5px; }
-  .handoff li { margin-bottom: 4px; }
-  .handoff li:last-child { margin-bottom: 0; }
-  .handoff code { font-family: var(--mono); font-size: 11.5px; background: var(--muted); padding: 1px 5px; border-radius: 4px; color: var(--fg); }
-  .handoff details { margin-top: 10px; }
-  .handoff summary { cursor: pointer; font-size: 12.5px; color: var(--fg-2); }
-  .handoff details p { font-size: 12.5px; color: var(--fg-3); }
-
   [hidden] { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
@@ -364,8 +337,6 @@
 <div class="actionbar">
   <div class="lead"><span class="filename" id="filename">acme.css</span></div>
   <div class="actions">
-    <button class="action" type="button" id="themeBtn" title="Switch between light and dark">Theme</button>
-    <span class="sep"></span>
     <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
     <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
     <button class="action" type="button" id="resetBtn">Reset</button>
@@ -385,21 +356,21 @@
       <button class="tab" type="button" role="tab" data-railtab="type" aria-selected="false">Type</button>
       <button class="tab" type="button" role="tab" data-railtab="table" aria-selected="false">Table</button>
       <button class="tab" type="button" role="tab" data-railtab="layout" aria-selected="false">Layout</button>
-      <button class="tab" type="button" role="tab" data-railtab="preview" aria-selected="false">Preview</button>
     </div>
     <div class="panel" id="panel-colour" role="tabpanel"></div>
     <div class="panel" id="panel-type" role="tabpanel" hidden></div>
     <div class="panel" id="panel-table" role="tabpanel" hidden></div>
     <div class="panel" id="panel-layout" role="tabpanel" hidden></div>
-    <div class="panel" id="panel-preview" role="tabpanel" hidden></div>
   </form>
 
   <main class="stage">
 
-    <div class="tabs" role="tablist" aria-label="Proof">
-      <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
-      <button class="tab" type="button" role="tab" data-proof="taf" aria-selected="false">ISA transfer form</button>
-      <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
+    <div class="stagebar">
+      <div class="tabs" role="tablist" aria-label="Proof">
+        <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
+        <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
+      </div>
+      <div class="sample" id="sample"></div>
     </div>
 
     <div class="checks" id="checks"></div>
@@ -408,36 +379,17 @@
       <div class="sheet-scaler" id="scaler-statement"><iframe class="sheet" id="frame-statement" title="Monthly statement proof"></iframe></div>
     </section>
 
-    <section class="proof" id="proof-taf" hidden>
-      <div class="sheet-scaler" id="scaler-taf"><iframe class="sheet" id="frame-taf" title="ISA transfer authority form proof"></iframe></div>
-    </section>
-
     <section id="proof-css" hidden>
       <div class="code"><pre id="cssOut"></pre></div>
     </section>
-
-    <div class="handoff">
-      <h2>Sending this to us</h2>
-      <ol>
-        <li>Download the stylesheet and email it to your Bondsmith contact, with your logo as a PNG or SVG.</li>
-        <li>We host the file and point your platform at it, so the next statements we generate use it.</li>
-        <li>Ask us for a sample statement before we switch it on for your customers.</li>
-      </ol>
-      <details>
-        <summary>Why can't I set letter spacing, gradients or shadows?</summary>
-        <p>Statements are rendered to PDF by an engine that supports a subset of CSS. We tested each
-          option against the real renderer and only offer the ones that genuinely come out the other
-          side. Letter and word spacing, transparency, gradients and drop shadows are all silently
-          dropped, so there is no control for them — a slider that did nothing would be worse than
-          its absence.</p>
-      </details>
-    </div>
 
   </main>
 </div>
 
 <script>
   "use strict";
+
+  const STATE_KEY = "glyph.settings";
 
   /* ================================================================== *
    * Baseline stylesheets, copied from the document templates so a proof
@@ -466,52 +418,6 @@ span.pagecount:before { content: counter(pages); }
 .data-table thead tr { border: 1px solid; color: white; margin-bottom: 80px; font-weight: normal; }
 .data-table th { padding: 10px 0 10px 10px; font-weight: normal; border: 1px solid; text-align: left; }
 .data-table td { padding-top: 5px; padding-bottom: 5px; text-align: left; padding-left: 10px; }
-`;
-
-  /* exchange: core/src/main/resources/thymeleaf/isa/taf/shared.css */
-  const TAF_BASE = `
-html, body { margin: 0; padding: 0; }
-.document-body { font-family: Inter, sans-serif; font-size: 12px; line-height: 1.35; color: #000; background: #fff; margin: 0 !important; }
-.container { width: 100%; padding: 0; }
-.section-wrapper { margin: 0 0 4px 0; }
-.subsection { background-color: #f3f3f3; border: 1px solid #2d3e7c; padding: 10px; margin: 0 0 12px 0; }
-.internal-use { border: 1px solid #333; padding: 10px; margin: 18px 0 0 0; background-color: #f4f4f4; }
-.doc-header { width: 100%; border-collapse: collapse; border-bottom: 3px solid #2d407d; height: 40px; }
-.doc-header td { vertical-align: middle; padding: 0 0 8px 0; }
-.doc-header .logo { text-align: right; width: 180px; }
-.doc-header .logo img { height: 40px; width: auto; display: inline-block; }
-h1 { font-size: 28px; margin: 0; color: #2d407d; }
-h2, h3 { margin: 0; padding: 0; background: transparent; }
-h3 { color: #2d3e7c; font-size: 14px; margin: 0 0 6px 0; }
-.section-header {
-  background-color: #2d3e7c; color: #fff;
-  margin: 10px 0 8px 0; padding: 6px 10px;
-  display: table; width: 100%;
-}
-.section-header h2 { display: table-cell; vertical-align: middle; font-size: 16px; font-weight: bold; color: #fff; white-space: nowrap; }
-.form-table { width: 100%; border-collapse: collapse; margin: 0; }
-.form-table td { vertical-align: top; padding: 2px; }
-.checkbox-table { border-collapse: collapse; margin: 0 0 8px 0; font-size: 12px; }
-.checkbox-table td { vertical-align: middle; padding: 2px 6px 2px 0; }
-label { font-size: 11px; font-weight: bold; display: block; }
-input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid #999; background-color: #fff; margin: 0; height: 24px; box-sizing: border-box; }
-.form-table input.stacked { display: block; width: 100%; margin: 0 0 -2px 0; }
-.checkbox-box { width: 16px; height: 16px; display: inline-block; }
-.char-box-group { display: inline-block; margin: 0 0 12px 0; }
-.char-box-group span { font-size: 12px; margin: 0 1px; }
-.char-box { width: 22px; height: 24px; border: 1px solid #333; display: inline-block; margin: 0 2px 0 0; vertical-align: middle; }
-.intro-box { font-size: 12px; padding: 2px 0; margin: 0; }
-.question-title { font-size: 12px; font-weight: bold; margin: 0 0 4px 0; }
-.authority-text { font-size: 12px; margin: 12px 0 0 0; }
-.footer-notes { font-size: 10px; color: #666; margin-top: 16px; border-top: 1px solid #eee; padding-top: 8px; }
-.w-form-half { width: 330px !important; }
-.w-50 { width: 50%; }
-.w-140 { width: 140px !important; }
-.w-150 { width: 150px !important; }
-.mb-10 { margin-bottom: 10px; }
-.pl-20 { padding-left: 20px; }
-.valign-top { vertical-align: top; }
-.stacked-label { margin: 2px 0 0 0; }
 `;
 
   const PLACEHOLDER_LOGO =
@@ -706,6 +612,8 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
   const CONTROLS = [
     /* ---- identity (always visible) ---- */
     { tab: "identity", type: "text", key: "partner", label: "Your name", hint: "Used for the filename only." },
+    { tab: "identity", type: "url", key: "logoUrl", label: "Logo image (preview only)", placeholder: "https://…/logo.png",
+      hint: "Your logo is not part of this stylesheet — we store it separately." },
     { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
       options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
@@ -818,23 +726,18 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
       format: v => v === 0 ? "none" : v + "px" },
 
-    /* ---- preview ---- *
-     * Proof-only. Nothing on this tab reaches generateCss(); it changes which
-     * blocks and which wording the sample document shows, because the four
-     * arrangements below produce visibly different statements from the same
-     * stylesheet. */
-    { tab: "preview", type: "group", label: "Sample document" },
-    { tab: "preview", type: "select", key: "previewModel", label: "Statement type",
+    /* ---- sample ---- *
+     * Sits beside the proof, not in the rail: nothing here reaches
+     * generateCss(). It chooses which blocks and which wording the sample
+     * document shows, because the four arrangements produce visibly different
+     * statements from the same stylesheet. */
+    { tab: "sample", type: "select", key: "previewModel", label: "Sample",
       options: [["trustIndividual", "Individual — holding account shown"],
                 ["trustPooled", "Pooled"],
                 ["direct", "Direct"],
                 ["trustHidden", "Individual — holding account hidden"]],
-      hint: "Changes the sample only, never the stylesheet. Each arrangement lists a different set of transactions, so check the one your customers get." },
-    { tab: "preview", type: "toggle", key: "previewHoldingAccount", label: "Show holding account sort code and number" },
-
-    { tab: "preview", type: "group", label: "Logo" },
-    { tab: "preview", type: "url", key: "logoUrl", label: "Logo image", placeholder: "https://…/logo.png",
-      hint: "Your logo is not part of this stylesheet — we store it separately. This is only so the proof looks right." }
+      hint: "Changes the sample document only, never the stylesheet. Each arrangement lists a different set of transactions, so check the one your customers get." },
+    { tab: "sample", type: "toggle", key: "previewHoldingAccount", label: "Holding account details" }
   ];
 
   /* ================================================================== *
@@ -1041,6 +944,9 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       ]));
     }
 
+    /* Emitted although the transfer form has no proof here: one stylesheet
+       covers both documents, so dropping these would leave the form on the
+       template's default navy. */
     blocks.push("/* TAF-specific selectors */");
     blocks.push(rule("h1", [`color: ${accent};`]));
     blocks.push(rule("h3", [`color: ${accent};`]));
@@ -1181,84 +1087,6 @@ ${rows}
 </div>`;
   }
 
-  function tafBody(logo) {
-    return `
-<div class="container">
-  <table class="doc-header"><tr>
-    <td><h1>ISA Transfer Authority Form</h1></td>
-    <td class="logo"><img src="${logo}" alt="Platform logo"></td>
-  </tr></table>
-  <div class="intro-box">
-    <p>Use this form to transfer an existing ISA to your Bondsmith Cash ISA.</p>
-    <ul><li>Cash ISA transfers typically complete within 15 business days.</li>
-    <li>Please include your Bondsmith Cash ISA Holding account details to avoid delays.</li></ul>
-  </div>
-  <div class="section-wrapper">
-    <div class="section-header"><h2>1. Your details</h2></div>
-    <div class="section-content">
-      <table class="form-table"><tr>
-        <td><label>Title</label><input class="w-140" type="text" value="Mr"></td>
-        <td><label>First Name(s)</label><input type="text" style="width:388px" value="Smith"></td>
-        <td><label>Last Name</label><input class="w-140" type="text" value="Bond"></td>
-      </tr></table>
-      <table class="form-table mb-10"><tr>
-        <td class="w-50 valign-top">
-          <label>Permanent residential address</label>
-          <input class="stacked w-form-half" type="text" value="4 Pentonville Rd">
-          <input class="stacked w-form-half" type="text" value="London">
-          <input class="stacked w-form-half" type="text" value="">
-          <label class="stacked-label">Postcode</label>
-          <input class="w-150" type="text" value="N1 9HF">
-        </td>
-        <td class="valign-top pl-20">
-          <label>Date of birth</label>
-          <div class="char-box-group">
-            <input class="char-box" type="text" value="1"><input class="char-box" type="text" value="4"><span>/</span>
-            <input class="char-box" type="text" value="0"><input class="char-box" type="text" value="9"><span>/</span>
-            <input class="char-box" type="text" value="8"><input class="char-box" type="text" value="7">
-          </div>
-          <label>Contact telephone number</label>
-          <input class="w-form-half" type="tel" value="07700 900412">
-        </td>
-      </tr></table>
-    </div>
-  </div>
-  <div class="section-wrapper">
-    <div class="section-header"><h2>2. Details of the existing ISA you want to transfer</h2></div>
-    <div class="section-content">
-      <table class="form-table mb-10"><tr>
-        <td class="w-50 valign-top">
-          <p class="question-title">Have you paid into this ISA during the current tax year?</p>
-          <table class="checkbox-table"><tr>
-            <td><input class="checkbox-box" type="checkbox" checked></td><td>Yes</td>
-            <td class="pl-20"><input class="checkbox-box" type="checkbox"></td><td>No</td>
-          </tr></table>
-        </td>
-        <td class="w-50 valign-top pl-20">
-          <label>Name of existing ISA manager</label>
-          <input class="stacked w-form-half" type="text" value="Northbank Building Society">
-        </td>
-      </tr></table>
-      <div class="subsection">
-        <h3>Cash ISA transfer details</h3>
-        <table class="form-table mb-10"><tr>
-          <td class="w-50"><label>Sort code</label><input class="w-form-half" type="text" value="60-12-04"></td>
-          <td class="w-50"><label>Account number</label><input class="w-form-half" type="text" value="44029183"></td>
-        </tr></table>
-      </div>
-    </div>
-  </div>
-  <div class="internal-use">
-    <strong>5. Transfer acceptance (Bondsmith Use Only)</strong>
-    <p class="authority-text">We are willing to accept this ISA transfer in line with instructions.</p>
-  </div>
-  <div class="footer-notes">
-    <p>ISA transfers do not affect your annual ISA allowance.</p>
-    <p>Bondsmith is the trading name of Bondsmith Savings Ltd, which is authorised and regulated by the Financial Conduct Authority.</p>
-  </div>
-</div>`;
-  }
-
   /* ================================================================== *
    * Checks
    * ================================================================== */
@@ -1269,7 +1097,7 @@ ${rows}
   }
 
   const MIN_CONTRAST = 4.5;
-  const TAB_LABELS = { colour: "Colour", type: "Type", table: "Table", layout: "Layout", preview: "Preview" };
+  const TAB_LABELS = { colour: "Colour", type: "Type", table: "Table", layout: "Layout" };
 
   /* Deduplicated on the colour pair: a background and its text both carry a
      chip, but they are one failure. */
@@ -1289,16 +1117,16 @@ ${rows}
   function buildChecks() {
     const items = [];
 
-    if (state.fontMode === "builtin") {
-      items.push({ tone: "ok", marker: "Type", text: "This font is built into every PDF reader, so your statements will look the same everywhere." });
-    } else if (!safeFamily(state.embedFamily)) {
-      items.push({ tone: "warn", marker: "Type", text: "Name the font family you want to embed, or your statements will fall back to Helvetica." });
-    } else if (!state.embedUrl.trim()) {
-      items.push({ tone: "warn", marker: "Type", text:
-        `<strong>${escapeHtml(safeFamily(state.embedFamily))} will not appear in the PDF yet.</strong> Fonts have to be embedded as a .ttf file — send us yours and paste back the URL we give you. Until then statements fall back to Helvetica.` });
-    } else if (!safeUrl(state.embedUrl)) {
-      items.push({ tone: "warn", marker: "Type", text:
-        "That font URL was not accepted. It needs to be a plain https address ending in the .ttf file, with no spaces or brackets." });
+    if (state.fontMode === "embed") {
+      if (!safeFamily(state.embedFamily)) {
+        items.push({ tone: "warn", marker: "Type", text: "Name the font family you want to embed, or your statements will fall back to Helvetica." });
+      } else if (!state.embedUrl.trim()) {
+        items.push({ tone: "warn", marker: "Type", text:
+          `<strong>${escapeHtml(safeFamily(state.embedFamily))} will not appear in the PDF yet.</strong> Fonts have to be embedded as a .ttf file — send us yours and paste back the URL we give you. Until then statements fall back to Helvetica.` });
+      } else if (!safeUrl(state.embedUrl)) {
+        items.push({ tone: "warn", marker: "Type", text:
+          "That font URL was not accepted. It needs to be a plain https address ending in the .ttf file, with no spaces or brackets." });
+      }
     }
 
     const failures = contrastFailures();
@@ -1311,9 +1139,6 @@ ${rows}
 
     if (state.zebra && state.rowLines) items.push({ tone: "info", marker: "Rows", text:
       "Shaded rows and hairlines together can look busy on a long statement. Most partners use one or the other." });
-
-    items.push({ tone: "info", marker: "Scope", text:
-      "These styles apply to monthly statements and the ISA transfer authority form. The annual tax summary uses our standard styling and is not affected." });
 
     return items;
   }
@@ -1482,6 +1307,7 @@ ${rows}
       hint.className = "hint";
       hint.textContent = spec.hint;
       wrap.appendChild(hint);
+      if (input) input.title = spec.hint;
     }
 
     return Object.assign({ wrap, input }, extra);
@@ -1525,7 +1351,9 @@ ${rows}
   function buildRail() {
     const open = new Map();
     for (const spec of CONTROLS) {
-      const panel = spec.tab === "identity" ? el("identity") : el("panel-" + spec.tab);
+      const panel = spec.tab === "identity" || spec.tab === "sample"
+        ? el(spec.tab)
+        : el("panel-" + spec.tab);
       if (spec.type === "group") {
         const { section, body } = makeGroup(spec);
         panel.appendChild(section);
@@ -1637,6 +1465,22 @@ ${rows}
     render();
   }
 
+  function remember() {
+    try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+    catch (err) { /* storage blocked or full; the session still works */ }
+  }
+
+  /* Through sanitiseState like a shared link: stored settings are no more
+     trustworthy than a pasted URL, and the file may predate a control. */
+  function recall() {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      return raw ? sanitiseState(JSON.parse(raw)) : null;
+    } catch (err) {
+      return null;
+    }
+  }
+
   function encodeState() {
     const diff = {};
     for (const key of Object.keys(DEFAULTS)) {
@@ -1670,7 +1514,7 @@ ${rows}
   }
 
   function fitSheets() {
-    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"], ["scaler-taf", "frame-taf"]]) {
+    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"]]) {
       const scaler = el(scalerId), frame = el(frameId);
       const available = scaler.parentElement.clientWidth - 44;
       if (available <= 0) continue;
@@ -1695,7 +1539,8 @@ ${rows}
 
     const logo = state.logoUrl.trim() || PLACEHOLDER_LOGO;
     el("frame-statement").srcdoc = proofDocument(STATEMENT_BASE, statementBody(logo));
-    el("frame-taf").srcdoc = proofDocument(TAF_BASE, tafBody(logo));
+
+    remember();
 
     el("undoBtn").disabled = history.past.length === 0;
     el("redoBtn").disabled = history.future.length === 0;
@@ -1785,12 +1630,6 @@ ${rows}
     (event.shiftKey ? el("redoBtn") : el("undoBtn")).click();
   });
 
-  el("themeBtn").addEventListener("click", () => {
-    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
-    const current = document.documentElement.dataset.theme || (dark ? "dark" : "light");
-    document.documentElement.dataset.theme = current === "dark" ? "light" : "dark";
-  });
-
   el("controls").addEventListener("submit", event => event.preventDefault());
   window.addEventListener("resize", fitSheets);
 
@@ -1814,6 +1653,10 @@ ${rows}
     render();
   });
 
-  applyHash();
+  if (!applyHash()) {
+    const saved = recall();
+    if (saved) state = saved;
+  }
+
   render();
 </script>

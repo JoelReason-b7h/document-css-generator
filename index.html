@@ -1,391 +1,413 @@
 <title>Glyph — statement branding</title>
 <style>
   :root {
-    --desk: #e6e8eb;
+    --canvas: #fafafa;
     --surface: #ffffff;
-    --surface-2: #f4f5f7;
-    --ink: #171a1d;
-    --ink-2: #5b636c;
-    --ink-3: #838c95;
-    --line: #d4d8dd;
-    --line-strong: #b9bfc7;
-    --accent: #3d5a5b;
-    --accent-ink: #ffffff;
-    --accent-soft: #e6eeed;
-    --warn: #8a5410;
-    --warn-bg: #fbf1e2;
-    --warn-line: #e2c79b;
-    --ok: #2c6647;
-    --ok-bg: #e7f1ea;
-    --shadow: 0 1px 2px rgba(20, 26, 30, .08), 0 12px 28px rgba(20, 26, 30, .10);
-    --display: Georgia, "Iowan Old Style", "Times New Roman", serif;
-    --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --muted: #f4f4f5;
+    --fg: #09090b;
+    --fg-2: #52525b;
+    --fg-3: #a1a1aa;
+    --line: #e4e4e7;
+    --line-2: #d4d4d8;
+    --primary: #18181b;
+    --primary-fg: #fafafa;
+    --ring: #a1a1aa;
+    --ok: #15803d;
+    --ok-bg: #f0fdf4;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+    --warn-line: #fde68a;
+    --radius: 8px;
+    --radius-sm: 6px;
+    --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --desk: #121417; --surface: #1b1e22; --surface-2: #23272c;
-      --ink: #e3e6ea; --ink-2: #98a1aa; --ink-3: #767f88;
-      --line: #2e343a; --line-strong: #414951;
-      --accent: #86b0ac; --accent-ink: #10201f; --accent-soft: #1e2a29;
-      --warn: #dfab68; --warn-bg: #292116; --warn-line: #52412a;
-      --ok: #82bb9b; --ok-bg: #17251d;
-      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 14px 32px rgba(0, 0, 0, .45);
+      --canvas: #09090b; --surface: #18181b; --muted: #27272a;
+      --fg: #fafafa; --fg-2: #a1a1aa; --fg-3: #71717a;
+      --line: #27272a; --line-2: #3f3f46; --ring: #52525b;
+      --primary: #fafafa; --primary-fg: #18181b;
+      --ok: #4ade80; --ok-bg: #14261a;
+      --warn: #fbbf24; --warn-bg: #271b09; --warn-line: #4a3411;
     }
   }
 
   :root[data-theme="dark"] {
-    --desk: #121417; --surface: #1b1e22; --surface-2: #23272c;
-    --ink: #e3e6ea; --ink-2: #98a1aa; --ink-3: #767f88;
-    --line: #2e343a; --line-strong: #414951;
-    --accent: #86b0ac; --accent-ink: #10201f; --accent-soft: #1e2a29;
-    --warn: #dfab68; --warn-bg: #292116; --warn-line: #52412a;
-    --ok: #82bb9b; --ok-bg: #17251d;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 14px 32px rgba(0, 0, 0, .45);
+    --canvas: #09090b; --surface: #18181b; --muted: #27272a;
+    --fg: #fafafa; --fg-2: #a1a1aa; --fg-3: #71717a;
+    --line: #27272a; --line-2: #3f3f46; --ring: #52525b;
+    --primary: #fafafa; --primary-fg: #18181b;
+    --ok: #4ade80; --ok-bg: #14261a;
+    --warn: #fbbf24; --warn-bg: #271b09; --warn-line: #4a3411;
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--desk);
-    color: var(--ink);
+    background: var(--surface);
+    color: var(--fg);
     font-family: var(--ui);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---------- masthead ---------- */
+  /* ---------- top bar ---------- */
 
-  .masthead {
+  .topbar {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 8px 18px;
-    padding: 16px 24px 14px;
-    background: var(--surface);
+    align-items: center;
+    gap: 10px;
+    block-size: 52px;
+    padding: 0 16px;
     border-bottom: 1px solid var(--line);
   }
 
   .wordmark {
-    font-family: var(--display);
-    font-size: 22px;
+    font-size: 15px;
+    font-weight: 600;
     letter-spacing: -0.01em;
     margin: 0;
-    display: flex;
-    align-items: baseline;
-    gap: 10px;
   }
 
   .wordmark .role {
-    font-family: var(--ui);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--ink-3);
-    border-left: 1px solid var(--line);
-    padding-left: 10px;
+    font-weight: 400;
+    font-size: 13px;
+    color: var(--fg-3);
+    margin-inline-start: 10px;
+    padding-inline-start: 10px;
+    border-inline-start: 1px solid var(--line);
   }
 
-  .masthead p { margin: 0; color: var(--ink-2); max-width: 58ch; font-size: 13px; }
+  .topbar .spacer { margin-inline-start: auto; }
+
+  /* ---------- action bar ---------- */
+
+  .actionbar {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    align-items: center;
+    block-size: 48px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .actionbar > .lead {
+    padding-inline: 16px;
+    border-inline-end: 1px solid var(--line);
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+
+  .actions { display: flex; align-items: center; gap: 2px; padding-inline: 12px 16px; justify-content: flex-end; }
+  .actions .sep { inline-size: 1px; block-size: 18px; background: var(--line); margin-inline: 6px; }
 
   /* ---------- layout ---------- */
 
   .workbench {
     display: grid;
-    grid-template-columns: 356px minmax(0, 1fr);
+    grid-template-columns: 340px minmax(0, 1fr);
     align-items: start;
-    min-height: calc(100vh - 70px);
+    min-block-size: calc(100vh - 100px);
   }
 
   @media (max-width: 1040px) {
-    .workbench { grid-template-columns: minmax(0, 1fr); }
-    .rail { border-right: none !important; border-bottom: 1px solid var(--line); }
+    .actionbar, .workbench { grid-template-columns: minmax(0, 1fr); }
+    .actionbar > .lead { border-inline-end: none; }
+    .rail { border-inline-end: none !important; border-bottom: 1px solid var(--line); }
   }
 
   .rail {
-    background: var(--surface);
-    border-right: 1px solid var(--line);
-    padding: 16px 20px 40px;
+    border-inline-end: 1px solid var(--line);
+    padding: 12px 16px 48px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
 
   .stage {
-    padding: 18px 24px 48px;
+    background: var(--canvas);
+    align-self: stretch;
+    padding: 14px 16px 40px;
     display: flex;
     flex-direction: column;
-    gap: 13px;
-    min-width: 0;
+    gap: 12px;
+    min-inline-size: 0;
   }
 
   /* ---------- controls ---------- */
 
-  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field.disabled input { opacity: .45; pointer-events: none; }
 
-  .field.disabled input { opacity: .5; pointer-events: none; }
-
-  .fieldlabel, .grouplabel {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    color: var(--ink-2);
-    font-weight: 600;
+  .fieldlabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fg);
   }
 
-  .hint { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
+  .hint { font-size: 12px; color: var(--fg-3); line-height: 1.45; }
 
   select, input[type="text"], input[type="url"] {
     font: inherit;
     font-size: 13px;
-    color: var(--ink);
-    background: var(--surface-2);
-    border: 1px solid var(--line-strong);
-    border-radius: 3px;
-    padding: 7px 9px;
-    width: 100%;
-  }
-
-
-  input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
-
-  select:focus-visible, input:focus-visible, button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-
-  .field.colour { flex-direction: row; align-items: flex-start; gap: 10px; }
-  .colourbody { display: flex; flex-direction: column; gap: 5px; flex: 1; min-inline-size: 0; }
-  .colourbody input[type="text"] { inline-size: 116px; }
-  .colourbody .fieldlabel { font-size: 10.5px; letter-spacing: .05em; }
-
-  input[type="color"] {
-    inline-size: 40px; block-size: 40px;
-    padding: 3px;
-    border: 1px solid var(--line-strong);
-    border-radius: 7px;
-    background: var(--surface-2);
-    flex: none;
-    cursor: pointer;
-  }
-
-  .colourfield input[type="text"] {
-    font-family: var(--mono);
-    text-transform: lowercase;
-    font-size: 12px;
-    width: 104px;
-    flex: none;
-  }
-
-  /* ---------- preset gallery ---------- */
-
-  .presetgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
-
-  .presetcard {
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
-    padding: 0;
+    color: var(--fg);
     background: var(--surface);
     border: 1px solid var(--line);
-    border-radius: 6px;
-    overflow: hidden;
-    display: block;
+    border-radius: var(--radius-sm);
+    block-size: 32px;
+    padding: 0 9px;
+    inline-size: 100%;
   }
 
-  .presetcard:hover { border-color: var(--ink-3); }
-
-  .mini { display: block; background: #fff; padding: 7px 7px 8px; }
-  .mini > span { display: block; }
-  .mini-bar { block-size: 12px; border-radius: 2px; margin-bottom: 6px; }
-  .mini-line { block-size: 2px; background: #dcdee2; margin-bottom: 4px; }
-  .mini-line.short { inline-size: 52%; margin-bottom: 8px; }
-  .mini-th { block-size: 7px; border-radius: 2px; }
-  .mini-row { block-size: 4px; }
-
-  .presetname {
-    display: block;
-    font-size: 11px;
-    line-height: 1.3;
-    padding: 6px 8px 7px;
-    color: var(--ink-2);
-    border-top: 1px solid var(--line);
-    background: var(--surface-2);
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--fg-3) 50%),
+                      linear-gradient(135deg, var(--fg-3) 50%, transparent 50%);
+    background-position: calc(100% - 15px) 14px, calc(100% - 10px) 14px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-inline-end: 26px;
   }
 
-  .checkline { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; cursor: pointer; }
-  .checkline input { margin: 3px 0 0; accent-color: var(--accent); flex: none; }
+  input[type="range"] { inline-size: 100%; accent-color: var(--primary); margin: 0; }
 
-  .readout { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
-  .rowlabel { display: flex; align-items: baseline; gap: 8px; }
-  .rowlabel .fieldlabel { margin-right: auto; }
+  select:focus-visible, input:focus-visible, button:focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
+  }
+
+  .swatchrow { display: flex; align-items: center; gap: 8px; }
+  .swatchrow input[type="text"] { font-family: var(--mono); font-size: 12px; text-transform: lowercase; }
+
+  input[type="color"] {
+    inline-size: 28px; block-size: 28px;
+    padding: 2px;
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    flex: none;
+    cursor: pointer;
+  }
+
+  .checkline { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; cursor: pointer; color: var(--fg); }
+  .checkline input { margin: 3px 0 0; accent-color: var(--primary); flex: none; }
+
+  .readout { font-family: var(--mono); font-size: 11.5px; color: var(--fg-3); font-variant-numeric: tabular-nums; }
+  .rowlabel { display: flex; align-items: center; gap: 6px; }
+  .rowlabel .fieldlabel { margin-inline-end: auto; }
 
   .ratio {
     font-family: var(--mono);
     font-size: 10.5px;
     font-variant-numeric: tabular-nums;
-    padding: 1px 7px;
+    padding: 1px 6px;
     border-radius: 20px;
-    border: 1px solid transparent;
     white-space: nowrap;
     flex: none;
   }
 
   .ratio.ok { color: var(--ok); background: var(--ok-bg); }
-  .ratio.warn { color: var(--warn); background: var(--warn-bg); border-color: var(--warn-line); }
+  .ratio.warn { color: var(--warn); background: var(--warn-bg); box-shadow: inset 0 0 0 1px var(--warn-line); }
 
   .autobtn {
     font: inherit;
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: .06em;
-    font-weight: 700;
-    border: 1px solid var(--line-strong);
-    background: var(--surface-2);
-    color: var(--ink-3);
+    letter-spacing: .05em;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg-3);
     border-radius: 20px;
-    padding: 2px 9px;
+    padding: 1px 7px;
     cursor: pointer;
     flex: none;
   }
 
-  .autobtn[aria-pressed="true"] {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--accent);
+  .autobtn[aria-pressed="true"] { background: var(--muted); color: var(--fg-2); }
+
+  /* ---------- collapsible groups ---------- */
+
+  .group { display: flex; flex-direction: column; gap: 8px; }
+
+  .grouphead {
+    font: inherit;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--fg-2);
+    background: var(--muted);
+    border: none;
+    border-radius: 20px;
+    padding: 3px 10px 3px 7px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    align-self: flex-start;
   }
 
-  .groupsep {
-    font-family: var(--display);
-    font-size: 14px;
-    color: var(--ink);
-    border-top: 1px solid var(--line);
-    padding-top: 14px;
-    margin-top: 2px;
-  }
+  .grouphead:hover { color: var(--fg); }
+  .chev { inline-size: 12px; block-size: 12px; transition: transform .12s ease; }
+  .grouphead[aria-expanded="false"] .chev { transform: rotate(-90deg); }
 
-  .groupsep:first-child { border-top: none; padding-top: 0; margin-top: 0; }
-  .groupsep .hint { display: block; font-family: var(--ui); margin-top: 4px; }
+  .groupbody { display: flex; flex-direction: column; gap: 11px; padding-inline-start: 2px; }
 
-  /* ---------- tab strips ---------- */
+  /* ---------- tabs ---------- */
 
-  .tabs {
-    display: flex;
-    gap: 2px;
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 3px;
-  }
-
-  .rail .tabs { background: var(--surface-2); }
+  .tabs { display: flex; gap: 2px; flex-wrap: wrap; }
 
   .tab {
     font: inherit;
-    font-size: 13px;
+    font-size: 12.5px;
     border: none;
     background: none;
-    color: var(--ink-2);
-    padding: 6px 12px;
-    border-radius: 3px;
+    color: var(--fg-2);
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    flex: 1;
     white-space: nowrap;
   }
 
-  .stage .tab { flex: none; }
-  .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+  .tab:hover { color: var(--fg); }
+  .tab[aria-selected="true"] { background: var(--muted); color: var(--fg); font-weight: 500; }
 
-  .panel { display: flex; flex-direction: column; gap: 13px; }
+  .panel { display: flex; flex-direction: column; gap: 14px; }
 
-  /* ---------- stage chrome ---------- */
-
-  .stagebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
-  .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  /* ---------- buttons ---------- */
 
   button.action {
     font: inherit;
     font-size: 13px;
-    border: 1px solid var(--line-strong);
-    background: var(--surface);
-    color: var(--ink);
-    padding: 7px 12px;
-    border-radius: 3px;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--fg-2);
+    block-size: 32px;
+    padding: 0 10px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
   }
 
-  button.action:hover:not(:disabled) { border-color: var(--ink-3); }
-  button.action:disabled { opacity: .4; cursor: default; }
+  button.action:hover:not(:disabled) { background: var(--muted); color: var(--fg); }
+  button.action:disabled { opacity: .35; cursor: default; }
 
   button.action.primary {
-    background: var(--accent); border-color: var(--accent);
-    color: var(--accent-ink); font-weight: 600;
+    background: var(--primary);
+    color: var(--primary-fg);
+    font-weight: 500;
+    padding: 0 14px;
   }
 
-  .filename { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+  button.action.primary:hover:not(:disabled) { background: var(--primary); opacity: .9; color: var(--primary-fg); }
+
+  .filename { font-family: var(--mono); font-size: 12px; color: var(--fg-3); }
 
   /* ---------- checks ---------- */
 
-  .checks { display: flex; flex-direction: column; gap: 7px; }
+  .checks { display: flex; flex-direction: column; gap: 6px; }
 
   .check {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 10px;
+    gap: 9px;
     align-items: start;
     font-size: 12.5px;
-    padding: 9px 12px;
-    border-radius: 3px;
+    padding: 8px 11px;
+    border-radius: var(--radius);
     border: 1px solid var(--line);
     background: var(--surface);
-    color: var(--ink-2);
+    color: var(--fg-2);
   }
 
   .check.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
   .check.ok { background: var(--ok-bg); border-color: transparent; color: var(--ok); }
-  .check .marker { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; padding-top: 1px; }
+
+  .check .marker {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 600;
+    opacity: .75;
+    padding-top: 1px;
+  }
 
   /* ---------- paper ---------- */
 
-  .proof { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 22px; overflow: auto; }
+  .proof {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    overflow: auto;
+  }
+
   .sheet-scaler { position: relative; margin: 0 auto; }
 
   .sheet {
     inline-size: 794px; block-size: 1123px;
-    border: none; background: #fff;
-    box-shadow: var(--shadow);
+    border: none;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .06), 0 1px 3px rgba(0, 0, 0, .08);
     transform-origin: top left;
     display: block;
   }
 
   /* ---------- css output ---------- */
 
-  .code { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; overflow: auto; max-block-size: 70vh; }
-  .code pre { margin: 0; padding: 18px 20px; font-family: var(--mono); font-size: 12.5px; line-height: 1.65; color: var(--ink); }
+  .code {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: auto;
+    max-block-size: 70vh;
+  }
 
-  .handoff { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 16px 20px; }
-  .handoff h2 { font-family: var(--display); font-size: 16px; margin: 0 0 8px; }
-  .handoff ol, .handoff ul { margin: 0; padding-left: 20px; color: var(--ink-2); font-size: 13px; }
-  .handoff li { margin-bottom: 5px; }
+  .code pre { margin: 0; padding: 16px 18px; font-family: var(--mono); font-size: 12px; line-height: 1.65; color: var(--fg); }
+
+  .handoff {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+
+  .handoff h2 { font-size: 13px; font-weight: 600; margin: 0 0 8px; }
+  .handoff ol, .handoff ul { margin: 0; padding-inline-start: 18px; color: var(--fg-2); font-size: 12.5px; }
+  .handoff li { margin-bottom: 4px; }
   .handoff li:last-child { margin-bottom: 0; }
-  .handoff code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; color: var(--ink); }
+  .handoff code { font-family: var(--mono); font-size: 11.5px; background: var(--muted); padding: 1px 5px; border-radius: 4px; color: var(--fg); }
   .handoff details { margin-top: 10px; }
-  .handoff summary { cursor: pointer; font-size: 13px; color: var(--accent); }
-  .handoff details p { font-size: 13px; color: var(--ink-2); }
+  .handoff summary { cursor: pointer; font-size: 12.5px; color: var(--fg-2); }
+  .handoff details p { font-size: 12.5px; color: var(--fg-3); }
 
   [hidden] { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
-<header class="masthead">
+<header class="topbar">
   <h1 class="wordmark">Glyph<span class="role">Statement branding</span></h1>
-  <p>Set your colours, type and table treatment, check them against a real statement, then download the stylesheet to send us.</p>
+  <span class="spacer"></span>
+  <button class="action" type="button" id="themeBtn" title="Switch between light and dark">Theme</button>
 </header>
+
+<div class="actionbar">
+  <div class="lead"><span class="filename" id="filename">acme.css</span></div>
+  <div class="actions">
+    <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
+    <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
+    <button class="action" type="button" id="resetBtn">Reset</button>
+    <span class="sep"></span>
+    <button class="action" type="button" id="shareBtn">Copy link</button>
+    <button class="action" type="button" id="copyBtn">Copy CSS</button>
+    <button class="action primary" type="button" id="downloadBtn">Download</button>
+  </div>
+</div>
 
 <div class="workbench">
 
@@ -407,20 +429,10 @@
 
   <main class="stage">
 
-    <div class="stagebar">
-      <div class="tabs" role="tablist" aria-label="Proof">
-        <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
-        <button class="tab" type="button" role="tab" data-proof="taf" aria-selected="false">ISA transfer form</button>
-        <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
-      </div>
-      <div class="actions">
-        <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
-        <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
-        <button class="action" type="button" id="resetBtn">Reset</button>
-        <button class="action" type="button" id="shareBtn">Copy link</button>
-        <button class="action" type="button" id="copyBtn">Copy CSS</button>
-        <button class="action primary" type="button" id="downloadBtn">Download</button>
-      </div>
+    <div class="tabs" role="tablist" aria-label="Proof">
+      <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
+      <button class="tab" type="button" role="tab" data-proof="taf" aria-selected="false">ISA transfer form</button>
+      <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
     </div>
 
     <div class="checks" id="checks"></div>
@@ -434,9 +446,6 @@
     </section>
 
     <section id="proof-css" hidden>
-      <div class="stagebar" style="margin-bottom: 10px;">
-        <span class="filename" id="filename">acme.css</span>
-      </div>
       <div class="code"><pre id="cssOut"></pre></div>
     </section>
 
@@ -717,27 +726,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 
   function cssColour(value) { return value === null ? "transparent" : value; }
 
-  /* A preset drawn small enough to choose by eye. Mirrors derive(), which
-     cannot be reused here because it reads the live state rather than a
-     candidate preset. */
-  function presetLook(name) {
-    const p = Object.assign({}, DEFAULTS, PRESETS[name] || {});
-    const barBg = p.barStyle === "filled" ? p.brand
-      : p.barStyle === "tinted" ? tintOf(p.brand, 0.86)
-      : p.barStyle === "plain" ? "#ffffff" : "transparent";
-    const thBg = p.tableHeaderStyle === "solid" ? p.brand
-      : p.tableHeaderStyle === "subtle" ? "#f9fafb" : "#ffffff";
-    const shade = p.zebraColour || tintOf(p.brand, 0.92);
-    return {
-      barBg,
-      barLine: p.barStyle === "filled" || p.barStyle === "tinted" ? barBg : "#e4e6ea",
-      thBg,
-      thLine: p.tableHeaderStyle === "brandText" ? "#e4e6ea" : p.brand,
-      rowLine: p.rowLines ? (p.rowLineColour || "#eaecf0") : "transparent",
-      rows: [0, 1, 2].map(i => (p.zebra && i % 2) ? shade : "#ffffff")
-    };
-  }
-
   /* ================================================================== *
    * Control definitions — the rail is built from this
    * ================================================================== */
@@ -751,7 +739,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
   const CONTROLS = [
     /* ---- identity (always visible) ---- */
     { tab: "identity", type: "text", key: "partner", label: "Your name", hint: "Used for the filename only." },
-    { tab: "identity", type: "presets", key: "preset", label: "Start from", transient: true,
+    { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
       options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
                 ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]],
@@ -1373,20 +1361,6 @@ ${rows}
   function makeField(spec) {
     const wrap = document.createElement("div");
 
-    if (spec.type === "group") {
-      wrap.className = "groupsep";
-      const title = document.createElement("div");
-      title.textContent = spec.label;
-      wrap.appendChild(title);
-      if (spec.hint) {
-        const note = document.createElement("span");
-        note.className = "hint";
-        note.textContent = spec.hint;
-        wrap.appendChild(note);
-      }
-      return { wrap };
-    }
-
     wrap.className = "field";
     const id = "ctl-" + spec.key;
     let input, extra = {};
@@ -1443,30 +1417,6 @@ ${rows}
         input.addEventListener("input", () => { state[spec.key] = input.value; commit(false); });
         wrap.appendChild(input);
         break;
-
-      case "presets": {
-        input = document.createElement("div");
-        input.id = id;
-        input.className = "presetgrid";
-        for (const [value, text] of spec.options) {
-          const look = presetLook(value);
-          const card = document.createElement("button");
-          card.type = "button";
-          card.className = "presetcard";
-          card.innerHTML =
-            '<span class="mini">' +
-            `<span class="mini-bar" style="background:${look.barBg};box-shadow:inset 0 0 0 1px ${look.barLine}"></span>` +
-            '<span class="mini-line"></span><span class="mini-line short"></span>' +
-            `<span class="mini-th" style="background:${look.thBg};border-bottom:1.5px solid ${look.thLine}"></span>` +
-            look.rows.map(bg =>
-              `<span class="mini-row" style="background:${bg};border-bottom:1px solid ${look.rowLine}"></span>`).join("") +
-            `</span><span class="presetname">${escapeHtml(text)}</span>`;
-          card.addEventListener("click", () => applyPreset(value));
-          input.appendChild(card);
-        }
-        wrap.appendChild(input);
-        break;
-      }
 
       case "select":
         input = document.createElement("select");
@@ -1531,11 +1481,8 @@ ${rows}
         break;
 
       case "colour": {
-        wrap.classList.add("colour");
-        const body = document.createElement("div");
-        body.className = "colourbody";
-        body.appendChild(labelRow);
-        extra.body = body;
+        const row = document.createElement("div");
+        row.className = "swatchrow";
         input = document.createElement("input");
         input.type = "color";
         input.setAttribute("aria-label", spec.label + " picker");
@@ -1556,8 +1503,8 @@ ${rows}
           input.value = value;
           commit(false);
         });
-        body.appendChild(hex);
-        wrap.append(input, body);
+        row.append(input, hex);
+        wrap.append(labelRow, row);
         extra.hex = hex;
         break;
       }
@@ -1567,17 +1514,59 @@ ${rows}
       const hint = document.createElement("span");
       hint.className = "hint";
       hint.textContent = spec.hint;
-      (extra.body || wrap).appendChild(hint);
+      wrap.appendChild(hint);
     }
 
     return Object.assign({ wrap, input }, extra);
   }
 
+  const CHEVRON =
+    '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true">' +
+    '<path d="M3 4.5 6 8l3-3.5" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function makeGroup(spec) {
+    const section = document.createElement("section");
+    section.className = "group";
+
+    const head = document.createElement("button");
+    head.type = "button";
+    head.className = "grouphead";
+    head.setAttribute("aria-expanded", "true");
+    head.innerHTML = CHEVRON + "<span>" + escapeHtml(spec.label) + "</span>";
+
+    const body = document.createElement("div");
+    body.className = "groupbody";
+
+    if (spec.hint) {
+      const note = document.createElement("span");
+      note.className = "hint";
+      note.textContent = spec.hint;
+      body.appendChild(note);
+    }
+
+    head.addEventListener("click", () => {
+      const open = head.getAttribute("aria-expanded") === "true";
+      head.setAttribute("aria-expanded", String(!open));
+      body.hidden = open;
+    });
+
+    section.append(head, body);
+    return { section, body };
+  }
+
   function buildRail() {
+    const open = new Map();
     for (const spec of CONTROLS) {
-      const target = spec.tab === "identity" ? el("identity") : el("panel-" + spec.tab);
+      const panel = spec.tab === "identity" ? el("identity") : el("panel-" + spec.tab);
+      if (spec.type === "group") {
+        const { section, body } = makeGroup(spec);
+        panel.appendChild(section);
+        open.set(panel, body);
+        continue;
+      }
       const built = makeField(spec);
-      target.appendChild(built.wrap);
+      (open.get(panel) || panel).appendChild(built.wrap);
       if (spec.key) nodes.set(spec.key, { spec, ...built });
     }
   }
@@ -1827,6 +1816,12 @@ ${rows}
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
     event.preventDefault();
     (event.shiftKey ? el("redoBtn") : el("undoBtn")).click();
+  });
+
+  el("themeBtn").addEventListener("click", () => {
+    const dark = matchMedia("(prefers-color-scheme: dark)").matches;
+    const current = document.documentElement.dataset.theme || (dark ? "dark" : "light");
+    document.documentElement.dataset.theme = current === "dark" ? "light" : "dark";
   });
 
   el("controls").addEventListener("submit", event => event.preventDefault());

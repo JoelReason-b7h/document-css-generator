@@ -14,8 +14,11 @@ Open `index.html` in any browser. Nothing is uploaded, and nothing leaves your m
    again to go back to following the brand.
 3. Check both document tabs — the monthly statement and the ISA transfer authority form share a
    stylesheet, so a change to one usually shows up in the other.
-4. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
-5. Download the stylesheet and send it to your Bondsmith contact along with your logo.
+4. On the **Preview** tab, set the statement type to the one your customers get. It changes only
+   the sample document, never the stylesheet, but the four types list different transactions and
+   the longest description is what decides how wide your columns need to be.
+5. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
+6. Download the stylesheet and send it to your Bondsmith contact along with your logo.
 
 **Copy link** puts your settings in the URL, which is the easiest way to show someone else what you
 are proposing — open the link and the controls come back exactly as you left them.

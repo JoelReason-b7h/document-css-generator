@@ -1,0 +1,1613 @@
+<title>Glyph — statement branding</title>
+<style>
+  :root {
+    --desk: #e6e8eb;
+    --surface: #ffffff;
+    --surface-2: #f4f5f7;
+    --ink: #171a1d;
+    --ink-2: #5b636c;
+    --ink-3: #838c95;
+    --line: #d4d8dd;
+    --line-strong: #b9bfc7;
+    --accent: #3d5a5b;
+    --accent-ink: #ffffff;
+    --accent-soft: #e6eeed;
+    --warn: #8a5410;
+    --warn-bg: #fbf1e2;
+    --warn-line: #e2c79b;
+    --ok: #2c6647;
+    --ok-bg: #e7f1ea;
+    --shadow: 0 1px 2px rgba(20, 26, 30, .08), 0 12px 28px rgba(20, 26, 30, .10);
+    --display: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --desk: #121417; --surface: #1b1e22; --surface-2: #23272c;
+      --ink: #e3e6ea; --ink-2: #98a1aa; --ink-3: #767f88;
+      --line: #2e343a; --line-strong: #414951;
+      --accent: #86b0ac; --accent-ink: #10201f; --accent-soft: #1e2a29;
+      --warn: #dfab68; --warn-bg: #292116; --warn-line: #52412a;
+      --ok: #82bb9b; --ok-bg: #17251d;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 14px 32px rgba(0, 0, 0, .45);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --desk: #121417; --surface: #1b1e22; --surface-2: #23272c;
+    --ink: #e3e6ea; --ink-2: #98a1aa; --ink-3: #767f88;
+    --line: #2e343a; --line-strong: #414951;
+    --accent: #86b0ac; --accent-ink: #10201f; --accent-soft: #1e2a29;
+    --warn: #dfab68; --warn-bg: #292116; --warn-line: #52412a;
+    --ok: #82bb9b; --ok-bg: #17251d;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 14px 32px rgba(0, 0, 0, .45);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--desk);
+    color: var(--ink);
+    font-family: var(--ui);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- masthead ---------- */
+
+  .masthead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 18px;
+    padding: 16px 24px 14px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .wordmark {
+    font-family: var(--display);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .wordmark .role {
+    font-family: var(--ui);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--ink-3);
+    border-left: 1px solid var(--line);
+    padding-left: 10px;
+  }
+
+  .masthead p { margin: 0; color: var(--ink-2); max-width: 58ch; font-size: 13px; }
+
+  /* ---------- layout ---------- */
+
+  .workbench {
+    display: grid;
+    grid-template-columns: 356px minmax(0, 1fr);
+    align-items: start;
+    min-height: calc(100vh - 70px);
+  }
+
+  @media (max-width: 1040px) {
+    .workbench { grid-template-columns: minmax(0, 1fr); }
+    .rail { border-right: none !important; border-bottom: 1px solid var(--line); }
+  }
+
+  .rail {
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+    padding: 16px 20px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .stage {
+    padding: 18px 24px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    min-width: 0;
+  }
+
+  /* ---------- controls ---------- */
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  .field.disabled > .colourfield input,
+  .field.disabled > input { opacity: .5; pointer-events: none; }
+
+  .fieldlabel, .grouplabel {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+
+  .hint { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
+
+  select, input[type="text"], input[type="url"] {
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    padding: 7px 9px;
+    width: 100%;
+  }
+
+
+  input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
+
+  select:focus-visible, input:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .colourfield { display: flex; gap: 8px; align-items: center; }
+
+  input[type="color"] {
+    inline-size: 38px; block-size: 33px;
+    padding: 2px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: var(--surface-2);
+    flex: none;
+    cursor: pointer;
+  }
+
+  .colourfield input[type="text"] { font-family: var(--mono); text-transform: lowercase; }
+
+  .checkline { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; cursor: pointer; }
+  .checkline input { margin: 3px 0 0; accent-color: var(--accent); flex: none; }
+
+  .readout { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .rowlabel { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+
+  .autobtn {
+    font: inherit;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 700;
+    border: 1px solid var(--line-strong);
+    background: var(--surface-2);
+    color: var(--ink-3);
+    border-radius: 20px;
+    padding: 2px 9px;
+    cursor: pointer;
+    flex: none;
+  }
+
+  .autobtn[aria-pressed="true"] {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .groupsep {
+    font-family: var(--display);
+    font-size: 14px;
+    color: var(--ink);
+    border-top: 1px solid var(--line);
+    padding-top: 14px;
+    margin-top: 2px;
+  }
+
+  .groupsep:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+
+  /* ---------- tab strips ---------- */
+
+  .tabs {
+    display: flex;
+    gap: 2px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 3px;
+  }
+
+  .rail .tabs { background: var(--surface-2); }
+
+  .tab {
+    font: inherit;
+    font-size: 13px;
+    border: none;
+    background: none;
+    color: var(--ink-2);
+    padding: 6px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+    flex: 1;
+    white-space: nowrap;
+  }
+
+  .stage .tab { flex: none; }
+  .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+
+  .panel { display: flex; flex-direction: column; gap: 13px; }
+
+  /* ---------- stage chrome ---------- */
+
+  .stagebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
+  .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+  button.action {
+    font: inherit;
+    font-size: 13px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    padding: 7px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  button.action:hover:not(:disabled) { border-color: var(--ink-3); }
+  button.action:disabled { opacity: .4; cursor: default; }
+
+  button.action.primary {
+    background: var(--accent); border-color: var(--accent);
+    color: var(--accent-ink); font-weight: 600;
+  }
+
+  .filename { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+
+  /* ---------- checks ---------- */
+
+  .checks { display: flex; flex-direction: column; gap: 7px; }
+
+  .check {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 10px;
+    align-items: start;
+    font-size: 12.5px;
+    padding: 9px 12px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+  }
+
+  .check.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
+  .check.ok { background: var(--ok-bg); border-color: transparent; color: var(--ok); }
+  .check .marker { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; padding-top: 1px; }
+
+  /* ---------- paper ---------- */
+
+  .proof { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 22px; overflow: auto; }
+  .sheet-scaler { position: relative; margin: 0 auto; }
+
+  .sheet {
+    inline-size: 794px; block-size: 1123px;
+    border: none; background: #fff;
+    box-shadow: var(--shadow);
+    transform-origin: top left;
+    display: block;
+  }
+
+  /* ---------- css output ---------- */
+
+  .code { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; overflow: auto; max-block-size: 70vh; }
+  .code pre { margin: 0; padding: 18px 20px; font-family: var(--mono); font-size: 12.5px; line-height: 1.65; color: var(--ink); }
+
+  .handoff { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 16px 20px; }
+  .handoff h2 { font-family: var(--display); font-size: 16px; margin: 0 0 8px; }
+  .handoff ol, .handoff ul { margin: 0; padding-left: 20px; color: var(--ink-2); font-size: 13px; }
+  .handoff li { margin-bottom: 5px; }
+  .handoff li:last-child { margin-bottom: 0; }
+  .handoff code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; color: var(--ink); }
+  .handoff details { margin-top: 10px; }
+  .handoff summary { cursor: pointer; font-size: 13px; color: var(--accent); }
+  .handoff details p { font-size: 13px; color: var(--ink-2); }
+
+  [hidden] { display: none !important; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="masthead">
+  <h1 class="wordmark">Glyph<span class="role">Statement branding</span></h1>
+  <p>Set your colours, type and table treatment, check them against a real statement, then download the stylesheet to send us.</p>
+</header>
+
+<div class="workbench">
+
+  <form class="rail" id="controls" autocomplete="off">
+    <div id="identity" class="panel"></div>
+    <div class="tabs" role="tablist" aria-label="Settings">
+      <button class="tab" type="button" role="tab" data-railtab="colour" aria-selected="true">Colour</button>
+      <button class="tab" type="button" role="tab" data-railtab="type" aria-selected="false">Type</button>
+      <button class="tab" type="button" role="tab" data-railtab="table" aria-selected="false">Table</button>
+      <button class="tab" type="button" role="tab" data-railtab="layout" aria-selected="false">Layout</button>
+    </div>
+    <div class="panel" id="panel-colour" role="tabpanel"></div>
+    <div class="panel" id="panel-type" role="tabpanel" hidden></div>
+    <div class="panel" id="panel-table" role="tabpanel" hidden></div>
+    <div class="panel" id="panel-layout" role="tabpanel" hidden></div>
+  </form>
+
+  <main class="stage">
+
+    <div class="stagebar">
+      <div class="tabs" role="tablist" aria-label="Proof">
+        <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
+        <button class="tab" type="button" role="tab" data-proof="taf" aria-selected="false">ISA transfer form</button>
+        <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
+      </div>
+      <div class="actions">
+        <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
+        <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
+        <button class="action" type="button" id="resetBtn">Reset</button>
+        <button class="action" type="button" id="shareBtn">Copy link</button>
+        <button class="action" type="button" id="copyBtn">Copy CSS</button>
+        <button class="action primary" type="button" id="downloadBtn">Download</button>
+      </div>
+    </div>
+
+    <div class="checks" id="checks"></div>
+
+    <section class="proof" id="proof-statement">
+      <div class="sheet-scaler" id="scaler-statement"><iframe class="sheet" id="frame-statement" title="Monthly statement proof"></iframe></div>
+    </section>
+
+    <section class="proof" id="proof-taf" hidden>
+      <div class="sheet-scaler" id="scaler-taf"><iframe class="sheet" id="frame-taf" title="ISA transfer authority form proof"></iframe></div>
+    </section>
+
+    <section id="proof-css" hidden>
+      <div class="stagebar" style="margin-bottom: 10px;">
+        <span class="filename" id="filename">acme.css</span>
+      </div>
+      <div class="code"><pre id="cssOut"></pre></div>
+    </section>
+
+    <div class="handoff">
+      <h2>Sending this to us</h2>
+      <ol>
+        <li>Download the stylesheet and email it to your Bondsmith contact, with your logo as a PNG or SVG.</li>
+        <li>We host the file and point your platform at it, so the next statements we generate use it.</li>
+        <li>Ask us for a sample statement before we switch it on for your customers.</li>
+      </ol>
+      <details>
+        <summary>Why can't I set letter spacing, gradients or shadows?</summary>
+        <p>Statements are rendered to PDF by an engine that supports a subset of CSS. We tested each
+          option against the real renderer and only offer the ones that genuinely come out the other
+          side. Letter and word spacing, transparency, gradients and drop shadows are all silently
+          dropped, so there is no control for them — a slider that did nothing would be worse than
+          its absence.</p>
+      </details>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  "use strict";
+
+  /* ================================================================== *
+   * Baseline stylesheets, copied from the document templates so a proof
+   * starts from the same defaults the PDF renderer does.
+   * exchange: core/src/main/resources/thymeleaf/statement/shared.css
+   * ================================================================== */
+
+  const STATEMENT_BASE = `
+#page-header { display: inline; }
+#page-footer { text-align: right; }
+span.page:before { content: counter(page); }
+span.pagecount:before { content: counter(pages); }
+.document-body { font-family: Inter, sans-serif; font-size: 12px; }
+.statement-banner { padding: 10px 20px 10px 20px; }
+.document-logo { height: 70px; }
+.account-list { width: 60%; }
+.account-name { width: 60%; }
+#address-details { text-align: right; line-height: 0; }
+.document-dates { text-align: right; color: #2B6DB2; }
+.data-table {
+  border: none; border-collapse: collapse; width: 100%;
+  text-align: center; vertical-align: middle;
+  padding-right: 20px; padding-left: 20px;
+}
+.data-table .transaction-amount { text-align: right; }
+.data-table thead tr { border: 1px solid; color: white; margin-bottom: 80px; font-weight: normal; }
+.data-table th { padding: 10px 0 10px 10px; font-weight: normal; border: 1px solid; text-align: left; }
+.data-table td { padding-top: 5px; padding-bottom: 5px; text-align: left; padding-left: 10px; }
+`;
+
+  /* exchange: core/src/main/resources/thymeleaf/isa/taf/shared.css */
+  const TAF_BASE = `
+html, body { margin: 0; padding: 0; }
+.document-body { font-family: Inter, sans-serif; font-size: 12px; line-height: 1.35; color: #000; background: #fff; margin: 0 !important; }
+.container { width: 100%; padding: 0; }
+.section-wrapper { margin: 0 0 4px 0; }
+.subsection { background-color: #f3f3f3; border: 1px solid #2d3e7c; padding: 10px; margin: 0 0 12px 0; }
+.internal-use { border: 1px solid #333; padding: 10px; margin: 18px 0 0 0; background-color: #f4f4f4; }
+.doc-header { width: 100%; border-collapse: collapse; border-bottom: 3px solid #2d407d; height: 40px; }
+.doc-header td { vertical-align: middle; padding: 0 0 8px 0; }
+.doc-header .logo { text-align: right; width: 180px; }
+.doc-header .logo img { height: 40px; width: auto; display: inline-block; }
+h1 { font-size: 28px; margin: 0; color: #2d407d; }
+h2, h3 { margin: 0; padding: 0; background: transparent; }
+h3 { color: #2d3e7c; font-size: 14px; margin: 0 0 6px 0; }
+.section-header {
+  background-color: #2d3e7c; color: #fff;
+  margin: 10px 0 8px 0; padding: 6px 10px;
+  display: table; width: 100%;
+}
+.section-header h2 { display: table-cell; vertical-align: middle; font-size: 16px; font-weight: bold; color: #fff; white-space: nowrap; }
+.form-table { width: 100%; border-collapse: collapse; margin: 0; }
+.form-table td { vertical-align: top; padding: 2px; }
+.checkbox-table { border-collapse: collapse; margin: 0 0 8px 0; font-size: 12px; }
+.checkbox-table td { vertical-align: middle; padding: 2px 6px 2px 0; }
+label { font-size: 11px; font-weight: bold; display: block; }
+input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid #999; background-color: #fff; margin: 0; height: 24px; box-sizing: border-box; }
+.form-table input.stacked { display: block; width: 100%; margin: 0 0 -2px 0; }
+.checkbox-box { width: 16px; height: 16px; display: inline-block; }
+.char-box-group { display: inline-block; margin: 0 0 12px 0; }
+.char-box-group span { font-size: 12px; margin: 0 1px; }
+.char-box { width: 22px; height: 24px; border: 1px solid #333; display: inline-block; margin: 0 2px 0 0; vertical-align: middle; }
+.intro-box { font-size: 12px; padding: 2px 0; margin: 0; }
+.question-title { font-size: 12px; font-weight: bold; margin: 0 0 4px 0; }
+.authority-text { font-size: 12px; margin: 12px 0 0 0; }
+.footer-notes { font-size: 10px; color: #666; margin-top: 16px; border-top: 1px solid #eee; padding-top: 8px; }
+.w-form-half { width: 330px !important; }
+.w-50 { width: 50%; }
+.w-140 { width: 140px !important; }
+.w-150 { width: 150px !important; }
+.mb-10 { margin-bottom: 10px; }
+.pl-20 { padding-left: 20px; }
+.valign-top { vertical-align: top; }
+.stacked-label { margin: 2px 0 0 0; }
+`;
+
+  const PLACEHOLDER_LOGO =
+    "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="80" viewBox="0 0 320 80">' +
+      '<rect width="320" height="80" fill="none" stroke="#b9bfc7" stroke-dasharray="6 5"/>' +
+      '<text x="160" y="45" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" ' +
+      'font-size="17" fill="#8b939c">your logo</text></svg>');
+
+  /* ================================================================== *
+   * State
+   * ================================================================== */
+
+  const DEFAULTS = {
+    partner: "acme",
+    logoUrl: "",
+
+    brand: "#26456b",
+    barStyle: "filled",
+    barBg: null,
+    barText: null,
+    sectionBarsMatch: false,
+    sectionBg: null,
+    sectionText: null,
+    dateColour: null,
+    accentColour: null,
+    bodyTextColour: "#000000",
+
+    fontMode: "builtin",
+    builtinFont: "Helvetica, Arial, sans-serif",
+    embedFamily: "",
+    embedUrl: "",
+    fontSize: 12,
+    lineHeight: 0,
+    titleSize: 0,
+    headingSize: 0,
+    headingWeight: "",
+    upperSections: false,
+
+    tableHeaderStyle: "brandText",
+    tableHeaderBg: null,
+    tableHeaderText: null,
+    upperTableHeader: false,
+    headerRadius: 0,
+    cellPadding: 5,
+    rowLines: false,
+    rowLineColour: "#eaecf0",
+    rowLineWidth: 1,
+    zebra: false,
+    zebraColour: null,
+
+    logoHeight: 70,
+    logoContain: false,
+    logoAlign: "left",
+    barPadX: 20,
+    barPadY: 10,
+    barRadius: 0,
+    barSpaceAbove: 0,
+    barSpaceBelow: 0,
+    summaryWidth: 60,
+    addressTight: false,
+    bodyMargin: 0
+  };
+
+  let state = Object.assign({}, DEFAULTS);
+
+  const DEMO_BRAND = "#26456b";
+
+  /* Layout shapes drawn from the stylesheets we host, in a neutral demo
+     colour. They set structure only — colour and type are the partner's. */
+  const PRESETS = {
+    plain: { brand: "#333333", barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "brandText", logoHeight: 70 },
+    banner: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: false, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true, summaryWidth: 100, addressTight: true },
+    tinted: { brand: DEMO_BRAND, barStyle: "tinted", sectionBarsMatch: true, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true },
+    bold: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: true, barPadY: 20, barPadX: 20, barSpaceAbove: 20, barSpaceBelow: 10, tableHeaderStyle: "solid", rowLines: true, logoHeight: 40 },
+    accent: { brand: DEMO_BRAND, barStyle: "plain", barText: "#000000", sectionBarsMatch: true, tableHeaderStyle: "solid", logoHeight: 50, bodyMargin: 20 },
+    minimal: { brand: "#000000", barStyle: "minimal", sectionBarsMatch: true, tableHeaderStyle: "subtle", rowLines: true, logoHeight: 40 },
+    striped: { brand: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "solid", zebra: true, headerRadius: 6, logoHeight: 40 }
+  };
+
+  /* ================================================================== *
+   * Colour helpers
+   * ================================================================== */
+
+  function normaliseHex(value) {
+    if (typeof value !== "string") return null;
+    let hex = value.trim().toLowerCase();
+    const named = { white: "#ffffff", black: "#000000", transparent: null };
+    if (Object.prototype.hasOwnProperty.call(named, hex)) return named[hex];
+    const rgb = hex.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+    if (rgb) {
+      return "#" + [1, 2, 3].map(i => Number(rgb[i]).toString(16).padStart(2, "0")).join("");
+    }
+    if (hex[0] !== "#") hex = "#" + hex;
+    if (/^#[0-9a-f]{3}$/.test(hex)) hex = "#" + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+    return /^#[0-9a-f]{6}$/.test(hex) ? hex : null;
+  }
+
+  function channelLuminance(c) {
+    const v = c / 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  }
+
+  function relativeLuminance(hex) {
+    return 0.2126 * channelLuminance(parseInt(hex.slice(1, 3), 16))
+         + 0.7152 * channelLuminance(parseInt(hex.slice(3, 5), 16))
+         + 0.0722 * channelLuminance(parseInt(hex.slice(5, 7), 16));
+  }
+
+  function contrastRatio(a, b) {
+    const la = relativeLuminance(a), lb = relativeLuminance(b);
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+  }
+
+  function readableOn(bg) {
+    return contrastRatio("#ffffff", bg) >= contrastRatio("#000000", bg) ? "#ffffff" : "#000000";
+  }
+
+  function tintOf(hex, amount) {
+    const mix = (start) => Math.round(start + (255 - start) * amount);
+    return "#" + [
+      mix(parseInt(hex.slice(1, 3), 16)),
+      mix(parseInt(hex.slice(3, 5), 16)),
+      mix(parseInt(hex.slice(5, 7), 16))
+    ].map(n => n.toString(16).padStart(2, "0")).join("");
+  }
+
+  /* ================================================================== *
+   * Derived values — every override falls back to one of these
+   * ================================================================== */
+
+  const derive = {
+    barBg() {
+      if (state.barBg) return state.barBg;
+      switch (state.barStyle) {
+        case "filled": return state.brand;
+        case "tinted": return tintOf(state.brand, 0.86);
+        case "plain": return "#ffffff";
+        default: return null;
+      }
+    },
+    barText() {
+      if (state.barText) return state.barText;
+      const bg = derive.barBg();
+      if (state.barStyle === "filled" || state.barStyle === "tinted") return readableOn(bg);
+      return state.brand;
+    },
+    sectionBg() {
+      if (state.sectionBarsMatch) return derive.barBg();
+      return state.sectionBg || "#ffffff";
+    },
+    sectionText() {
+      if (state.sectionBarsMatch) return derive.barText();
+      return state.sectionText || state.brand;
+    },
+    dateColour() { return state.dateColour || state.brand; },
+    accentColour() { return state.accentColour || state.brand; },
+    zebraColour() { return state.zebraColour || tintOf(state.brand, 0.92); },
+    tableHeaderBg() {
+      if (state.tableHeaderBg) return state.tableHeaderBg;
+      switch (state.tableHeaderStyle) {
+        case "solid": return state.brand;
+        case "subtle": return "#f9fafb";
+        default: return "#ffffff";
+      }
+    },
+    tableHeaderText() {
+      if (state.tableHeaderText) return state.tableHeaderText;
+      switch (state.tableHeaderStyle) {
+        case "solid": return readableOn(state.brand);
+        case "subtle": return "#000000";
+        default: return state.brand;
+      }
+    }
+  };
+
+  function cssColour(value) { return value === null ? "transparent" : value; }
+
+  /* ================================================================== *
+   * Control definitions — the rail is built from this
+   * ================================================================== */
+
+  const FONT_OPTIONS = [
+    ["Helvetica, Arial, sans-serif", "Helvetica / Arial"],
+    ['"Times New Roman", Times, serif', "Times New Roman"],
+    ["Courier, monospace", "Courier"]
+  ];
+
+  const CONTROLS = [
+    /* ---- identity (always visible) ---- */
+    { tab: "identity", type: "text", key: "partner", label: "Your name", hint: "Used for the filename only." },
+    { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
+      options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
+                ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
+                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]],
+      hint: "Layouts other partners use, in a neutral colour. Pick the closest, then make it yours." },
+    { tab: "identity", type: "url", key: "logoUrl", label: "Logo image (preview only)", placeholder: "https://…/logo.png",
+      hint: "Your logo is not part of this stylesheet — we store it separately." },
+
+    /* ---- colour ---- */
+    { tab: "colour", type: "group", label: "Brand" },
+    { tab: "colour", type: "colour", key: "brand", label: "Brand colour",
+      hint: "Everything below follows this until you override it." },
+
+    { tab: "colour", type: "group", label: "Statement title bar" },
+    { tab: "colour", type: "select", key: "barStyle", label: "Treatment",
+      options: [["filled", "Solid brand bar, reversed text"], ["tinted", "Tinted bar, brand text"],
+                ["plain", "White bar, brand text"], ["minimal", "No bar — heading only"]] },
+    { tab: "colour", type: "colour", key: "barBg", label: "Bar background", derived: () => derive.barBg(),
+      showIf: () => state.barStyle !== "minimal" },
+    { tab: "colour", type: "colour", key: "barText", label: "Bar text", derived: () => derive.barText() },
+
+    { tab: "colour", type: "group", label: "Section bars" },
+    { tab: "colour", type: "toggle", key: "sectionBarsMatch", label: 'Match the title bar treatment' },
+    { tab: "colour", type: "colour", key: "sectionBg", label: "Section bar background", derived: () => derive.sectionBg(),
+      showIf: () => !state.sectionBarsMatch },
+    { tab: "colour", type: "colour", key: "sectionText", label: "Section bar text", derived: () => derive.sectionText(),
+      showIf: () => !state.sectionBarsMatch },
+
+    { tab: "colour", type: "group", label: "Elsewhere" },
+    { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour() },
+    { tab: "colour", type: "colour", key: "accentColour", label: "ISA form rules and headings", derived: () => derive.accentColour(),
+      hint: "The underline beneath the form title, section box borders, and its headings." },
+    { tab: "colour", type: "colour", key: "bodyTextColour", label: "Body text" },
+
+    /* ---- type ---- */
+    { tab: "type", type: "group", label: "Typeface" },
+    { tab: "type", type: "radio", key: "fontMode", label: "Source",
+      options: [["builtin", "Use a font built into PDF readers"], ["embed", "Embed our own font file"]] },
+    { tab: "type", type: "select", key: "builtinFont", label: "Built-in font", options: FONT_OPTIONS,
+      showIf: () => state.fontMode === "builtin" },
+    { tab: "type", type: "text", key: "embedFamily", label: "Font family name", placeholder: "Open Sans",
+      showIf: () => state.fontMode === "embed" },
+    { tab: "type", type: "url", key: "embedUrl", label: "TrueType (.ttf) file URL", placeholder: "https://…/YourFont-Regular.ttf",
+      showIf: () => state.fontMode === "embed",
+      hint: "Send us the .ttf, then paste back the URL we give you." },
+
+    { tab: "type", type: "group", label: "Sizing" },
+    { tab: "type", type: "range", key: "fontSize", label: "Base text size", min: 9, max: 16, step: 1, unit: "px" },
+    { tab: "type", type: "range", key: "lineHeight", label: "Line spacing", min: 0, max: 20, step: 1,
+      format: v => v === 0 ? "default" : (1 + v / 10).toFixed(1) },
+    { tab: "type", type: "range", key: "titleSize", label: "Statement title size", min: 0, max: 40, step: 2,
+      format: v => v === 0 ? "default" : v + "px" },
+    { tab: "type", type: "range", key: "headingSize", label: "Section heading size", min: 0, max: 28, step: 1,
+      format: v => v === 0 ? "default" : v + "px" },
+
+    { tab: "type", type: "group", label: "Headings" },
+    { tab: "type", type: "select", key: "headingWeight", label: "Weight",
+      options: [["", "Leave as-is"], ["normal", "Regular"], ["bold", "Bold"]] },
+    { tab: "type", type: "toggle", key: "upperSections", label: "Set section headings in capitals" },
+
+    /* ---- table ---- */
+    { tab: "table", type: "group", label: "Header row" },
+    { tab: "table", type: "select", key: "tableHeaderStyle", label: "Treatment",
+      options: [["brandText", "Brand text on white"], ["solid", "Reversed text on brand"],
+                ["subtle", "Dark text on light grey"], ["rule", "Brand text with a brand underline"]] },
+    { tab: "table", type: "colour", key: "tableHeaderBg", label: "Header background", derived: () => derive.tableHeaderBg() },
+    { tab: "table", type: "colour", key: "tableHeaderText", label: "Header text", derived: () => derive.tableHeaderText() },
+    { tab: "table", type: "toggle", key: "upperTableHeader", label: "Column names in capitals" },
+    { tab: "table", type: "range", key: "headerRadius", label: "Header corner rounding", min: 0, max: 14, step: 1,
+      format: v => v === 0 ? "square" : v + "px" },
+
+    { tab: "table", type: "group", label: "Rows" },
+    { tab: "table", type: "range", key: "cellPadding", label: "Row height", min: 2, max: 14, step: 1, unit: "px" },
+    { tab: "table", type: "toggle", key: "rowLines", label: "Hairline between rows" },
+    { tab: "table", type: "colour", key: "rowLineColour", label: "Hairline colour", showIf: () => state.rowLines },
+    { tab: "table", type: "range", key: "rowLineWidth", label: "Hairline weight", min: 1, max: 3, step: 1, unit: "px",
+      showIf: () => state.rowLines },
+    { tab: "table", type: "toggle", key: "zebra", label: "Shade alternate rows" },
+    { tab: "table", type: "colour", key: "zebraColour", label: "Shading colour", derived: () => derive.zebraColour(),
+      showIf: () => state.zebra },
+
+    /* ---- layout ---- */
+    { tab: "layout", type: "group", label: "Logo" },
+    { tab: "layout", type: "range", key: "logoHeight", label: "Height", min: 20, max: 90, step: 5, unit: "px" },
+    { tab: "layout", type: "toggle", key: "logoContain", label: "Keep proportions and add space beneath" },
+    { tab: "layout", type: "select", key: "logoAlign", label: "Position",
+      options: [["left", "Left"], ["center", "Centred"], ["right", "Right"]] },
+
+    { tab: "layout", type: "group", label: "Bars" },
+    { tab: "layout", type: "range", key: "barPadY", label: "Height", min: 0, max: 30, step: 2, unit: "px" },
+    { tab: "layout", type: "range", key: "barPadX", label: "Side padding", min: 0, max: 30, step: 2, unit: "px" },
+    { tab: "layout", type: "range", key: "barRadius", label: "Corner rounding", min: 0, max: 16, step: 1,
+      format: v => v === 0 ? "square" : v + "px" },
+    { tab: "layout", type: "range", key: "barSpaceAbove", label: "Space above", min: 0, max: 40, step: 4, unit: "px" },
+    { tab: "layout", type: "range", key: "barSpaceBelow", label: "Space below", min: 0, max: 40, step: 4, unit: "px" },
+
+    { tab: "layout", type: "group", label: "Page" },
+    { tab: "layout", type: "range", key: "summaryWidth", label: "Account summary width", min: 40, max: 100, step: 5, unit: "%" },
+    { tab: "layout", type: "toggle", key: "addressTight", label: "Tighten the address block" },
+    { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
+      format: v => v === 0 ? "none" : v + "px" }
+  ];
+
+  /* ================================================================== *
+   * Stylesheet generation
+   * ================================================================== */
+
+  /* ================================================================== *
+   * Input guards
+   *
+   * Every byte of the stylesheet is written by generateCss() from values
+   * that have been through here first, so nothing a user types — or packs
+   * into a shared link — can reach the output verbatim.
+   * ================================================================== */
+
+  const SPEC = new Map(CONTROLS.filter(c => c.key).map(c => [c.key, c]));
+
+  function safeFamily(value) {
+    return String(value || "").replace(/[^A-Za-z0-9 \-]/g, "").trim().slice(0, 60);
+  }
+
+  function safeUrl(value) {
+    const url = String(value || "").trim().slice(0, 300);
+    return /^https?:\/\/[^\s"'()\\<>{}]+$/.test(url) ? url : "";
+  }
+
+  function sanitiseState(raw) {
+    const clean = Object.assign({}, DEFAULTS);
+    if (!raw || typeof raw !== "object") return clean;
+
+    for (const key of Object.keys(DEFAULTS)) {
+      if (!(key in raw)) continue;
+      const value = raw[key];
+      const spec = SPEC.get(key);
+
+      if (key === "embedFamily") { clean[key] = safeFamily(value); continue; }
+      if (key === "embedUrl" || key === "logoUrl") { clean[key] = safeUrl(value); continue; }
+      if (key === "partner") { clean[key] = String(value ?? "").slice(0, 80); continue; }
+
+      if (!spec) continue;
+
+      switch (spec.type) {
+        case "toggle":
+          clean[key] = Boolean(value);
+          break;
+        case "range": {
+          const n = Number(value);
+          if (Number.isFinite(n)) clean[key] = Math.min(spec.max, Math.max(spec.min, Math.round(n)));
+          break;
+        }
+        case "select":
+        case "radio":
+          if (spec.options.some(([option]) => option === value)) clean[key] = value;
+          break;
+        case "colour": {
+          if (value === null && spec.derived) { clean[key] = null; break; }
+          const hex = normaliseHex(value);
+          if (hex) clean[key] = hex;
+          break;
+        }
+      }
+    }
+    return clean;
+  }
+
+  function fontStack() {
+    const family = safeFamily(state.embedFamily);
+    if (state.fontMode === "embed" && family) {
+      return `"${family}", Helvetica, Arial, sans-serif`;
+    }
+    return SPEC.get("builtinFont").options.some(([o]) => o === state.builtinFont)
+      ? state.builtinFont
+      : DEFAULTS.builtinFont;
+  }
+
+  function rule(selector, declarations) {
+    const body = declarations.filter(Boolean).map(d => "  " + d).join("\n");
+    return body ? `${selector} {\n${body}\n}` : null;
+  }
+
+  function barPadding() {
+    const { barPadY: y, barPadX: x } = state;
+    if (!y && !x) return "padding: 0;";
+    return y === x ? `padding: ${y}px;` : `padding: ${y}px ${x}px;`;
+  }
+
+  function barSpacing() {
+    return [
+      state.barSpaceAbove ? `margin-top: ${state.barSpaceAbove}px;` : null,
+      barPadding(),
+      state.barSpaceBelow ? `margin-bottom: ${state.barSpaceBelow}px;` : null,
+      state.barRadius ? `border-radius: ${state.barRadius}px;` : null
+    ];
+  }
+
+  function generateCss() {
+    const blocks = [];
+    const accent = derive.accentColour();
+
+    if (state.fontMode === "embed" && safeFamily(state.embedFamily) && safeUrl(state.embedUrl)) {
+      blocks.push(rule("@font-face", [
+        `font-family: "${safeFamily(state.embedFamily)}";`,
+        `src: url("${safeUrl(state.embedUrl)}");`,
+        "-fs-pdf-font-embed: embed;",
+        "-fs-pdf-font-encoding: Identity-H;"
+      ]));
+    }
+
+    blocks.push(rule(".document-body", [
+      `font-family: ${fontStack()};`,
+      `font-size: ${state.fontSize}px;`,
+      state.lineHeight ? `line-height: ${(1 + state.lineHeight / 10).toFixed(1)};` : null,
+      state.bodyTextColour !== "#000000" ? `color: ${state.bodyTextColour};` : null,
+      state.bodyMargin ? `margin: ${state.bodyMargin}px;` : null
+    ]));
+
+    blocks.push("/* Statement-specific selectors (also targets TAF via .section-header) */");
+
+    if (state.summaryWidth !== 60) blocks.push(rule(".account-list", [`width: ${state.summaryWidth}%;`]));
+
+    if (state.addressTight) {
+      blocks.push(rule("#address-details", ["line-height: 0.5;"]));
+      blocks.push(rule("#address-details p:last-child", ["line-height: 1;"]));
+    }
+
+    blocks.push(rule(".section-header", [
+      `color: ${derive.sectionText()};`,
+      `background-color: ${cssColour(derive.sectionBg())};`,
+      ...barSpacing()
+    ]));
+
+    blocks.push(rule(".section-header h2", [
+      `color: ${derive.sectionText()};`,
+      state.headingSize ? `font-size: ${state.headingSize}px;` : null,
+      state.headingWeight ? `font-weight: ${state.headingWeight};` : null,
+      state.upperSections ? "text-transform: uppercase;" : null
+    ]));
+
+    blocks.push(rule(".statement-banner", [
+      `color: ${derive.barText()};`,
+      `background-color: ${cssColour(derive.barBg())};`,
+      ...barSpacing()
+    ]));
+
+    blocks.push(rule(".statement-banner h1", ["padding: 0;"]));
+
+    /* Always emitted: the statement title is an h1, so without this id rule
+       the TAF `h1 { color: … }` below would recolour it. */
+    blocks.push(rule("#statement-header", [
+      `color: ${derive.barText()};`,
+      state.titleSize ? `font-size: ${state.titleSize}px;` : null,
+      state.headingWeight ? `font-weight: ${state.headingWeight};` : null,
+      state.upperSections ? "text-transform: uppercase;" : null
+    ]));
+
+    blocks.push(rule(".document-dates", ["text-align: right;", `color: ${derive.dateColour()};`, "line-height: 1;"]));
+    blocks.push(rule(".account-summary-banner", [`color: ${derive.sectionText()};`]));
+    blocks.push(rule("#account-summary-header", [`color: ${derive.sectionText()};`]));
+    blocks.push(rule(".transactions-banner", [`color: ${derive.sectionText()};`]));
+
+    blocks.push(rule(".data-table thead tr", ["border: none;", "color: black;", "font-weight: normal;"]));
+
+    blocks.push(rule(".data-table th", [
+      `background-color: ${derive.tableHeaderBg()};`,
+      `color: ${derive.tableHeaderText()};`,
+      "border: none;",
+      "font-weight: bold;",
+      state.upperTableHeader ? "text-transform: uppercase;" : null,
+      state.headerRadius ? `border-radius: ${state.headerRadius}px;` : null,
+      state.tableHeaderStyle === "rule"
+        ? `border-bottom: 2px solid ${state.brand} !important;`
+        : state.tableHeaderStyle === "subtle"
+          ? "border-bottom: 1px solid #D0D5DD !important;"
+          : "border-bottom: 1px solid #F9FAFB !important;"
+    ]));
+
+    /* Row rules go on td, not tr: Flying Saucer draws no border on a table
+       row, so the `tbody tr { border-bottom }` several of our hosted files
+       use has never appeared in a generated PDF. */
+    blocks.push(rule(".data-table td", [
+      `padding-top: ${state.cellPadding}px;`,
+      `padding-bottom: ${state.cellPadding}px;`,
+      state.rowLines ? `border-bottom: ${state.rowLineWidth}px solid ${state.rowLineColour};` : null
+    ]));
+
+    if (state.zebra) {
+      blocks.push(rule(".data-table tbody tr:nth-child(even)", [`background-color: ${derive.zebraColour()};`]));
+    }
+
+    blocks.push(rule(".data-table tbody tr", [`color: ${state.bodyTextColour};`]));
+
+    if (state.rowLines) {
+      blocks.push(rule(".account-list td", [`border-bottom: ${state.rowLineWidth}px solid ${state.rowLineColour};`]));
+    }
+
+    if (state.logoHeight !== 70 || state.logoContain || state.logoAlign !== "left") {
+      blocks.push(rule(".document-logo", [
+        `height: ${state.logoHeight}px;`,
+        state.logoContain ? "object-fit: contain;" : null,
+        state.logoContain ? "margin-bottom: 24px;" : null,
+        state.logoAlign !== "left" ? "display: block;" : null,
+        state.logoAlign === "center" ? "margin-left: auto;" : null,
+        state.logoAlign === "center" ? "margin-right: auto;" : null,
+        state.logoAlign === "right" ? "margin-left: auto;" : null
+      ]));
+    }
+
+    blocks.push("/* TAF-specific selectors */");
+    blocks.push(rule("h1", [`color: ${accent};`]));
+    blocks.push(rule("h3", [`color: ${accent};`]));
+    blocks.push(rule(".doc-header", [`border-bottom-color: ${accent};`]));
+    blocks.push(rule(".subsection", [`border-color: ${accent};`]));
+
+    return blocks.filter(Boolean).join("\n\n") + "\n";
+  }
+
+  /* ================================================================== *
+   * Proof documents
+   * ================================================================== */
+
+  function statementBody(logo) {
+    return `
+<div id="front-page">
+  <img class="document-logo" src="${logo}" alt="logo">
+  <div class="section-header statement-banner"><h1 id="statement-header">Account Statement</h1></div>
+  <div id="address-details">
+    <p>Ms Priya Raman</p><p>Flat 6, Hollis House</p><p>22 Wharf Lane</p>
+    <p>Bristol</p><p>BS1 4XG</p><p>United Kingdom</p>
+  </div>
+  <div class="document-dates"><p><span>01 Jul 2026</span> to <span>31 Jul 2026</span></p></div>
+  <div id="holding-account-details">
+    <p>Holding account details: sort code <span>04-00-72</span>, account number <span>81043327</span></p>
+  </div>
+  <div id="account-summary">
+    <div class="section-header account-summary-banner"><h2 id="account-summary-header">Account Summary</h2></div>
+    <div>
+      <table class="account-list"><tr><td class="account-name">Total Balance</td><td style="text-align:right">£48,210.66</td></tr></table>
+      <table class="account-list">
+        <tr style="height:30px"><td style="font-weight:bold">Cash</td></tr>
+        <tr><td class="account-name">Holding account</td><td style="text-align:right">£1,204.10</td></tr>
+      </table>
+      <table class="account-list">
+        <tr style="height:30px"><td style="font-weight:bold">Savings</td></tr>
+        <tr><td class="account-name">1 Year Fixed Saver </td><td style="text-align:right">£25,000.00</td></tr>
+        <tr><td class="account-name">Easy Access Saver </td><td style="text-align:right">£12,006.56</td></tr>
+        <tr><td class="account-name">95 Day Notice Saver </td><td style="text-align:right">£10,000.00</td></tr>
+      </table>
+      <table class="account-list">
+        <tr style="height:30px"><td style="font-weight:bold">Interest paid over period</td></tr>
+        <tr><td class="account-name">GBP </td><td style="text-align:right">£161.42</td></tr>
+      </table>
+    </div>
+  </div>
+  <br>
+</div>
+<div id="transactions">
+  <div class="section-header transactions-banner"><h2>Transactions</h2></div>
+  <table class="data-table">
+    <thead><tr>
+      <th>Date</th><th>Account</th><th>Description</th>
+      <th class="transaction-amount">Credit</th><th class="transaction-amount">Debit</th><th class="transaction-amount">Balance</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="transaction-date">01 Jul 2026</td><td>Holding account</td><td>Opening balance</td><td class="transaction-amount"></td><td class="transaction-amount"></td><td class="transaction-amount">£1,043.24</td></tr>
+      <tr><td class="transaction-date">03 Jul 2026</td><td>Holding account</td><td>Deposit received</td><td class="transaction-amount">£5,000.00</td><td class="transaction-amount"></td><td class="transaction-amount">£6,043.24</td></tr>
+      <tr><td class="transaction-date"></td><td>Easy Access Saver</td><td>Transfer to savings</td><td class="transaction-amount"></td><td class="transaction-amount">£5,000.00</td><td class="transaction-amount">£1,043.24</td></tr>
+      <tr><td class="transaction-date">18 Jul 2026</td><td>Easy Access Saver</td><td>Interest paid</td><td class="transaction-amount">£38.19</td><td class="transaction-amount"></td><td class="transaction-amount">£1,081.43</td></tr>
+      <tr><td class="transaction-date">25 Jul 2026</td><td>1 Year Fixed Saver</td><td>Interest paid</td><td class="transaction-amount">£123.23</td><td class="transaction-amount"></td><td class="transaction-amount">£1,204.66</td></tr>
+      <tr><td class="transaction-date">31 Jul 2026</td><td>Holding account</td><td>Closing balance</td><td class="transaction-amount"></td><td class="transaction-amount"></td><td class="transaction-amount">£1,204.10</td></tr>
+    </tbody>
+  </table>
+</div>`;
+  }
+
+  function tafBody(logo) {
+    return `
+<div class="container">
+  <table class="doc-header"><tr>
+    <td><h1>ISA Transfer Authority Form</h1></td>
+    <td class="logo"><img src="${logo}" alt="Platform logo"></td>
+  </tr></table>
+  <div class="intro-box">
+    <p>Use this form to transfer an existing ISA to your Bondsmith Cash ISA.</p>
+    <ul><li>Cash ISA transfers typically complete within 15 business days.</li>
+    <li>Please include your Bondsmith Cash ISA Holding account details to avoid delays.</li></ul>
+  </div>
+  <div class="section-wrapper">
+    <div class="section-header"><h2>1. Your details</h2></div>
+    <div class="section-content">
+      <table class="form-table"><tr>
+        <td><label>Title</label><input class="w-140" type="text" value="Ms"></td>
+        <td><label>First Name(s)</label><input type="text" style="width:388px" value="Priya"></td>
+        <td><label>Last Name</label><input class="w-140" type="text" value="Raman"></td>
+      </tr></table>
+      <table class="form-table mb-10"><tr>
+        <td class="w-50 valign-top">
+          <label>Permanent residential address</label>
+          <input class="stacked w-form-half" type="text" value="Flat 6, Hollis House">
+          <input class="stacked w-form-half" type="text" value="22 Wharf Lane">
+          <input class="stacked w-form-half" type="text" value="Bristol">
+          <label class="stacked-label">Postcode</label>
+          <input class="w-150" type="text" value="BS1 4XG">
+        </td>
+        <td class="valign-top pl-20">
+          <label>Date of birth</label>
+          <div class="char-box-group">
+            <input class="char-box" type="text" value="1"><input class="char-box" type="text" value="4"><span>/</span>
+            <input class="char-box" type="text" value="0"><input class="char-box" type="text" value="9"><span>/</span>
+            <input class="char-box" type="text" value="8"><input class="char-box" type="text" value="7">
+          </div>
+          <label>Contact telephone number</label>
+          <input class="w-form-half" type="tel" value="07700 900412">
+        </td>
+      </tr></table>
+    </div>
+  </div>
+  <div class="section-wrapper">
+    <div class="section-header"><h2>2. Details of the existing ISA you want to transfer</h2></div>
+    <div class="section-content">
+      <table class="form-table mb-10"><tr>
+        <td class="w-50 valign-top">
+          <p class="question-title">Have you paid into this ISA during the current tax year?</p>
+          <table class="checkbox-table"><tr>
+            <td><input class="checkbox-box" type="checkbox" checked></td><td>Yes</td>
+            <td class="pl-20"><input class="checkbox-box" type="checkbox"></td><td>No</td>
+          </tr></table>
+        </td>
+        <td class="w-50 valign-top pl-20">
+          <label>Name of existing ISA manager</label>
+          <input class="stacked w-form-half" type="text" value="Northbank Building Society">
+        </td>
+      </tr></table>
+      <div class="subsection">
+        <h3>Cash ISA transfer details</h3>
+        <table class="form-table mb-10"><tr>
+          <td class="w-50"><label>Sort code</label><input class="w-form-half" type="text" value="60-12-04"></td>
+          <td class="w-50"><label>Account number</label><input class="w-form-half" type="text" value="44029183"></td>
+        </tr></table>
+      </div>
+    </div>
+  </div>
+  <div class="internal-use">
+    <strong>5. Transfer acceptance (Bondsmith Use Only)</strong>
+    <p class="authority-text">We are willing to accept this ISA transfer in line with instructions.</p>
+  </div>
+  <div class="footer-notes">
+    <p>ISA transfers do not affect your annual ISA allowance.</p>
+    <p>Bondsmith is the trading name of Bondsmith Savings Ltd, which is authorised and regulated by the Financial Conduct Authority.</p>
+  </div>
+</div>`;
+  }
+
+  /* ================================================================== *
+   * Checks
+   * ================================================================== */
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, ch =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  }
+
+  function buildChecks() {
+    const items = [];
+
+    if (state.fontMode === "builtin") {
+      items.push({ tone: "ok", marker: "Type", text: "This font is built into every PDF reader, so your statements will look the same everywhere." });
+    } else if (!safeFamily(state.embedFamily)) {
+      items.push({ tone: "warn", marker: "Type", text: "Name the font family you want to embed, or your statements will fall back to Helvetica." });
+    } else if (!state.embedUrl.trim()) {
+      items.push({ tone: "warn", marker: "Type", text:
+        `<strong>${escapeHtml(safeFamily(state.embedFamily))} will not appear in the PDF yet.</strong> Fonts have to be embedded as a .ttf file — send us yours and paste back the URL we give you. Until then statements fall back to Helvetica.` });
+    } else if (!safeUrl(state.embedUrl)) {
+      items.push({ tone: "warn", marker: "Type", text:
+        "That font URL was not accepted. It needs to be a plain https address ending in the .ttf file, with no spaces or brackets." });
+    }
+
+    const barBg = derive.barBg();
+    if (barBg) {
+      const ratio = contrastRatio(derive.barText(), barBg);
+      if (ratio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
+        `Title bar text sits at ${ratio.toFixed(1)}:1 against the bar — below the 4.5:1 readability threshold.` });
+    }
+
+    const sectionBg = derive.sectionBg();
+    if (sectionBg) {
+      const ratio = contrastRatio(derive.sectionText(), sectionBg);
+      if (ratio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
+        `Section heading text sits at ${ratio.toFixed(1)}:1 against its bar — below the 4.5:1 readability threshold.` });
+    }
+
+    const brandOnWhite = contrastRatio(state.brand, "#ffffff");
+    if (brandOnWhite < 3) items.push({ tone: "warn", marker: "Contrast", text:
+      `Your brand colour is only ${brandOnWhite.toFixed(1)}:1 against white, so headings and the period line will look washed out in print.` });
+
+    const headerRatio = contrastRatio(derive.tableHeaderText(), derive.tableHeaderBg());
+    if (headerRatio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
+      `Transactions header text reaches only ${headerRatio.toFixed(1)}:1 on its background.` });
+
+    if (state.zebra) {
+      const zebraRatio = contrastRatio(state.bodyTextColour, derive.zebraColour());
+      if (zebraRatio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
+        `Text on the shaded rows reaches only ${zebraRatio.toFixed(1)}:1. Lighten the shading.` });
+    }
+
+    if (state.zebra && state.rowLines) items.push({ tone: "info", marker: "Rows", text:
+      "Shaded rows and hairlines together can look busy on a long statement. Most partners use one or the other." });
+
+    items.push({ tone: "info", marker: "Scope", text:
+      "These styles apply to monthly statements and the ISA transfer authority form. The annual tax summary uses our standard styling and is not affected." });
+
+    return items;
+  }
+
+  /* ================================================================== *
+   * Rail rendering
+   * ================================================================== */
+
+  const el = id => document.getElementById(id);
+  const nodes = new Map();
+
+  function makeField(spec) {
+    const wrap = document.createElement("div");
+
+    if (spec.type === "group") {
+      wrap.className = "groupsep";
+      wrap.textContent = spec.label;
+      return { wrap };
+    }
+
+    wrap.className = "field";
+    const id = "ctl-" + spec.key;
+    let input, extra = {};
+
+    const labelRow = document.createElement("div");
+    labelRow.className = "rowlabel";
+    const label = document.createElement("label");
+    label.className = "fieldlabel";
+    label.setAttribute("for", id);
+    label.textContent = spec.label;
+    labelRow.appendChild(label);
+
+    if (spec.type === "range") {
+      const out = document.createElement("span");
+      out.className = "readout";
+      labelRow.appendChild(out);
+      extra.readout = out;
+    }
+
+    if (spec.derived) {
+      const auto = document.createElement("button");
+      auto.type = "button";
+      auto.className = "autobtn";
+      auto.textContent = "Auto";
+      auto.setAttribute("aria-pressed", "true");
+      auto.addEventListener("click", () => {
+        if (state[spec.key] === null) {
+          state[spec.key] = spec.derived() || "#000000";
+        } else {
+          state[spec.key] = null;
+        }
+        commit();
+      });
+      labelRow.appendChild(auto);
+      extra.auto = auto;
+    }
+
+    if (spec.type !== "toggle") wrap.appendChild(labelRow);
+
+    switch (spec.type) {
+      case "text":
+      case "url":
+        input = document.createElement("input");
+        input.type = spec.type === "url" ? "url" : "text";
+        input.id = id;
+        if (spec.placeholder) input.placeholder = spec.placeholder;
+        input.addEventListener("input", () => { state[spec.key] = input.value; commit(false); });
+        wrap.appendChild(input);
+        break;
+
+      case "select":
+        input = document.createElement("select");
+        input.id = id;
+        for (const [value, text] of spec.options) {
+          const opt = document.createElement("option");
+          opt.value = value; opt.textContent = text;
+          input.appendChild(opt);
+        }
+        input.addEventListener("change", () => {
+          if (spec.key === "preset") { applyPreset(input.value); return; }
+          state[spec.key] = input.value;
+          commit();
+        });
+        wrap.appendChild(input);
+        break;
+
+      case "radio": {
+        input = document.createElement("div");
+        input.id = id;
+        extra.radios = [];
+        for (const [value, text] of spec.options) {
+          const line = document.createElement("label");
+          line.className = "checkline";
+          const radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = spec.key;
+          radio.value = value;
+          radio.addEventListener("change", () => { if (radio.checked) { state[spec.key] = value; commit(); } });
+          const span = document.createElement("span");
+          span.textContent = text;
+          line.append(radio, span);
+          input.appendChild(line);
+          extra.radios.push(radio);
+        }
+        wrap.appendChild(input);
+        break;
+      }
+
+      case "toggle": {
+        const line = document.createElement("label");
+        line.className = "checkline";
+        input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = id;
+        input.addEventListener("change", () => { state[spec.key] = input.checked; commit(); });
+        const span = document.createElement("span");
+        span.textContent = spec.label;
+        line.append(input, span);
+        wrap.appendChild(line);
+        break;
+      }
+
+      case "range":
+        input = document.createElement("input");
+        input.type = "range";
+        input.id = id;
+        input.min = spec.min; input.max = spec.max; input.step = spec.step;
+        input.addEventListener("input", () => { state[spec.key] = Number(input.value); commit(false); });
+        input.addEventListener("change", () => commit());
+        wrap.appendChild(input);
+        break;
+
+      case "colour": {
+        const field = document.createElement("div");
+        field.className = "colourfield";
+        input = document.createElement("input");
+        input.type = "color";
+        input.setAttribute("aria-label", spec.label + " picker");
+        const hex = document.createElement("input");
+        hex.type = "text";
+        hex.id = id;
+        hex.spellcheck = false;
+        hex.setAttribute("aria-label", spec.label + " hex");
+        input.addEventListener("input", () => {
+          state[spec.key] = input.value.toLowerCase();
+          hex.value = state[spec.key];
+          commit(false);
+        });
+        hex.addEventListener("input", () => {
+          const value = normaliseHex(hex.value);
+          if (!value) return;
+          state[spec.key] = value;
+          input.value = value;
+          commit(false);
+        });
+        field.append(input, hex);
+        wrap.appendChild(field);
+        extra.hex = hex;
+        break;
+      }
+    }
+
+    if (spec.hint) {
+      const hint = document.createElement("span");
+      hint.className = "hint";
+      hint.textContent = spec.hint;
+      wrap.appendChild(hint);
+    }
+
+    return Object.assign({ wrap, input }, extra);
+  }
+
+  function buildRail() {
+    for (const spec of CONTROLS) {
+      const target = spec.tab === "identity" ? el("identity") : el("panel-" + spec.tab);
+      const built = makeField(spec);
+      target.appendChild(built.wrap);
+      if (spec.key) nodes.set(spec.key, { spec, ...built });
+    }
+  }
+
+  function syncRail() {
+    for (const [key, node] of nodes) {
+      const { spec, wrap, input } = node;
+
+      if (spec.showIf) wrap.hidden = !spec.showIf();
+
+      if (spec.key === "preset") continue;
+
+      const derived = spec.derived ? spec.derived() : null;
+      const isAuto = spec.derived && state[key] === null;
+
+      if (node.auto) {
+        node.auto.setAttribute("aria-pressed", String(isAuto));
+        node.auto.textContent = isAuto ? "Auto" : "Custom";
+        wrap.classList.toggle("disabled", isAuto);
+      }
+
+      switch (spec.type) {
+        case "text":
+        case "url":
+          if (input.value !== state[key]) input.value = state[key];
+          break;
+        case "select":
+          input.value = state[key];
+          break;
+        case "radio":
+          node.radios.forEach(r => { r.checked = r.value === state[key]; });
+          break;
+        case "toggle":
+          input.checked = Boolean(state[key]);
+          break;
+        case "range":
+          input.value = state[key];
+          node.readout.textContent = spec.format
+            ? spec.format(state[key])
+            : state[key] + (spec.unit || "");
+          break;
+        case "colour": {
+          const value = normaliseHex(isAuto ? derived : state[key]) || "#ffffff";
+          input.value = value;
+          if (document.activeElement !== node.hex) node.hex.value = value;
+          break;
+        }
+      }
+    }
+  }
+
+  /* ================================================================== *
+   * History, presets, share
+   * ================================================================== */
+
+  const history = { past: [], future: [] };
+
+  function snapshot() { return JSON.stringify(state); }
+
+  function pushHistory(previous) {
+    if (previous === snapshot()) return;
+    history.past.push(previous);
+    if (history.past.length > 60) history.past.shift();
+    history.future.length = 0;
+  }
+
+  let pending = null;
+
+  function commit(record = true) {
+    if (record) {
+      pushHistory(pending || snapshot());
+      pending = null;
+    } else if (pending === null) {
+      pending = snapshot();
+    }
+    render();
+  }
+
+  function applyPreset(value) {
+    const preset = PRESETS[value];
+    pushHistory(snapshot());
+    const keep = { partner: state.partner, logoUrl: state.logoUrl };
+    state = Object.assign({}, DEFAULTS, keep, preset || {});
+    render();
+  }
+
+  function encodeState() {
+    const diff = {};
+    for (const key of Object.keys(DEFAULTS)) {
+      if (JSON.stringify(state[key]) !== JSON.stringify(DEFAULTS[key])) diff[key] = state[key];
+    }
+    return btoa(unescape(encodeURIComponent(JSON.stringify(diff)))).replace(/=+$/, "");
+  }
+
+  function decodeState(raw) {
+    try {
+      return sanitiseState(JSON.parse(decodeURIComponent(escape(atob(raw)))));
+    } catch (err) {
+      return null;
+    }
+  }
+
+  /* ================================================================== *
+   * Render
+   * ================================================================== */
+
+  function slug(value) {
+    const cleaned = String(value).trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return cleaned || "branding";
+  }
+
+  function proofDocument(base, body) {
+    return `<!doctype html><html><head><meta charset="utf-8">
+<style>${base}</style>
+<style>${generateCss()}</style>
+</head><body class="document-body">${body}</body></html>`;
+  }
+
+  function fitSheets() {
+    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"], ["scaler-taf", "frame-taf"]]) {
+      const scaler = el(scalerId), frame = el(frameId);
+      const available = scaler.parentElement.clientWidth - 44;
+      if (available <= 0) continue;
+      const scale = Math.min(1, available / 794);
+      frame.style.transform = `scale(${scale})`;
+      scaler.style.width = (794 * scale) + "px";
+      scaler.style.height = (1123 * scale) + "px";
+    }
+  }
+
+  function render() {
+    syncRail();
+
+    const css = generateCss();
+    el("cssOut").textContent = css;
+    el("filename").textContent = slug(state.partner) + ".css";
+
+    el("checks").innerHTML = buildChecks().map(item =>
+      `<div class="check ${item.tone === "info" ? "" : item.tone}">
+         <span class="marker">${item.marker}</span><span>${item.text}</span>
+       </div>`).join("");
+
+    const logo = state.logoUrl.trim() || PLACEHOLDER_LOGO;
+    el("frame-statement").srcdoc = proofDocument(STATEMENT_BASE, statementBody(logo));
+    el("frame-taf").srcdoc = proofDocument(TAF_BASE, tafBody(logo));
+
+    el("undoBtn").disabled = history.past.length === 0;
+    el("redoBtn").disabled = history.future.length === 0;
+
+    fitSheets();
+  }
+
+  /* ================================================================== *
+   * Wiring
+   * ================================================================== */
+
+  document.querySelectorAll("[data-railtab]").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll("[data-railtab]").forEach(t => {
+        const on = t === tab;
+        t.setAttribute("aria-selected", String(on));
+        el("panel-" + t.dataset.railtab).hidden = !on;
+      });
+    });
+  });
+
+  document.querySelectorAll("[data-proof]").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll("[data-proof]").forEach(t => {
+        const on = t === tab;
+        t.setAttribute("aria-selected", String(on));
+        el("proof-" + t.dataset.proof).hidden = !on;
+      });
+      if (tab.dataset.proof !== "css") fitSheets();
+    });
+  });
+
+  function flash(button, text) {
+    const original = button.textContent;
+    button.textContent = text;
+    setTimeout(() => { button.textContent = original; }, 1800);
+  }
+
+  el("copyBtn").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText(generateCss()); flash(el("copyBtn"), "Copied"); }
+    catch { flash(el("copyBtn"), "Press Ctrl+C"); }
+  });
+
+  el("shareBtn").addEventListener("click", async () => {
+    const url = location.origin + location.pathname + "#s=" + encodeState();
+    window.history.replaceState(null, "", "#s=" + encodeState());
+    try { await navigator.clipboard.writeText(url); flash(el("shareBtn"), "Link copied"); }
+    catch { flash(el("shareBtn"), "In address bar"); }
+  });
+
+  el("downloadBtn").addEventListener("click", () => {
+    const blob = new Blob([generateCss()], { type: "text/css" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = slug(state.partner) + ".css";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  el("resetBtn").addEventListener("click", () => {
+    pushHistory(snapshot());
+    state = Object.assign({}, DEFAULTS);
+    render();
+  });
+
+  el("undoBtn").addEventListener("click", () => {
+    if (!history.past.length) return;
+    history.future.push(snapshot());
+    state = JSON.parse(history.past.pop());
+    render();
+  });
+
+  el("redoBtn").addEventListener("click", () => {
+    if (!history.future.length) return;
+    history.past.push(snapshot());
+    state = JSON.parse(history.future.pop());
+    render();
+  });
+
+  document.addEventListener("keydown", event => {
+    if (!(event.ctrlKey || event.metaKey) || event.key.toLowerCase() !== "z") return;
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+    event.preventDefault();
+    (event.shiftKey ? el("redoBtn") : el("undoBtn")).click();
+  });
+
+  el("controls").addEventListener("submit", event => event.preventDefault());
+  window.addEventListener("resize", fitSheets);
+
+  buildRail();
+
+  function applyHash() {
+    if (!location.hash.startsWith("#s=")) return false;
+    const decoded = decodeState(location.hash.slice(3));
+    if (!decoded) return false;
+    state = decoded;
+    return true;
+  }
+
+  /* A pasted link while the page is already open changes only the fragment,
+     which is a same-document navigation — without this the settings in the
+     link would silently do nothing. */
+  window.addEventListener("hashchange", () => {
+    const previous = snapshot();
+    if (!applyHash()) return;
+    pushHistory(previous);
+    render();
+  });
+
+  applyHash();
+  render();
+</script>

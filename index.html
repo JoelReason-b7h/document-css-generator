@@ -55,35 +55,6 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---------- top bar ---------- */
-
-  .topbar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    block-size: 52px;
-    padding: 0 16px;
-    border-bottom: 1px solid var(--line);
-  }
-
-  .wordmark {
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 0;
-  }
-
-  .wordmark .role {
-    font-weight: 400;
-    font-size: 13px;
-    color: var(--fg-3);
-    margin-inline-start: 10px;
-    padding-inline-start: 10px;
-    border-inline-start: 1px solid var(--line);
-  }
-
-  .topbar .spacer { margin-inline-start: auto; }
-
   /* ---------- action bar ---------- */
 
   .actionbar {
@@ -111,7 +82,7 @@
     display: grid;
     grid-template-columns: 340px minmax(0, 1fr);
     align-items: start;
-    min-block-size: calc(100vh - 100px);
+    min-block-size: calc(100vh - 48px);
   }
 
   @media (max-width: 1040px) {
@@ -390,22 +361,18 @@
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
-<header class="topbar">
-  <h1 class="wordmark">Glyph<span class="role">Statement branding</span></h1>
-  <span class="spacer"></span>
-  <button class="action" type="button" id="themeBtn" title="Switch between light and dark">Theme</button>
-</header>
-
 <div class="actionbar">
   <div class="lead"><span class="filename" id="filename">acme.css</span></div>
   <div class="actions">
+    <button class="action" type="button" id="themeBtn" title="Switch between light and dark">Theme</button>
+    <span class="sep"></span>
     <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
     <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
     <button class="action" type="button" id="resetBtn">Reset</button>
     <span class="sep"></span>
     <button class="action" type="button" id="shareBtn">Copy link</button>
     <button class="action" type="button" id="copyBtn">Copy CSS</button>
-    <button class="action primary" type="button" id="downloadBtn">Download</button>
+    <button class="action primary" type="button" id="downloadBtn">Download CSS</button>
   </div>
 </div>
 

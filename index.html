@@ -508,6 +508,10 @@ span.pagecount:before { content: counter(pages); }
     summaryCardPad: 16,
     summaryCardGap: 10,
     addressSpaced: false,
+    addressWidth: 0,
+    addressPinned: false,
+    addressTop: 32,
+    addressRight: 20,
     bodyMargin: 0
   };
 
@@ -524,7 +528,12 @@ span.pagecount:before { content: counter(pages); }
     bold: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: true, barPadY: 20, barPadX: 20, barSpaceAbove: 20, barSpaceBelow: 10, tableHeaderStyle: "solid", rowLines: true, logoHeight: 40 },
     accent: { brand: DEMO_BRAND, barStyle: "plain", barText: "#000000", sectionBarsMatch: true, tableHeaderStyle: "solid", logoHeight: 50, bodyMargin: 20 },
     minimal: { brand: "#000000", barStyle: "minimal", sectionBarsMatch: true, tableHeaderStyle: "subtle", rowLines: true, logoHeight: 40 },
-    striped: { brand: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "solid", zebra: true, headerRadius: 6, logoHeight: 40 }
+    striped: { brand: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "solid", zebra: true, headerRadius: 6, logoHeight: 40 },
+    cards: { brand: DEMO_BRAND, bodyTextColour: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true,
+             barPadY: 10, barPadX: 20, barSpaceBelow: 10, logoHeight: 50, logoContain: true,
+             fontSize: 11, summaryCard: true, summaryCardText: "#656c7a", summaryCardRadius: 16,
+             summaryCardPad: 16, summaryCardGap: 10, tableHeaderStyle: "rule", cellPadding: 10,
+             addressSpaced: true, addressWidth: 400, addressPinned: true, bodyMargin: 20 }
   };
 
   /* ================================================================== *
@@ -645,7 +654,8 @@ span.pagecount:before { content: counter(pages); }
     { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
       options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
-                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]] },
+                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"],
+                ["cards", "Cards — shaded summary blocks"]] },
 
     /* ---- colour ---- */
     { tab: "colour", type: "group", label: "Brand",
@@ -762,8 +772,18 @@ span.pagecount:before { content: counter(pages); }
     { tab: "layout", type: "range", key: "summaryCardGap", label: "Space between blocks", min: 0, max: 30, step: 2, unit: "px",
       showIf: () => state.summaryCard },
 
-    { tab: "layout", type: "group", label: "Page" },
+    { tab: "layout", type: "group", label: "Address block" },
     { tab: "layout", type: "toggle", key: "addressSpaced", label: "Space out the address block" },
+    { tab: "layout", type: "range", key: "addressWidth", label: "Width", min: 0, max: 500, step: 20,
+      format: v => v === 0 ? "as it comes" : v + "px" },
+    { tab: "layout", type: "toggle", key: "addressPinned", label: "Pin it to the top of the page",
+      hint: "Pinned, it no longer pushes what follows down the page." },
+    { tab: "layout", type: "range", key: "addressTop", label: "Distance from the top", min: 0, max: 160, step: 4, unit: "px",
+      showIf: () => state.addressPinned },
+    { tab: "layout", type: "range", key: "addressRight", label: "Distance from the right", min: 0, max: 80, step: 4, unit: "px",
+      showIf: () => state.addressPinned },
+
+    { tab: "layout", type: "group", label: "Page" },
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
       format: v => v === 0 ? "none" : v + "px" },
 
@@ -905,10 +925,15 @@ span.pagecount:before { content: counter(pages); }
       state.summaryCard && state.summaryCardGap ? `margin-bottom: ${state.summaryCardGap}px;` : null
     ]));
 
-    if (state.addressSpaced) {
-      blocks.push(rule("#address-details", ["line-height: 0.5;"]));
-      blocks.push(rule("#address-details p:last-child", ["line-height: 1;"]));
-    }
+    blocks.push(rule("#address-details", [
+      state.addressSpaced ? "line-height: 0.5;" : null,
+      state.addressWidth ? `width: ${state.addressWidth}px;` : null,
+      state.addressPinned ? "position: absolute;" : null,
+      state.addressPinned ? `top: ${state.addressTop}px;` : null,
+      state.addressPinned ? `right: ${state.addressRight}px;` : null
+    ]));
+
+    if (state.addressSpaced) blocks.push(rule("#address-details p:last-child", ["line-height: 1;"]));
 
     blocks.push(rule(".section-header", [
       `color: ${derive.sectionText()};`,

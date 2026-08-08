@@ -9,16 +9,24 @@ Open `index.html` in any browser. Nothing is uploaded, and nothing leaves your m
 ## How to use it
 
 1. Pick the layout closest to what you want under **Start from**, then work through the
-   **Colour**, **Type**, **Table** and **Layout** tabs.
+   **Colour**, **Type**, **Table** and **Layout** tabs. Trying another layout does not lose your
+   work — it is kept under **Your changes**, at the top of the same list.
 2. Anything marked **Auto** follows your brand colour. Click the pill to set it yourself; click
    again to go back to following the brand.
-3. Check both document tabs — the monthly statement and the ISA transfer authority form share a
-   stylesheet, so a change to one usually shows up in the other.
-4. On the **Preview** tab, set the statement type to the one your customers get. It changes only
-   the sample document, never the stylesheet, but the four types list different transactions and
+3. Every colour shows its contrast against whatever sits behind it. Green passes; amber is below
+   4.5:1, the point where text starts to be hard to read on paper. One weak pair often lights up
+   several controls, because they all resolve to the same two colours.
+4. Set **Sample**, above the preview, to the statement your customers get. It changes the sample
+   document only, never the stylesheet, but the four arrangements list different transactions and
    the longest description is what decides how wide your columns need to be.
 5. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
 6. Download the stylesheet and send it to your Bondsmith contact along with your logo.
+
+Your settings are kept in the browser, so closing the tab and coming back does not lose them.
+
+The stylesheet also covers the ISA transfer authority form, which has no preview here. The
+**ISA form rules and headings** colour on the **Colour** tab is what sets its title underline,
+section borders and headings.
 
 **Copy link** puts your settings in the URL, which is the easiest way to show someone else what you
 are proposing — open the link and the controls come back exactly as you left them.

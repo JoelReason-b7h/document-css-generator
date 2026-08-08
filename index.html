@@ -1,331 +1,371 @@
 <title>Glyph — statement branding</title>
 <style>
   :root {
-    --desk: #e6e8eb;
+    --canvas: #fafafa;
     --surface: #ffffff;
-    --surface-2: #f4f5f7;
-    --ink: #171a1d;
-    --ink-2: #5b636c;
-    --ink-3: #838c95;
-    --line: #d4d8dd;
-    --line-strong: #b9bfc7;
-    --accent: #3d5a5b;
-    --accent-ink: #ffffff;
-    --accent-soft: #e6eeed;
-    --warn: #8a5410;
-    --warn-bg: #fbf1e2;
-    --warn-line: #e2c79b;
-    --ok: #2c6647;
-    --ok-bg: #e7f1ea;
-    --shadow: 0 1px 2px rgba(20, 26, 30, .08), 0 12px 28px rgba(20, 26, 30, .10);
-    --display: Georgia, "Iowan Old Style", "Times New Roman", serif;
-    --ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --muted: #f4f4f5;
+    --fg: #09090b;
+    --fg-2: #52525b;
+    --fg-3: #a1a1aa;
+    --line: #e4e4e7;
+    --line-2: #d4d4d8;
+    --primary: #18181b;
+    --primary-fg: #fafafa;
+    --ring: #a1a1aa;
+    --ok: #15803d;
+    --ok-bg: #f0fdf4;
+    --warn: #b45309;
+    --warn-bg: #fffbeb;
+    --warn-line: #fde68a;
+    --radius: 8px;
+    --radius-sm: 6px;
+    --ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --desk: #121417; --surface: #1b1e22; --surface-2: #23272c;
-      --ink: #e3e6ea; --ink-2: #98a1aa; --ink-3: #767f88;
-      --line: #2e343a; --line-strong: #414951;
-      --accent: #86b0ac; --accent-ink: #10201f; --accent-soft: #1e2a29;
-      --warn: #dfab68; --warn-bg: #292116; --warn-line: #52412a;
-      --ok: #82bb9b; --ok-bg: #17251d;
-      --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 14px 32px rgba(0, 0, 0, .45);
-    }
-  }
-
-  :root[data-theme="dark"] {
-    --desk: #121417; --surface: #1b1e22; --surface-2: #23272c;
-    --ink: #e3e6ea; --ink-2: #98a1aa; --ink-3: #767f88;
-    --line: #2e343a; --line-strong: #414951;
-    --accent: #86b0ac; --accent-ink: #10201f; --accent-soft: #1e2a29;
-    --warn: #dfab68; --warn-bg: #292116; --warn-line: #52412a;
-    --ok: #82bb9b; --ok-bg: #17251d;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .5), 0 14px 32px rgba(0, 0, 0, .45);
   }
 
   * { box-sizing: border-box; }
 
   body {
     margin: 0;
-    background: var(--desk);
-    color: var(--ink);
+    background: var(--surface);
+    color: var(--fg);
     font-family: var(--ui);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* ---------- masthead ---------- */
+  /* ---------- action bar ---------- */
 
-  .masthead {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 8px 18px;
-    padding: 16px 24px 14px;
-    background: var(--surface);
+  .actionbar {
+    display: grid;
+    grid-template-columns: 340px minmax(0, 1fr);
+    align-items: center;
+    block-size: 48px;
     border-bottom: 1px solid var(--line);
   }
 
-  .wordmark {
-    font-family: var(--display);
-    font-size: 22px;
-    letter-spacing: -0.01em;
-    margin: 0;
+  .actionbar > .lead {
+    padding-inline: 16px;
+    border-inline-end: 1px solid var(--line);
+    align-self: stretch;
     display: flex;
-    align-items: baseline;
-    gap: 10px;
+    align-items: center;
   }
 
-  .wordmark .role {
-    font-family: var(--ui);
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: .1em;
-    color: var(--ink-3);
-    border-left: 1px solid var(--line);
-    padding-left: 10px;
-  }
-
-  .masthead p { margin: 0; color: var(--ink-2); max-width: 58ch; font-size: 13px; }
+  .actions { display: flex; align-items: center; gap: 2px; padding-inline: 12px 16px; justify-content: flex-end; }
+  .actions .sep { inline-size: 1px; block-size: 18px; background: var(--line); margin-inline: 6px; }
 
   /* ---------- layout ---------- */
 
   .workbench {
     display: grid;
-    grid-template-columns: 356px minmax(0, 1fr);
+    grid-template-columns: 340px minmax(0, 1fr);
     align-items: start;
-    min-height: calc(100vh - 70px);
+    min-block-size: calc(100vh - 48px);
   }
 
   @media (max-width: 1040px) {
-    .workbench { grid-template-columns: minmax(0, 1fr); }
-    .rail { border-right: none !important; border-bottom: 1px solid var(--line); }
+    .actionbar, .workbench { grid-template-columns: minmax(0, 1fr); }
+    .actionbar > .lead { border-inline-end: none; }
+    .rail { border-inline-end: none !important; border-bottom: 1px solid var(--line); }
   }
 
   .rail {
-    background: var(--surface);
-    border-right: 1px solid var(--line);
-    padding: 16px 20px 40px;
+    border-inline-end: 1px solid var(--line);
+    padding: 12px 16px 48px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
   }
 
   .stage {
-    padding: 18px 24px 48px;
+    background: var(--canvas);
+    align-self: stretch;
+    padding: 14px 16px 40px;
     display: flex;
     flex-direction: column;
-    gap: 13px;
-    min-width: 0;
+    gap: 12px;
+    min-inline-size: 0;
   }
 
   /* ---------- controls ---------- */
 
-  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field.disabled input { opacity: .45; pointer-events: none; }
 
-  .field.disabled > .colourfield input,
-  .field.disabled > input { opacity: .5; pointer-events: none; }
-
-  .fieldlabel, .grouplabel {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: .07em;
-    color: var(--ink-2);
-    font-weight: 600;
+  .fieldlabel {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--fg);
   }
 
-  .hint { font-size: 12px; color: var(--ink-3); line-height: 1.4; }
+  .hint { font-size: 12px; color: var(--fg-3); line-height: 1.45; }
+
+  .revertline { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .revertline .changed {
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 1px 7px;
+    color: var(--fg-2);
+    font-size: 11px;
+  }
+  .revertline button {
+    font: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--fg-2);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .revertline button:hover { color: var(--fg); }
 
   select, input[type="text"], input[type="url"] {
     font: inherit;
     font-size: 13px;
-    color: var(--ink);
-    background: var(--surface-2);
-    border: 1px solid var(--line-strong);
-    border-radius: 3px;
-    padding: 7px 9px;
-    width: 100%;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    block-size: 32px;
+    padding: 0 9px;
+    inline-size: 100%;
   }
 
+  select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--fg-3) 50%),
+                      linear-gradient(135deg, var(--fg-3) 50%, transparent 50%);
+    background-position: calc(100% - 15px) 14px, calc(100% - 10px) 14px;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-inline-end: 26px;
+  }
 
-  input[type="range"] { width: 100%; accent-color: var(--accent); margin: 0; }
+  input[type="range"] { inline-size: 100%; accent-color: var(--primary); margin: 0; }
 
   select:focus-visible, input:focus-visible, button:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+    outline: 2px solid var(--ring);
+    outline-offset: 1px;
   }
 
-  .colourfield { display: flex; gap: 8px; align-items: center; }
+  .swatchrow { display: flex; align-items: center; gap: 8px; }
+  .swatchrow input[type="text"] { font-family: var(--mono); font-size: 12px; text-transform: lowercase; }
 
   input[type="color"] {
-    inline-size: 38px; block-size: 33px;
+    inline-size: 28px; block-size: 28px;
     padding: 2px;
-    border: 1px solid var(--line-strong);
-    border-radius: 3px;
-    background: var(--surface-2);
+    border: 1px solid var(--line-2);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
     flex: none;
     cursor: pointer;
   }
 
-  .colourfield input[type="text"] { font-family: var(--mono); text-transform: lowercase; }
+  .checkline { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; cursor: pointer; color: var(--fg); }
+  .checkline input { margin: 3px 0 0; accent-color: var(--primary); flex: none; }
 
-  .checkline { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; cursor: pointer; }
-  .checkline input { margin: 3px 0 0; accent-color: var(--accent); flex: none; }
+  .readout { font-family: var(--mono); font-size: 11.5px; color: var(--fg-3); font-variant-numeric: tabular-nums; }
+  .rowlabel { display: flex; align-items: center; gap: 6px; }
+  .rowlabel .fieldlabel { margin-inline-end: auto; }
 
-  .readout { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
-  .rowlabel { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .ratio {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    padding: 1px 6px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex: none;
+  }
+
+  .ratio.ok { color: var(--ok); background: var(--ok-bg); }
+  .ratio.warn { color: var(--warn); background: var(--warn-bg); box-shadow: inset 0 0 0 1px var(--warn-line); }
 
   .autobtn {
     font: inherit;
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: .06em;
-    font-weight: 700;
-    border: 1px solid var(--line-strong);
-    background: var(--surface-2);
-    color: var(--ink-3);
+    letter-spacing: .05em;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg-3);
     border-radius: 20px;
-    padding: 2px 9px;
+    padding: 1px 7px;
     cursor: pointer;
     flex: none;
   }
 
-  .autobtn[aria-pressed="true"] {
-    background: var(--accent-soft);
-    border-color: var(--accent);
-    color: var(--accent);
+  .autobtn[aria-pressed="true"] { background: var(--muted); color: var(--fg-2); }
+
+  /* ---------- collapsible groups ---------- */
+
+  .group { display: flex; flex-direction: column; gap: 8px; }
+
+  .grouphead {
+    font: inherit;
+    font-size: 10.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: var(--fg-2);
+    background: var(--muted);
+    border: none;
+    border-radius: 20px;
+    padding: 3px 10px 3px 7px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    align-self: flex-start;
   }
 
-  .groupsep {
-    font-family: var(--display);
-    font-size: 14px;
-    color: var(--ink);
-    border-top: 1px solid var(--line);
-    padding-top: 14px;
-    margin-top: 2px;
-  }
+  .grouphead:hover { color: var(--fg); }
+  .chev { inline-size: 12px; block-size: 12px; transition: transform .12s ease; }
+  .grouphead[aria-expanded="false"] .chev { transform: rotate(-90deg); }
 
-  .groupsep:first-child { border-top: none; padding-top: 0; margin-top: 0; }
+  .groupbody { display: flex; flex-direction: column; gap: 11px; padding-inline-start: 2px; }
 
-  /* ---------- tab strips ---------- */
+  /* ---------- tabs ---------- */
 
-  .tabs {
-    display: flex;
-    gap: 2px;
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 3px;
-  }
-
-  .rail .tabs { background: var(--surface-2); }
+  .tabs { display: flex; gap: 2px; flex-wrap: wrap; }
 
   .tab {
     font: inherit;
-    font-size: 13px;
+    font-size: 12.5px;
     border: none;
     background: none;
-    color: var(--ink-2);
-    padding: 6px 12px;
-    border-radius: 3px;
+    color: var(--fg-2);
+    padding: 5px 8px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
-    flex: 1;
     white-space: nowrap;
   }
 
-  .stage .tab { flex: none; }
-  .tab[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); }
+  .tab:hover { color: var(--fg); }
+  .tab[aria-selected="true"] { background: var(--muted); color: var(--fg); font-weight: 500; }
 
-  .panel { display: flex; flex-direction: column; gap: 13px; }
+  .panel { display: flex; flex-direction: column; gap: 14px; }
 
-  /* ---------- stage chrome ---------- */
-
-  .stagebar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; }
-  .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  /* ---------- buttons ---------- */
 
   button.action {
     font: inherit;
     font-size: 13px;
-    border: 1px solid var(--line-strong);
-    background: var(--surface);
-    color: var(--ink);
-    padding: 7px 12px;
-    border-radius: 3px;
+    border: 1px solid transparent;
+    background: none;
+    color: var(--fg-2);
+    block-size: 32px;
+    padding: 0 10px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
   }
 
-  button.action:hover:not(:disabled) { border-color: var(--ink-3); }
-  button.action:disabled { opacity: .4; cursor: default; }
+  button.action:hover:not(:disabled) { background: var(--muted); color: var(--fg); }
+  button.action:disabled { opacity: .35; cursor: default; }
 
   button.action.primary {
-    background: var(--accent); border-color: var(--accent);
-    color: var(--accent-ink); font-weight: 600;
+    background: var(--primary);
+    color: var(--primary-fg);
+    font-weight: 500;
+    padding: 0 14px;
   }
 
-  .filename { font-family: var(--mono); font-size: 12.5px; color: var(--ink-2); }
+  button.action.primary:hover:not(:disabled) { background: var(--primary); opacity: .9; color: var(--primary-fg); }
+
+  .filename { font-family: var(--mono); font-size: 12px; color: var(--fg-3); }
 
   /* ---------- checks ---------- */
 
-  .checks { display: flex; flex-direction: column; gap: 7px; }
+  .stagebar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
+
+  .sample { display: flex; align-items: center; gap: 14px; }
+  .sample .field { flex-direction: row; align-items: center; gap: 7px; }
+  .sample .fieldlabel { color: var(--fg-3); font-weight: 400; white-space: nowrap; }
+  .sample select { inline-size: auto; }
+  .sample .hint { display: none; }
+  .sample .checkline { color: var(--fg-2); white-space: nowrap; }
+
+  .checks { display: flex; flex-direction: column; gap: 6px; }
 
   .check {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: 10px;
+    gap: 9px;
     align-items: start;
     font-size: 12.5px;
-    padding: 9px 12px;
-    border-radius: 3px;
+    padding: 8px 11px;
+    border-radius: var(--radius);
     border: 1px solid var(--line);
     background: var(--surface);
-    color: var(--ink-2);
+    color: var(--fg-2);
   }
 
   .check.warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
   .check.ok { background: var(--ok-bg); border-color: transparent; color: var(--ok); }
-  .check .marker { font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; padding-top: 1px; }
+
+  .check .marker {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    font-weight: 600;
+    opacity: .75;
+    padding-top: 1px;
+  }
 
   /* ---------- paper ---------- */
 
-  .proof { background: var(--surface-2); border: 1px solid var(--line); border-radius: 4px; padding: 22px; overflow: auto; }
+  .proof {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 24px;
+    overflow: auto;
+  }
+
   .sheet-scaler { position: relative; margin: 0 auto; }
 
   .sheet {
     inline-size: 794px; block-size: 1123px;
-    border: none; background: #fff;
-    box-shadow: var(--shadow);
+    border: none;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .06), 0 1px 3px rgba(0, 0, 0, .08);
     transform-origin: top left;
     display: block;
   }
 
   /* ---------- css output ---------- */
 
-  .code { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; overflow: auto; max-block-size: 70vh; }
-  .code pre { margin: 0; padding: 18px 20px; font-family: var(--mono); font-size: 12.5px; line-height: 1.65; color: var(--ink); }
+  .code {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: auto;
+    max-block-size: 70vh;
+  }
 
-  .handoff { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 16px 20px; }
-  .handoff h2 { font-family: var(--display); font-size: 16px; margin: 0 0 8px; }
-  .handoff ol, .handoff ul { margin: 0; padding-left: 20px; color: var(--ink-2); font-size: 13px; }
-  .handoff li { margin-bottom: 5px; }
-  .handoff li:last-child { margin-bottom: 0; }
-  .handoff code { font-family: var(--mono); font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 3px; color: var(--ink); }
-  .handoff details { margin-top: 10px; }
-  .handoff summary { cursor: pointer; font-size: 13px; color: var(--accent); }
-  .handoff details p { font-size: 13px; color: var(--ink-2); }
+  .code pre { margin: 0; padding: 16px 18px; font-family: var(--mono); font-size: 12px; line-height: 1.65; color: var(--fg); }
 
   [hidden] { display: none !important; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 </style>
 
-<header class="masthead">
-  <h1 class="wordmark">Glyph<span class="role">Statement branding</span></h1>
-  <p>Set your colours, type and table treatment, check them against a real statement, then download the stylesheet to send us.</p>
-</header>
+<div class="actionbar">
+  <div class="lead"><span class="filename" id="filename">acme.css</span></div>
+  <div class="actions">
+    <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
+    <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
+    <button class="action" type="button" id="resetBtn">Reset</button>
+    <span class="sep"></span>
+    <button class="action" type="button" id="shareBtn">Copy link</button>
+    <button class="action" type="button" id="copyBtn">Copy CSS</button>
+    <button class="action primary" type="button" id="downloadBtn">Download CSS</button>
+  </div>
+</div>
 
 <div class="workbench">
 
@@ -336,13 +376,11 @@
       <button class="tab" type="button" role="tab" data-railtab="type" aria-selected="false">Type</button>
       <button class="tab" type="button" role="tab" data-railtab="table" aria-selected="false">Table</button>
       <button class="tab" type="button" role="tab" data-railtab="layout" aria-selected="false">Layout</button>
-      <button class="tab" type="button" role="tab" data-railtab="preview" aria-selected="false">Preview</button>
     </div>
     <div class="panel" id="panel-colour" role="tabpanel"></div>
     <div class="panel" id="panel-type" role="tabpanel" hidden></div>
     <div class="panel" id="panel-table" role="tabpanel" hidden></div>
     <div class="panel" id="panel-layout" role="tabpanel" hidden></div>
-    <div class="panel" id="panel-preview" role="tabpanel" hidden></div>
   </form>
 
   <main class="stage">
@@ -350,17 +388,9 @@
     <div class="stagebar">
       <div class="tabs" role="tablist" aria-label="Proof">
         <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
-        <button class="tab" type="button" role="tab" data-proof="taf" aria-selected="false">ISA transfer form</button>
         <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
       </div>
-      <div class="actions">
-        <button class="action" type="button" id="undoBtn" title="Undo (Ctrl+Z)">Undo</button>
-        <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
-        <button class="action" type="button" id="resetBtn">Reset</button>
-        <button class="action" type="button" id="shareBtn">Copy link</button>
-        <button class="action" type="button" id="copyBtn">Copy CSS</button>
-        <button class="action primary" type="button" id="downloadBtn">Download</button>
-      </div>
+      <div class="sample" id="sample"></div>
     </div>
 
     <div class="checks" id="checks"></div>
@@ -369,39 +399,17 @@
       <div class="sheet-scaler" id="scaler-statement"><iframe class="sheet" id="frame-statement" title="Monthly statement proof"></iframe></div>
     </section>
 
-    <section class="proof" id="proof-taf" hidden>
-      <div class="sheet-scaler" id="scaler-taf"><iframe class="sheet" id="frame-taf" title="ISA transfer authority form proof"></iframe></div>
-    </section>
-
     <section id="proof-css" hidden>
-      <div class="stagebar" style="margin-bottom: 10px;">
-        <span class="filename" id="filename">acme.css</span>
-      </div>
       <div class="code"><pre id="cssOut"></pre></div>
     </section>
-
-    <div class="handoff">
-      <h2>Sending this to us</h2>
-      <ol>
-        <li>Download the stylesheet and email it to your Bondsmith contact, with your logo as a PNG or SVG.</li>
-        <li>We host the file and point your platform at it, so the next statements we generate use it.</li>
-        <li>Ask us for a sample statement before we switch it on for your customers.</li>
-      </ol>
-      <details>
-        <summary>Why can't I set letter spacing, gradients or shadows?</summary>
-        <p>Statements are rendered to PDF by an engine that supports a subset of CSS. We tested each
-          option against the real renderer and only offer the ones that genuinely come out the other
-          side. Letter and word spacing, transparency, gradients and drop shadows are all silently
-          dropped, so there is no control for them — a slider that did nothing would be worse than
-          its absence.</p>
-      </details>
-    </div>
 
   </main>
 </div>
 
 <script>
   "use strict";
+
+  const STATE_KEY = "glyph.settings";
 
   /* ================================================================== *
    * Baseline stylesheets, copied from the document templates so a proof
@@ -430,52 +438,6 @@ span.pagecount:before { content: counter(pages); }
 .data-table thead tr { border: 1px solid; color: white; margin-bottom: 80px; font-weight: normal; }
 .data-table th { padding: 10px 0 10px 10px; font-weight: normal; border: 1px solid; text-align: left; }
 .data-table td { padding-top: 5px; padding-bottom: 5px; text-align: left; padding-left: 10px; }
-`;
-
-  /* exchange: core/src/main/resources/thymeleaf/isa/taf/shared.css */
-  const TAF_BASE = `
-html, body { margin: 0; padding: 0; }
-.document-body { font-family: Inter, sans-serif; font-size: 12px; line-height: 1.35; color: #000; background: #fff; margin: 0 !important; }
-.container { width: 100%; padding: 0; }
-.section-wrapper { margin: 0 0 4px 0; }
-.subsection { background-color: #f3f3f3; border: 1px solid #2d3e7c; padding: 10px; margin: 0 0 12px 0; }
-.internal-use { border: 1px solid #333; padding: 10px; margin: 18px 0 0 0; background-color: #f4f4f4; }
-.doc-header { width: 100%; border-collapse: collapse; border-bottom: 3px solid #2d407d; height: 40px; }
-.doc-header td { vertical-align: middle; padding: 0 0 8px 0; }
-.doc-header .logo { text-align: right; width: 180px; }
-.doc-header .logo img { height: 40px; width: auto; display: inline-block; }
-h1 { font-size: 28px; margin: 0; color: #2d407d; }
-h2, h3 { margin: 0; padding: 0; background: transparent; }
-h3 { color: #2d3e7c; font-size: 14px; margin: 0 0 6px 0; }
-.section-header {
-  background-color: #2d3e7c; color: #fff;
-  margin: 10px 0 8px 0; padding: 6px 10px;
-  display: table; width: 100%;
-}
-.section-header h2 { display: table-cell; vertical-align: middle; font-size: 16px; font-weight: bold; color: #fff; white-space: nowrap; }
-.form-table { width: 100%; border-collapse: collapse; margin: 0; }
-.form-table td { vertical-align: top; padding: 2px; }
-.checkbox-table { border-collapse: collapse; margin: 0 0 8px 0; font-size: 12px; }
-.checkbox-table td { vertical-align: middle; padding: 2px 6px 2px 0; }
-label { font-size: 11px; font-weight: bold; display: block; }
-input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid #999; background-color: #fff; margin: 0; height: 24px; box-sizing: border-box; }
-.form-table input.stacked { display: block; width: 100%; margin: 0 0 -2px 0; }
-.checkbox-box { width: 16px; height: 16px; display: inline-block; }
-.char-box-group { display: inline-block; margin: 0 0 12px 0; }
-.char-box-group span { font-size: 12px; margin: 0 1px; }
-.char-box { width: 22px; height: 24px; border: 1px solid #333; display: inline-block; margin: 0 2px 0 0; vertical-align: middle; }
-.intro-box { font-size: 12px; padding: 2px 0; margin: 0; }
-.question-title { font-size: 12px; font-weight: bold; margin: 0 0 4px 0; }
-.authority-text { font-size: 12px; margin: 12px 0 0 0; }
-.footer-notes { font-size: 10px; color: #666; margin-top: 16px; border-top: 1px solid #eee; padding-top: 8px; }
-.w-form-half { width: 330px !important; }
-.w-50 { width: 50%; }
-.w-140 { width: 140px !important; }
-.w-150 { width: 150px !important; }
-.mb-10 { margin-bottom: 10px; }
-.pl-20 { padding-left: 20px; }
-.valign-top { vertical-align: top; }
-.stacked-label { margin: 2px 0 0 0; }
 `;
 
   const PLACEHOLDER_LOGO =
@@ -539,7 +501,17 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     barSpaceAbove: 0,
     barSpaceBelow: 0,
     summaryWidth: 60,
-    addressTight: false,
+    summaryCard: false,
+    summaryCardBg: null,
+    summaryCardText: null,
+    summaryCardRadius: 12,
+    summaryCardPad: 16,
+    summaryCardGap: 10,
+    addressSpaced: false,
+    addressWidth: 0,
+    addressPinned: false,
+    addressTop: 32,
+    addressRight: 20,
     bodyMargin: 0
   };
 
@@ -551,12 +523,17 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
      colour. They set structure only — colour and type are the partner's. */
   const PRESETS = {
     plain: { brand: "#333333", barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "brandText", logoHeight: 70 },
-    banner: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: false, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true, summaryWidth: 100, addressTight: true },
+    banner: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: false, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true, summaryWidth: 100, addressSpaced: true },
     tinted: { brand: DEMO_BRAND, barStyle: "tinted", sectionBarsMatch: true, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true },
     bold: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: true, barPadY: 20, barPadX: 20, barSpaceAbove: 20, barSpaceBelow: 10, tableHeaderStyle: "solid", rowLines: true, logoHeight: 40 },
     accent: { brand: DEMO_BRAND, barStyle: "plain", barText: "#000000", sectionBarsMatch: true, tableHeaderStyle: "solid", logoHeight: 50, bodyMargin: 20 },
     minimal: { brand: "#000000", barStyle: "minimal", sectionBarsMatch: true, tableHeaderStyle: "subtle", rowLines: true, logoHeight: 40 },
-    striped: { brand: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "solid", zebra: true, headerRadius: 6, logoHeight: 40 }
+    striped: { brand: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "solid", zebra: true, headerRadius: 6, logoHeight: 40 },
+    cards: { brand: DEMO_BRAND, bodyTextColour: DEMO_BRAND, barStyle: "plain", sectionBarsMatch: true,
+             barPadY: 10, barPadX: 20, barSpaceBelow: 10, logoHeight: 50, logoContain: true,
+             fontSize: 11, summaryCard: true, summaryCardText: "#656c7a", summaryCardRadius: 16,
+             summaryCardPad: 16, summaryCardGap: 10, tableHeaderStyle: "rule", cellPadding: 10,
+             addressSpaced: true, addressWidth: 400, addressPinned: true, bodyMargin: 20 }
   };
 
   /* ================================================================== *
@@ -634,6 +611,8 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       if (state.sectionBarsMatch) return derive.barText();
       return state.sectionText || state.brand;
     },
+    summaryCardBg() { return state.summaryCardBg || tintOf(state.brand, 0.94); },
+    summaryCardText() { return state.summaryCardText || state.bodyTextColour; },
     dateColour() { return state.dateColour || state.brand; },
     accentColour() { return state.accentColour || state.brand; },
     zebraColour() { return state.zebraColour || tintOf(state.brand, 0.92); },
@@ -670,15 +649,19 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
   const CONTROLS = [
     /* ---- identity (always visible) ---- */
     { tab: "identity", type: "text", key: "partner", label: "Your name", hint: "Used for the filename only." },
+    { tab: "identity", type: "url", key: "logoUrl", label: "Logo image (preview only)", placeholder: "https://…/logo.png",
+      hint: "Your logo is not part of this stylesheet — we store it separately." },
     { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
       options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
-                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]],
-      hint: "Layouts other partners use, in a neutral colour. Pick the closest, then make it yours." },
+                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"],
+                ["cards", "Cards — shaded summary blocks"]] },
 
     /* ---- colour ---- */
-    { tab: "colour", type: "group", label: "Brand" },
+    { tab: "colour", type: "group", label: "Brand",
+      hint: "The figure beside a colour is its contrast with whatever sits behind it. Amber means below 4.5:1, where text starts to be hard to read on paper." },
     { tab: "colour", type: "colour", key: "brand", label: "Brand colour",
+      contrast: () => [state.brand, "#ffffff"],
       hint: "Everything below follows this until you override it." },
 
     { tab: "colour", type: "group", label: "Statement title bar" },
@@ -686,21 +669,28 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       options: [["filled", "Solid brand bar, reversed text"], ["tinted", "Tinted bar, brand text"],
                 ["plain", "White bar, brand text"], ["minimal", "No bar — heading only"]] },
     { tab: "colour", type: "colour", key: "barBg", label: "Bar background", derived: () => derive.barBg(),
+      contrast: () => [derive.barText(), derive.barBg()],
       showIf: () => state.barStyle !== "minimal" },
-    { tab: "colour", type: "colour", key: "barText", label: "Bar text", derived: () => derive.barText() },
+    { tab: "colour", type: "colour", key: "barText", label: "Bar text", derived: () => derive.barText(),
+      contrast: () => [derive.barText(), derive.barBg()] },
 
     { tab: "colour", type: "group", label: "Section bars" },
     { tab: "colour", type: "toggle", key: "sectionBarsMatch", label: 'Match the title bar treatment' },
     { tab: "colour", type: "colour", key: "sectionBg", label: "Section bar background", derived: () => derive.sectionBg(),
+      contrast: () => [derive.sectionText(), derive.sectionBg()],
       showIf: () => !state.sectionBarsMatch },
     { tab: "colour", type: "colour", key: "sectionText", label: "Section bar text", derived: () => derive.sectionText(),
+      contrast: () => [derive.sectionText(), derive.sectionBg()],
       showIf: () => !state.sectionBarsMatch },
 
     { tab: "colour", type: "group", label: "Elsewhere" },
-    { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour() },
+    { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour(),
+      contrast: () => [derive.dateColour(), "#ffffff"] },
     { tab: "colour", type: "colour", key: "accentColour", label: "ISA form rules and headings", derived: () => derive.accentColour(),
+      contrast: () => [derive.accentColour(), "#ffffff"],
       hint: "The underline beneath the form title, section box borders, and its headings." },
-    { tab: "colour", type: "colour", key: "bodyTextColour", label: "Body text" },
+    { tab: "colour", type: "colour", key: "bodyTextColour", label: "Body text",
+      contrast: () => [state.bodyTextColour, "#ffffff"] },
 
     /* ---- type ---- */
     { tab: "type", type: "group", label: "Typeface" },
@@ -733,8 +723,10 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     { tab: "table", type: "select", key: "tableHeaderStyle", label: "Treatment",
       options: [["brandText", "Brand text on white"], ["solid", "Reversed text on brand"],
                 ["subtle", "Dark text on light grey"], ["rule", "Brand text with a brand underline"]] },
-    { tab: "table", type: "colour", key: "tableHeaderBg", label: "Header background", derived: () => derive.tableHeaderBg() },
-    { tab: "table", type: "colour", key: "tableHeaderText", label: "Header text", derived: () => derive.tableHeaderText() },
+    { tab: "table", type: "colour", key: "tableHeaderBg", label: "Header background", derived: () => derive.tableHeaderBg(),
+      contrast: () => [derive.tableHeaderText(), derive.tableHeaderBg()] },
+    { tab: "table", type: "colour", key: "tableHeaderText", label: "Header text", derived: () => derive.tableHeaderText(),
+      contrast: () => [derive.tableHeaderText(), derive.tableHeaderBg()] },
     { tab: "table", type: "toggle", key: "upperTableHeader", label: "Column names in capitals" },
     { tab: "table", type: "range", key: "headerRadius", label: "Header corner rounding", min: 0, max: 14, step: 1,
       format: v => v === 0 ? "square" : v + "px" },
@@ -747,6 +739,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       showIf: () => state.rowLines },
     { tab: "table", type: "toggle", key: "zebra", label: "Shade alternate rows" },
     { tab: "table", type: "colour", key: "zebraColour", label: "Shading colour", derived: () => derive.zebraColour(),
+      contrast: () => [state.bodyTextColour, derive.zebraColour()],
       showIf: () => state.zebra },
 
     /* ---- layout ---- */
@@ -764,29 +757,48 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     { tab: "layout", type: "range", key: "barSpaceAbove", label: "Space above", min: 0, max: 40, step: 4, unit: "px" },
     { tab: "layout", type: "range", key: "barSpaceBelow", label: "Space below", min: 0, max: 40, step: 4, unit: "px" },
 
+    { tab: "layout", type: "group", label: "Account summary" },
+    { tab: "layout", type: "range", key: "summaryWidth", label: "Width", min: 40, max: 100, step: 5, unit: "%" },
+    { tab: "layout", type: "toggle", key: "summaryCard", label: "Shade each block" },
+    { tab: "layout", type: "colour", key: "summaryCardBg", label: "Block background", derived: () => derive.summaryCardBg(),
+      contrast: () => [derive.summaryCardText(), derive.summaryCardBg()],
+      showIf: () => state.summaryCard },
+    { tab: "layout", type: "colour", key: "summaryCardText", label: "Block text", derived: () => derive.summaryCardText(),
+      contrast: () => [derive.summaryCardText(), state.summaryCard ? derive.summaryCardBg() : "#ffffff"] },
+    { tab: "layout", type: "range", key: "summaryCardRadius", label: "Corner rounding", min: 0, max: 24, step: 2,
+      format: v => v === 0 ? "square" : v + "px", showIf: () => state.summaryCard },
+    { tab: "layout", type: "range", key: "summaryCardPad", label: "Padding", min: 0, max: 28, step: 2, unit: "px",
+      showIf: () => state.summaryCard },
+    { tab: "layout", type: "range", key: "summaryCardGap", label: "Space between blocks", min: 0, max: 30, step: 2, unit: "px",
+      showIf: () => state.summaryCard },
+
+    { tab: "layout", type: "group", label: "Address block" },
+    { tab: "layout", type: "toggle", key: "addressSpaced", label: "Space out the address block" },
+    { tab: "layout", type: "range", key: "addressWidth", label: "Width", min: 0, max: 500, step: 20,
+      format: v => v === 0 ? "as it comes" : v + "px" },
+    { tab: "layout", type: "toggle", key: "addressPinned", label: "Pin it to the top of the page",
+      hint: "Pinned, it no longer pushes what follows down the page." },
+    { tab: "layout", type: "range", key: "addressTop", label: "Distance from the top", min: 0, max: 160, step: 4, unit: "px",
+      showIf: () => state.addressPinned },
+    { tab: "layout", type: "range", key: "addressRight", label: "Distance from the right", min: 0, max: 80, step: 4, unit: "px",
+      showIf: () => state.addressPinned },
+
     { tab: "layout", type: "group", label: "Page" },
-    { tab: "layout", type: "range", key: "summaryWidth", label: "Account summary width", min: 40, max: 100, step: 5, unit: "%" },
-    { tab: "layout", type: "toggle", key: "addressTight", label: "Tighten the address block" },
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
       format: v => v === 0 ? "none" : v + "px" },
 
-    /* ---- preview ---- *
-     * Proof-only. Nothing on this tab reaches generateCss(); it changes which
-     * blocks and which wording the sample document shows, because the four
-     * arrangements below produce visibly different statements from the same
-     * stylesheet. */
-    { tab: "preview", type: "group", label: "Sample document" },
-    { tab: "preview", type: "select", key: "previewModel", label: "Statement type",
-      options: [["trustIndividual", "Individual — holding account shown"],
+    /* ---- sample ---- *
+     * Sits beside the proof, not in the rail: nothing here reaches
+     * generateCss(). It chooses which blocks and which wording the sample
+     * document shows, because the four arrangements produce visibly different
+     * statements from the same stylesheet. */
+    { tab: "sample", type: "select", key: "previewModel", label: "Sample",
+      options: [["trustIndividual", "Individual — holding balance shown"],
                 ["trustPooled", "Pooled"],
                 ["direct", "Direct"],
-                ["trustHidden", "Individual — holding account hidden"]],
-      hint: "Changes the sample only, never the stylesheet. Each arrangement lists a different set of transactions, so check the one your customers get." },
-    { tab: "preview", type: "toggle", key: "previewHoldingAccount", label: "Show holding account sort code and number" },
-
-    { tab: "preview", type: "group", label: "Logo" },
-    { tab: "preview", type: "url", key: "logoUrl", label: "Logo image", placeholder: "https://…/logo.png",
-      hint: "Your logo is not part of this stylesheet — we store it separately. This is only so the proof looks right." }
+                ["trustHidden", "Individual — holding balance hidden"]],
+      hint: "Changes the sample document only, never the stylesheet. Each arrangement lists a different set of transactions, so check the one your customers get." },
+    { tab: "sample", type: "toggle", key: "previewHoldingAccount", label: "Holding account details" }
   ];
 
   /* ================================================================== *
@@ -904,12 +916,24 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 
     blocks.push("/* Statement-specific selectors (also targets TAF via .section-header) */");
 
-    if (state.summaryWidth !== 60) blocks.push(rule(".account-list", [`width: ${state.summaryWidth}%;`]));
+    blocks.push(rule(".account-list", [
+      state.summaryWidth !== 60 ? `width: ${state.summaryWidth}%;` : null,
+      state.summaryCardText ? `color: ${state.summaryCardText};` : null,
+      state.summaryCard ? `background-color: ${cssColour(derive.summaryCardBg())};` : null,
+      state.summaryCard && state.summaryCardPad ? `padding: ${state.summaryCardPad}px;` : null,
+      state.summaryCard && state.summaryCardRadius ? `border-radius: ${state.summaryCardRadius}px;` : null,
+      state.summaryCard && state.summaryCardGap ? `margin-bottom: ${state.summaryCardGap}px;` : null
+    ]));
 
-    if (state.addressTight) {
-      blocks.push(rule("#address-details", ["line-height: 0.5;"]));
-      blocks.push(rule("#address-details p:last-child", ["line-height: 1;"]));
-    }
+    blocks.push(rule("#address-details", [
+      state.addressSpaced ? "line-height: 0.5;" : null,
+      state.addressWidth ? `width: ${state.addressWidth}px;` : null,
+      state.addressPinned ? "position: absolute;" : null,
+      state.addressPinned ? `top: ${state.addressTop}px;` : null,
+      state.addressPinned ? `right: ${state.addressRight}px;` : null
+    ]));
+
+    if (state.addressSpaced) blocks.push(rule("#address-details p:last-child", ["line-height: 1;"]));
 
     blocks.push(rule(".section-header", [
       `color: ${derive.sectionText()};`,
@@ -993,6 +1017,9 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       ]));
     }
 
+    /* Emitted although the transfer form has no proof here: one stylesheet
+       covers both documents, so dropping these would leave the form on the
+       template's default navy. */
     blocks.push("/* TAF-specific selectors */");
     blocks.push(rule("h1", [`color: ${accent};`]));
     blocks.push(rule("h3", [`color: ${accent};`]));
@@ -1014,10 +1041,17 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       cashSummary: true,
       rows: [
         ["01 Jul 2026", "Holding account", "Balance brought forward", "", "", "£1,043.24"],
-        ["03 Jul 2026", "Holding account", "Deposit from nominated account", "£5,000.00", "", "£6,043.24"],
-        ["05 Jul 2026", "Easy Access Saver", "Transfer to Easy Access Saver", "", "£5,000.00", "£1,043.24"],
-        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£1,081.43"],
-        ["25 Jul 2026", "1 Year Fixed Saver", "1 Year Fixed Saver reached maturity", "£123.23", "", "£1,204.66"],
+        ["02 Jul 2026", "Holding account", "Deposit from nominated account", "£5,000.00", "", "£6,043.24"],
+        ["03 Jul 2026", "Easy Access Saver", "Transfer to Easy Access Saver", "", "£5,000.00", "£1,043.24"],
+        ["06 Jul 2026", "Holding account", "Deposit from nominated account", "£2,500.00", "", "£3,543.24"],
+        ["07 Jul 2026", "95 Day Notice Saver", "Transfer to 95 Day Notice Saver", "", "£2,500.00", "£1,043.24"],
+        ["10 Jul 2026", "Easy Access Saver", "Interest paid", "£12.44", "", "£1,055.68"],
+        ["14 Jul 2026", "Holding account", "Withdrawal to nominated account", "", "£200.00", "£855.68"],
+        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£893.87"],
+        ["21 Jul 2026", "Holding account", "Deposit from nominated account", "£1,000.00", "", "£1,893.87"],
+        ["22 Jul 2026", "1 Year Fixed Saver", "Transfer to 1 Year Fixed Saver", "", "£1,000.00", "£893.87"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "1 Year Fixed Saver reached maturity", "£123.23", "", "£1,017.10"],
+        ["28 Jul 2026", "Holding account", "Correction", "£187.56", "", "£1,204.66"],
         ["31 Jul 2026", "Holding account", "Withdrawal to nominated account", "", "£0.56", "£1,204.10"]
       ]
     },
@@ -1026,9 +1060,14 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       rows: [
         ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
         ["03 Jul 2026", "Easy Access Saver", "Deposit to Easy Access Saver", "£5,000.00", "", "£27,006.56"],
-        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£27,044.75"],
-        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£27,167.98"],
-        ["31 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£5,000.00", "£22,167.98"]
+        ["07 Jul 2026", "95 Day Notice Saver", "Deposit to 95 Day Notice Saver", "£2,500.00", "", "£29,506.56"],
+        ["10 Jul 2026", "Easy Access Saver", "Interest paid", "£12.44", "", "£29,519.00"],
+        ["14 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£200.00", "£29,319.00"],
+        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£29,357.19"],
+        ["22 Jul 2026", "1 Year Fixed Saver", "Deposit to 1 Year Fixed Saver", "£1,000.00", "", "£30,357.19"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£30,480.42"],
+        ["28 Jul 2026", "95 Day Notice Saver", "Correction", "", "£0.02", "£30,480.40"],
+        ["31 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£5,000.00", "£25,480.40"]
       ]
     },
     direct: {
@@ -1036,10 +1075,15 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       rows: [
         ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
         ["03 Jul 2026", "Easy Access Saver", "Deposit to Easy Access Saver", "£5,000.00", "", "£27,006.56"],
-        ["18 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£38.19", "", "£27,044.75"],
-        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£27,167.98"],
-        ["28 Jul 2026", "95 Day Notice Saver", "Withdrawal from 95 Day Notice Saver", "", "£1,000.00", "£26,167.98"],
-        ["31 Jul 2026", "Easy Access Saver", "Correction", "", "£0.02", "£26,167.96"]
+        ["07 Jul 2026", "95 Day Notice Saver", "Deposit to 95 Day Notice Saver", "£2,500.00", "", "£29,506.56"],
+        ["10 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£12.44", "", "£29,519.00"],
+        ["14 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£200.00", "£29,319.00"],
+        ["18 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£38.19", "", "£29,357.19"],
+        ["22 Jul 2026", "1 Year Fixed Saver", "Deposit to 1 Year Fixed Saver", "£1,000.00", "", "£30,357.19"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£30,480.42"],
+        ["28 Jul 2026", "95 Day Notice Saver", "Withdrawal from 95 Day Notice Saver", "", "£1,000.00", "£29,480.42"],
+        ["30 Jul 2026", "1 Year Fixed Saver", "Income from 1 Year Fixed Saver", "£64.10", "", "£29,544.52"],
+        ["31 Jul 2026", "Easy Access Saver", "Correction", "", "£0.02", "£29,544.50"]
       ]
     },
     trustHidden: {
@@ -1047,7 +1091,11 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       rows: [
         ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
         ["03 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£5,000.00", "", "£27,006.56"],
-        ["31 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£1,500.00", "£25,506.56"]
+        ["09 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£2,500.00", "", "£29,506.56"],
+        ["14 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£200.00", "£29,306.56"],
+        ["21 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£1,000.00", "", "£30,306.56"],
+        ["27 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£1,300.00", "£29,006.56"],
+        ["31 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£3,500.00", "£25,506.56"]
       ]
     }
   };
@@ -1112,84 +1160,6 @@ ${rows}
 </div>`;
   }
 
-  function tafBody(logo) {
-    return `
-<div class="container">
-  <table class="doc-header"><tr>
-    <td><h1>ISA Transfer Authority Form</h1></td>
-    <td class="logo"><img src="${logo}" alt="Platform logo"></td>
-  </tr></table>
-  <div class="intro-box">
-    <p>Use this form to transfer an existing ISA to your Bondsmith Cash ISA.</p>
-    <ul><li>Cash ISA transfers typically complete within 15 business days.</li>
-    <li>Please include your Bondsmith Cash ISA Holding account details to avoid delays.</li></ul>
-  </div>
-  <div class="section-wrapper">
-    <div class="section-header"><h2>1. Your details</h2></div>
-    <div class="section-content">
-      <table class="form-table"><tr>
-        <td><label>Title</label><input class="w-140" type="text" value="Mr"></td>
-        <td><label>First Name(s)</label><input type="text" style="width:388px" value="Smith"></td>
-        <td><label>Last Name</label><input class="w-140" type="text" value="Bond"></td>
-      </tr></table>
-      <table class="form-table mb-10"><tr>
-        <td class="w-50 valign-top">
-          <label>Permanent residential address</label>
-          <input class="stacked w-form-half" type="text" value="4 Pentonville Rd">
-          <input class="stacked w-form-half" type="text" value="London">
-          <input class="stacked w-form-half" type="text" value="">
-          <label class="stacked-label">Postcode</label>
-          <input class="w-150" type="text" value="N1 9HF">
-        </td>
-        <td class="valign-top pl-20">
-          <label>Date of birth</label>
-          <div class="char-box-group">
-            <input class="char-box" type="text" value="1"><input class="char-box" type="text" value="4"><span>/</span>
-            <input class="char-box" type="text" value="0"><input class="char-box" type="text" value="9"><span>/</span>
-            <input class="char-box" type="text" value="8"><input class="char-box" type="text" value="7">
-          </div>
-          <label>Contact telephone number</label>
-          <input class="w-form-half" type="tel" value="07700 900412">
-        </td>
-      </tr></table>
-    </div>
-  </div>
-  <div class="section-wrapper">
-    <div class="section-header"><h2>2. Details of the existing ISA you want to transfer</h2></div>
-    <div class="section-content">
-      <table class="form-table mb-10"><tr>
-        <td class="w-50 valign-top">
-          <p class="question-title">Have you paid into this ISA during the current tax year?</p>
-          <table class="checkbox-table"><tr>
-            <td><input class="checkbox-box" type="checkbox" checked></td><td>Yes</td>
-            <td class="pl-20"><input class="checkbox-box" type="checkbox"></td><td>No</td>
-          </tr></table>
-        </td>
-        <td class="w-50 valign-top pl-20">
-          <label>Name of existing ISA manager</label>
-          <input class="stacked w-form-half" type="text" value="Northbank Building Society">
-        </td>
-      </tr></table>
-      <div class="subsection">
-        <h3>Cash ISA transfer details</h3>
-        <table class="form-table mb-10"><tr>
-          <td class="w-50"><label>Sort code</label><input class="w-form-half" type="text" value="60-12-04"></td>
-          <td class="w-50"><label>Account number</label><input class="w-form-half" type="text" value="44029183"></td>
-        </tr></table>
-      </div>
-    </div>
-  </div>
-  <div class="internal-use">
-    <strong>5. Transfer acceptance (Bondsmith Use Only)</strong>
-    <p class="authority-text">We are willing to accept this ISA transfer in line with instructions.</p>
-  </div>
-  <div class="footer-notes">
-    <p>ISA transfers do not affect your annual ISA allowance.</p>
-    <p>Bondsmith is the trading name of Bondsmith Savings Ltd, which is authorised and regulated by the Financial Conduct Authority.</p>
-  </div>
-</div>`;
-  }
-
   /* ================================================================== *
    * Checks
    * ================================================================== */
@@ -1199,54 +1169,49 @@ ${rows}
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
   }
 
+  const MIN_CONTRAST = 4.5;
+  const TAB_LABELS = { colour: "Colour", type: "Type", table: "Table", layout: "Layout" };
+
+  /* Deduplicated on the colour pair: a background and its text both carry a
+     chip, but they are one failure. */
+  function contrastFailures() {
+    const seen = new Set(), out = [];
+    for (const spec of CONTROLS) {
+      if (!spec.contrast || (spec.showIf && !spec.showIf())) continue;
+      const [fg, bg] = spec.contrast();
+      if (!fg || !bg || seen.has(fg + bg)) continue;
+      seen.add(fg + bg);
+      const ratio = contrastRatio(fg, bg);
+      if (ratio < MIN_CONTRAST) out.push({ spec, ratio });
+    }
+    return out;
+  }
+
   function buildChecks() {
     const items = [];
 
-    if (state.fontMode === "builtin") {
-      items.push({ tone: "ok", marker: "Type", text: "This font is built into every PDF reader, so your statements will look the same everywhere." });
-    } else if (!safeFamily(state.embedFamily)) {
-      items.push({ tone: "warn", marker: "Type", text: "Name the font family you want to embed, or your statements will fall back to Helvetica." });
-    } else if (!state.embedUrl.trim()) {
-      items.push({ tone: "warn", marker: "Type", text:
-        `<strong>${escapeHtml(safeFamily(state.embedFamily))} will not appear in the PDF yet.</strong> Fonts have to be embedded as a .ttf file — send us yours and paste back the URL we give you. Until then statements fall back to Helvetica.` });
-    } else if (!safeUrl(state.embedUrl)) {
-      items.push({ tone: "warn", marker: "Type", text:
-        "That font URL was not accepted. It needs to be a plain https address ending in the .ttf file, with no spaces or brackets." });
+    if (state.fontMode === "embed") {
+      if (!safeFamily(state.embedFamily)) {
+        items.push({ tone: "warn", marker: "Type", text: "Name the font family you want to embed, or your statements will fall back to Helvetica." });
+      } else if (!state.embedUrl.trim()) {
+        items.push({ tone: "warn", marker: "Type", text:
+          `<strong>${escapeHtml(safeFamily(state.embedFamily))} will not appear in the PDF yet.</strong> Fonts have to be embedded as a .ttf file — send us yours and paste back the URL we give you. Until then statements fall back to Helvetica.` });
+      } else if (!safeUrl(state.embedUrl)) {
+        items.push({ tone: "warn", marker: "Type", text:
+          "That font URL was not accepted. It needs to be a plain https address ending in the .ttf file, with no spaces or brackets." });
+      }
     }
 
-    const barBg = derive.barBg();
-    if (barBg) {
-      const ratio = contrastRatio(derive.barText(), barBg);
-      if (ratio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-        `Title bar text sits at ${ratio.toFixed(1)}:1 against the bar — below the 4.5:1 readability threshold.` });
-    }
-
-    const sectionBg = derive.sectionBg();
-    if (sectionBg) {
-      const ratio = contrastRatio(derive.sectionText(), sectionBg);
-      if (ratio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-        `Section heading text sits at ${ratio.toFixed(1)}:1 against its bar — below the 4.5:1 readability threshold.` });
-    }
-
-    const brandOnWhite = contrastRatio(state.brand, "#ffffff");
-    if (brandOnWhite < 3) items.push({ tone: "warn", marker: "Contrast", text:
-      `Your brand colour is only ${brandOnWhite.toFixed(1)}:1 against white, so headings and the period line will look washed out in print.` });
-
-    const headerRatio = contrastRatio(derive.tableHeaderText(), derive.tableHeaderBg());
-    if (headerRatio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-      `Transactions header text reaches only ${headerRatio.toFixed(1)}:1 on its background.` });
-
-    if (state.zebra) {
-      const zebraRatio = contrastRatio(state.bodyTextColour, derive.zebraColour());
-      if (zebraRatio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-        `Text on the shaded rows reaches only ${zebraRatio.toFixed(1)}:1. Lighten the shading.` });
+    const failures = contrastFailures();
+    if (failures.length) {
+      const tabs = [...new Set(failures.map(f => TAB_LABELS[f.spec.tab]))];
+      items.push({ tone: "warn", marker: "Contrast", text:
+        failures.map(f => `<strong>${escapeHtml(f.spec.label)}</strong> at ${f.ratio.toFixed(1)}:1`).join(", ") +
+        ` — below ${MIN_CONTRAST}:1. Amber chips on the ${tabs.join(" and ")} tab${tabs.length > 1 ? "s" : ""} show every control the same pair affects.` });
     }
 
     if (state.zebra && state.rowLines) items.push({ tone: "info", marker: "Rows", text:
       "Shaded rows and hairlines together can look busy on a long statement. Most partners use one or the other." });
-
-    items.push({ tone: "info", marker: "Scope", text:
-      "These styles apply to monthly statements and the ISA transfer authority form. The annual tax summary uses our standard styling and is not affected." });
 
     return items;
   }
@@ -1260,12 +1225,6 @@ ${rows}
 
   function makeField(spec) {
     const wrap = document.createElement("div");
-
-    if (spec.type === "group") {
-      wrap.className = "groupsep";
-      wrap.textContent = spec.label;
-      return { wrap };
-    }
 
     wrap.className = "field";
     const id = "ctl-" + spec.key;
@@ -1286,6 +1245,13 @@ ${rows}
       extra.readout = out;
     }
 
+    if (spec.contrast) {
+      const chip = document.createElement("span");
+      chip.className = "ratio";
+      labelRow.appendChild(chip);
+      extra.chip = chip;
+    }
+
     if (spec.derived) {
       const auto = document.createElement("button");
       auto.type = "button";
@@ -1304,7 +1270,7 @@ ${rows}
       extra.auto = auto;
     }
 
-    if (spec.type !== "toggle") wrap.appendChild(labelRow);
+    if (spec.type !== "toggle" && spec.type !== "colour") wrap.appendChild(labelRow);
 
     switch (spec.type) {
       case "text":
@@ -1331,6 +1297,20 @@ ${rows}
           commit();
         });
         wrap.appendChild(input);
+
+        if (spec.key === "preset") {
+          const line = document.createElement("div");
+          line.className = "revertline";
+          const tag = document.createElement("span");
+          tag.className = "changed";
+          tag.textContent = "Changed";
+          const button = document.createElement("button");
+          button.type = "button";
+          button.addEventListener("click", revertPreset);
+          line.append(tag, button);
+          wrap.appendChild(line);
+          extra.revert = { wrap: line, button };
+        }
         break;
 
       case "radio": {
@@ -1380,8 +1360,8 @@ ${rows}
         break;
 
       case "colour": {
-        const field = document.createElement("div");
-        field.className = "colourfield";
+        const row = document.createElement("div");
+        row.className = "swatchrow";
         input = document.createElement("input");
         input.type = "color";
         input.setAttribute("aria-label", spec.label + " picker");
@@ -1402,8 +1382,8 @@ ${rows}
           input.value = value;
           commit(false);
         });
-        field.append(input, hex);
-        wrap.appendChild(field);
+        row.append(input, hex);
+        wrap.append(labelRow, row);
         extra.hex = hex;
         break;
       }
@@ -1414,16 +1394,61 @@ ${rows}
       hint.className = "hint";
       hint.textContent = spec.hint;
       wrap.appendChild(hint);
+      if (input) input.title = spec.hint;
     }
 
     return Object.assign({ wrap, input }, extra);
   }
 
+  const CHEVRON =
+    '<svg class="chev" viewBox="0 0 12 12" aria-hidden="true">' +
+    '<path d="M3 4.5 6 8l3-3.5" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function makeGroup(spec) {
+    const section = document.createElement("section");
+    section.className = "group";
+
+    const head = document.createElement("button");
+    head.type = "button";
+    head.className = "grouphead";
+    head.setAttribute("aria-expanded", "true");
+    head.innerHTML = CHEVRON + "<span>" + escapeHtml(spec.label) + "</span>";
+
+    const body = document.createElement("div");
+    body.className = "groupbody";
+
+    if (spec.hint) {
+      const note = document.createElement("span");
+      note.className = "hint";
+      note.textContent = spec.hint;
+      body.appendChild(note);
+    }
+
+    head.addEventListener("click", () => {
+      const open = head.getAttribute("aria-expanded") === "true";
+      head.setAttribute("aria-expanded", String(!open));
+      body.hidden = open;
+    });
+
+    section.append(head, body);
+    return { section, body };
+  }
+
   function buildRail() {
+    const open = new Map();
     for (const spec of CONTROLS) {
-      const target = spec.tab === "identity" ? el("identity") : el("panel-" + spec.tab);
+      const panel = spec.tab === "identity" || spec.tab === "sample"
+        ? el(spec.tab)
+        : el("panel-" + spec.tab);
+      if (spec.type === "group") {
+        const { section, body } = makeGroup(spec);
+        panel.appendChild(section);
+        open.set(panel, body);
+        continue;
+      }
       const built = makeField(spec);
-      target.appendChild(built.wrap);
+      (open.get(panel) || panel).appendChild(built.wrap);
       if (spec.key) nodes.set(spec.key, { spec, ...built });
     }
   }
@@ -1434,10 +1459,33 @@ ${rows}
 
       if (spec.showIf) wrap.hidden = !spec.showIf();
 
-      if (spec.key === "preset") continue;
+      if (spec.key === "preset") {
+        input.value = currentPreset;
+        if (node.revert) {
+          const changed = isModified();
+          node.revert.wrap.hidden = !changed;
+          if (changed) {
+            const name = spec.options.find(([value]) => value === currentPreset);
+            node.revert.button.textContent = "Revert to " + (name ? name[1].split(" — ")[0] : "the start");
+          }
+        }
+        continue;
+      }
 
       const derived = spec.derived ? spec.derived() : null;
       const isAuto = spec.derived && state[key] === null;
+
+      if (node.chip) {
+        const [fg, bg] = spec.contrast();
+        node.chip.hidden = !fg || !bg;
+        if (fg && bg) {
+          const ratio = contrastRatio(fg, bg);
+          const passes = ratio >= MIN_CONTRAST;
+          node.chip.textContent = ratio.toFixed(1) + ":1";
+          node.chip.className = "ratio " + (passes ? "ok" : "warn");
+          node.chip.title = (passes ? "Meets the " : "Below the ") + MIN_CONTRAST + ":1 readability threshold.";
+        }
+      }
 
       if (node.auto) {
         node.auto.setAttribute("aria-pressed", String(isAuto));
@@ -1481,6 +1529,12 @@ ${rows}
 
   const history = { past: [], future: [] };
 
+  /* Edits stick to the layout they were made on, so trying another layout and
+     coming back does not throw them away. Keyed by layout name; an entry only
+     exists while it differs from the clean layout. */
+  const edits = {};
+  let currentPreset = "";
+
   function snapshot() { return JSON.stringify(state); }
 
   function pushHistory(previous) {
@@ -1491,6 +1545,25 @@ ${rows}
   }
 
   let pending = null;
+
+  function cleanPreset(value) {
+    const keep = {
+      partner: state.partner,
+      logoUrl: state.logoUrl,
+      previewModel: state.previewModel,
+      previewHoldingAccount: state.previewHoldingAccount
+    };
+    return Object.assign({}, DEFAULTS, keep, PRESETS[value] || {});
+  }
+
+  function isModified() {
+    return snapshot() !== JSON.stringify(cleanPreset(currentPreset));
+  }
+
+  function park() {
+    if (isModified()) edits[currentPreset] = JSON.parse(snapshot());
+    else delete edits[currentPreset];
+  }
 
   function commit(record = true) {
     if (record) {
@@ -1503,16 +1576,47 @@ ${rows}
   }
 
   function applyPreset(value) {
-    const preset = PRESETS[value];
+    if (value === currentPreset) return;
     pushHistory(snapshot());
-    const keep = {
-      partner: state.partner,
-      logoUrl: state.logoUrl,
-      previewModel: state.previewModel,
-      previewHoldingAccount: state.previewHoldingAccount
-    };
-    state = Object.assign({}, DEFAULTS, keep, preset || {});
+    park();
+    state = edits[value] ? Object.assign({}, edits[value]) : cleanPreset(value);
+    currentPreset = value;
     render();
+  }
+
+  function revertPreset() {
+    if (!isModified()) return;
+    pushHistory(snapshot());
+    delete edits[currentPreset];
+    state = cleanPreset(currentPreset);
+    render();
+  }
+
+  function remember() {
+    try { localStorage.setItem(STATE_KEY, JSON.stringify({ state, edits, preset: currentPreset })); }
+    catch (err) { /* storage blocked or full; the session still works */ }
+  }
+
+  /* Through sanitiseState like a shared link: stored settings are no more
+     trustworthy than a pasted URL, and the file may predate a control. */
+  function recall() {
+    try {
+      const raw = localStorage.getItem(STATE_KEY);
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      const names = new Set(SPEC.get("preset").options.map(([value]) => value));
+      const stored = {};
+      for (const [name, value] of Object.entries(saved.edits || {})) {
+        if (names.has(name)) stored[name] = sanitiseState(value);
+      }
+      return {
+        state: sanitiseState(saved.state),
+        edits: stored,
+        preset: names.has(saved.preset) ? saved.preset : ""
+      };
+    } catch (err) {
+      return null;
+    }
   }
 
   function encodeState() {
@@ -1548,7 +1652,7 @@ ${rows}
   }
 
   function fitSheets() {
-    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"], ["scaler-taf", "frame-taf"]]) {
+    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"]]) {
       const scaler = el(scalerId), frame = el(frameId);
       const available = scaler.parentElement.clientWidth - 44;
       if (available <= 0) continue;
@@ -1573,7 +1677,8 @@ ${rows}
 
     const logo = state.logoUrl.trim() || PLACEHOLDER_LOGO;
     el("frame-statement").srcdoc = proofDocument(STATEMENT_BASE, statementBody(logo));
-    el("frame-taf").srcdoc = proofDocument(TAF_BASE, tafBody(logo));
+
+    remember();
 
     el("undoBtn").disabled = history.past.length === 0;
     el("redoBtn").disabled = history.future.length === 0;
@@ -1638,7 +1743,9 @@ ${rows}
 
   el("resetBtn").addEventListener("click", () => {
     pushHistory(snapshot());
+    park();
     state = Object.assign({}, DEFAULTS);
+    currentPreset = "";
     render();
   });
 
@@ -1672,7 +1779,9 @@ ${rows}
     if (!location.hash.startsWith("#s=")) return false;
     const decoded = decodeState(location.hash.slice(3));
     if (!decoded) return false;
+    park();
     state = decoded;
+    currentPreset = "";
     return true;
   }
 
@@ -1686,6 +1795,13 @@ ${rows}
     render();
   });
 
+  const saved = recall();
+  if (saved) {
+    state = saved.state;
+    Object.assign(edits, saved.edits);
+    currentPreset = saved.preset;
+  }
   applyHash();
+
   render();
 </script>

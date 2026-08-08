@@ -348,7 +348,6 @@
     <div class="stagebar">
       <div class="tabs" role="tablist" aria-label="Proof">
         <button class="tab" type="button" role="tab" data-proof="statement" aria-selected="true">Monthly statement</button>
-        <button class="tab" type="button" role="tab" data-proof="taf" aria-selected="false">ISA transfer form</button>
         <button class="tab" type="button" role="tab" data-proof="css" aria-selected="false">Stylesheet</button>
       </div>
       <div class="actions">
@@ -365,10 +364,6 @@
 
     <section class="proof" id="proof-statement">
       <div class="sheet-scaler" id="scaler-statement"><iframe class="sheet" id="frame-statement" title="Monthly statement proof"></iframe></div>
-    </section>
-
-    <section class="proof" id="proof-taf" hidden>
-      <div class="sheet-scaler" id="scaler-taf"><iframe class="sheet" id="frame-taf" title="ISA transfer authority form proof"></iframe></div>
     </section>
 
     <section id="proof-css" hidden>
@@ -430,51 +425,6 @@ span.pagecount:before { content: counter(pages); }
 .data-table td { padding-top: 5px; padding-bottom: 5px; text-align: left; padding-left: 10px; }
 `;
 
-  /* exchange: core/src/main/resources/thymeleaf/isa/taf/shared.css */
-  const TAF_BASE = `
-html, body { margin: 0; padding: 0; }
-.document-body { font-family: Inter, sans-serif; font-size: 12px; line-height: 1.35; color: #000; background: #fff; margin: 0 !important; }
-.container { width: 100%; padding: 0; }
-.section-wrapper { margin: 0 0 4px 0; }
-.subsection { background-color: #f3f3f3; border: 1px solid #2d3e7c; padding: 10px; margin: 0 0 12px 0; }
-.internal-use { border: 1px solid #333; padding: 10px; margin: 18px 0 0 0; background-color: #f4f4f4; }
-.doc-header { width: 100%; border-collapse: collapse; border-bottom: 3px solid #2d407d; height: 40px; }
-.doc-header td { vertical-align: middle; padding: 0 0 8px 0; }
-.doc-header .logo { text-align: right; width: 180px; }
-.doc-header .logo img { height: 40px; width: auto; display: inline-block; }
-h1 { font-size: 28px; margin: 0; color: #2d407d; }
-h2, h3 { margin: 0; padding: 0; background: transparent; }
-h3 { color: #2d3e7c; font-size: 14px; margin: 0 0 6px 0; }
-.section-header {
-  background-color: #2d3e7c; color: #fff;
-  margin: 10px 0 8px 0; padding: 6px 10px;
-  display: table; width: 100%;
-}
-.section-header h2 { display: table-cell; vertical-align: middle; font-size: 16px; font-weight: bold; color: #fff; white-space: nowrap; }
-.form-table { width: 100%; border-collapse: collapse; margin: 0; }
-.form-table td { vertical-align: top; padding: 2px; }
-.checkbox-table { border-collapse: collapse; margin: 0 0 8px 0; font-size: 12px; }
-.checkbox-table td { vertical-align: middle; padding: 2px 6px 2px 0; }
-label { font-size: 11px; font-weight: bold; display: block; }
-input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid #999; background-color: #fff; margin: 0; height: 24px; box-sizing: border-box; }
-.form-table input.stacked { display: block; width: 100%; margin: 0 0 -2px 0; }
-.checkbox-box { width: 16px; height: 16px; display: inline-block; }
-.char-box-group { display: inline-block; margin: 0 0 12px 0; }
-.char-box-group span { font-size: 12px; margin: 0 1px; }
-.char-box { width: 22px; height: 24px; border: 1px solid #333; display: inline-block; margin: 0 2px 0 0; vertical-align: middle; }
-.intro-box { font-size: 12px; padding: 2px 0; margin: 0; }
-.question-title { font-size: 12px; font-weight: bold; margin: 0 0 4px 0; }
-.authority-text { font-size: 12px; margin: 12px 0 0 0; }
-.footer-notes { font-size: 10px; color: #666; margin-top: 16px; border-top: 1px solid #eee; padding-top: 8px; }
-.w-form-half { width: 330px !important; }
-.w-50 { width: 50%; }
-.w-140 { width: 140px !important; }
-.w-150 { width: 150px !important; }
-.mb-10 { margin-bottom: 10px; }
-.pl-20 { padding-left: 20px; }
-.valign-top { vertical-align: top; }
-.stacked-label { margin: 2px 0 0 0; }
-`;
 
   const PLACEHOLDER_LOGO =
     "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
@@ -499,7 +449,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     sectionBg: null,
     sectionText: null,
     dateColour: null,
-    accentColour: null,
     bodyTextColour: "#000000",
 
     fontMode: "builtin",
@@ -630,7 +579,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       return state.sectionText || state.brand;
     },
     dateColour() { return state.dateColour || state.brand; },
-    accentColour() { return state.accentColour || state.brand; },
     zebraColour() { return state.zebraColour || tintOf(state.brand, 0.92); },
     tableHeaderBg() {
       if (state.tableHeaderBg) return state.tableHeaderBg;
@@ -695,8 +643,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 
     { tab: "colour", type: "group", label: "Elsewhere" },
     { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour() },
-    { tab: "colour", type: "colour", key: "accentColour", label: "ISA form rules and headings", derived: () => derive.accentColour(),
-      hint: "The underline beneath the form title, section box borders, and its headings." },
     { tab: "colour", type: "colour", key: "bodyTextColour", label: "Body text" },
 
     /* ---- type ---- */
@@ -862,7 +808,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 
   function generateCss() {
     const blocks = [];
-    const accent = derive.accentColour();
 
     if (state.fontMode === "embed" && safeFamily(state.embedFamily) && safeUrl(state.embedUrl)) {
       blocks.push(rule("@font-face", [
@@ -881,7 +826,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       state.bodyMargin ? `margin: ${state.bodyMargin}px;` : null
     ]));
 
-    blocks.push("/* Statement-specific selectors (also targets TAF via .section-header) */");
+    blocks.push("/* Statement-specific selectors */");
 
     if (state.summaryWidth !== 60) blocks.push(rule(".account-list", [`width: ${state.summaryWidth}%;`]));
 
@@ -911,8 +856,8 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 
     blocks.push(rule(".statement-banner h1", ["padding: 0;"]));
 
-    /* Always emitted: the statement title is an h1, so without this id rule
-       the TAF `h1 { color: … }` below would recolour it. */
+    /* Emitted unconditionally: the title inherits the bar colour, and this is
+       the only hook for title size and case. */
     blocks.push(rule("#statement-header", [
       `color: ${derive.barText()};`,
       state.titleSize ? `font-size: ${state.titleSize}px;` : null,
@@ -971,12 +916,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
         state.logoAlign === "right" ? "margin-left: auto;" : null
       ]));
     }
-
-    blocks.push("/* TAF-specific selectors */");
-    blocks.push(rule("h1", [`color: ${accent};`]));
-    blocks.push(rule("h3", [`color: ${accent};`]));
-    blocks.push(rule(".doc-header", [`border-bottom-color: ${accent};`]));
-    blocks.push(rule(".subsection", [`border-color: ${accent};`]));
 
     return blocks.filter(Boolean).join("\n\n") + "\n";
   }
@@ -1039,83 +978,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 </div>`;
   }
 
-  function tafBody(logo) {
-    return `
-<div class="container">
-  <table class="doc-header"><tr>
-    <td><h1>ISA Transfer Authority Form</h1></td>
-    <td class="logo"><img src="${logo}" alt="Platform logo"></td>
-  </tr></table>
-  <div class="intro-box">
-    <p>Use this form to transfer an existing ISA to your Bondsmith Cash ISA.</p>
-    <ul><li>Cash ISA transfers typically complete within 15 business days.</li>
-    <li>Please include your Bondsmith Cash ISA Holding account details to avoid delays.</li></ul>
-  </div>
-  <div class="section-wrapper">
-    <div class="section-header"><h2>1. Your details</h2></div>
-    <div class="section-content">
-      <table class="form-table"><tr>
-        <td><label>Title</label><input class="w-140" type="text" value="Ms"></td>
-        <td><label>First Name(s)</label><input type="text" style="width:388px" value="Priya"></td>
-        <td><label>Last Name</label><input class="w-140" type="text" value="Raman"></td>
-      </tr></table>
-      <table class="form-table mb-10"><tr>
-        <td class="w-50 valign-top">
-          <label>Permanent residential address</label>
-          <input class="stacked w-form-half" type="text" value="Flat 6, Hollis House">
-          <input class="stacked w-form-half" type="text" value="22 Wharf Lane">
-          <input class="stacked w-form-half" type="text" value="Bristol">
-          <label class="stacked-label">Postcode</label>
-          <input class="w-150" type="text" value="BS1 4XG">
-        </td>
-        <td class="valign-top pl-20">
-          <label>Date of birth</label>
-          <div class="char-box-group">
-            <input class="char-box" type="text" value="1"><input class="char-box" type="text" value="4"><span>/</span>
-            <input class="char-box" type="text" value="0"><input class="char-box" type="text" value="9"><span>/</span>
-            <input class="char-box" type="text" value="8"><input class="char-box" type="text" value="7">
-          </div>
-          <label>Contact telephone number</label>
-          <input class="w-form-half" type="tel" value="07700 900412">
-        </td>
-      </tr></table>
-    </div>
-  </div>
-  <div class="section-wrapper">
-    <div class="section-header"><h2>2. Details of the existing ISA you want to transfer</h2></div>
-    <div class="section-content">
-      <table class="form-table mb-10"><tr>
-        <td class="w-50 valign-top">
-          <p class="question-title">Have you paid into this ISA during the current tax year?</p>
-          <table class="checkbox-table"><tr>
-            <td><input class="checkbox-box" type="checkbox" checked></td><td>Yes</td>
-            <td class="pl-20"><input class="checkbox-box" type="checkbox"></td><td>No</td>
-          </tr></table>
-        </td>
-        <td class="w-50 valign-top pl-20">
-          <label>Name of existing ISA manager</label>
-          <input class="stacked w-form-half" type="text" value="Northbank Building Society">
-        </td>
-      </tr></table>
-      <div class="subsection">
-        <h3>Cash ISA transfer details</h3>
-        <table class="form-table mb-10"><tr>
-          <td class="w-50"><label>Sort code</label><input class="w-form-half" type="text" value="60-12-04"></td>
-          <td class="w-50"><label>Account number</label><input class="w-form-half" type="text" value="44029183"></td>
-        </tr></table>
-      </div>
-    </div>
-  </div>
-  <div class="internal-use">
-    <strong>5. Transfer acceptance (Bondsmith Use Only)</strong>
-    <p class="authority-text">We are willing to accept this ISA transfer in line with instructions.</p>
-  </div>
-  <div class="footer-notes">
-    <p>ISA transfers do not affect your annual ISA allowance.</p>
-    <p>Bondsmith is the trading name of Bondsmith Savings Ltd, which is authorised and regulated by the Financial Conduct Authority.</p>
-  </div>
-</div>`;
-  }
 
   /* ================================================================== *
    * Checks
@@ -1173,7 +1035,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       "Shaded rows and hairlines together can look busy on a long statement. Most partners use one or the other." });
 
     items.push({ tone: "info", marker: "Scope", text:
-      "These styles apply to monthly statements and the ISA transfer authority form. The annual tax summary uses our standard styling and is not affected." });
+      "These styles apply to monthly statements. The annual tax summary uses our standard styling and is not affected." });
 
     return items;
   }
@@ -1470,7 +1332,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
   }
 
   function fitSheets() {
-    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"], ["scaler-taf", "frame-taf"]]) {
+    for (const [scalerId, frameId] of [["scaler-statement", "frame-statement"]]) {
       const scaler = el(scalerId), frame = el(frameId);
       const available = scaler.parentElement.clientWidth - 44;
       if (available <= 0) continue;
@@ -1495,7 +1357,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
 
     const logo = state.logoUrl.trim() || PLACEHOLDER_LOGO;
     el("frame-statement").srcdoc = proofDocument(STATEMENT_BASE, statementBody(logo));
-    el("frame-taf").srcdoc = proofDocument(TAF_BASE, tafBody(logo));
 
     el("undoBtn").disabled = history.past.length === 0;
     el("redoBtn").disabled = history.future.length === 0;

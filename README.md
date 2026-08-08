@@ -1,8 +1,8 @@
 # Glyph
 
-Bondsmith's statement branding tool. Customise how your brand appears on the statements and ISA
-transfer forms we generate for your customers: set your colours, type and table styling, check
-them against a sample document, then download the stylesheet to send us.
+Bondsmith's statement branding tool. Customise how your brand appears on the statements we
+generate for your customers: set your colours, type and table styling, check them against a
+sample document, then download the stylesheet to send us.
 
 Open `index.html` in any browser. Nothing is uploaded, and nothing leaves your machine.
 
@@ -12,10 +12,8 @@ Open `index.html` in any browser. Nothing is uploaded, and nothing leaves your m
    **Colour**, **Type**, **Table** and **Layout** tabs.
 2. Anything marked **Auto** follows your brand colour. Click the pill to set it yourself; click
    again to go back to following the brand.
-3. Check both document tabs — the monthly statement and the ISA transfer authority form share a
-   stylesheet, so a change to one usually shows up in the other.
-4. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
-5. Download the stylesheet and send it to your Bondsmith contact along with your logo.
+3. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
+4. Download the stylesheet and send it to your Bondsmith contact along with your logo.
 
 **Copy link** puts your settings in the URL, which is the easiest way to show someone else what you
 are proposing — open the link and the controls come back exactly as you left them.

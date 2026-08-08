@@ -177,7 +177,22 @@
   .checkline input { margin: 3px 0 0; accent-color: var(--accent); flex: none; }
 
   .readout { font-family: var(--mono); font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
-  .rowlabel { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .rowlabel { display: flex; align-items: baseline; gap: 8px; }
+  .rowlabel .fieldlabel { margin-right: auto; }
+
+  .ratio {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-variant-numeric: tabular-nums;
+    padding: 1px 7px;
+    border-radius: 20px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+    flex: none;
+  }
+
+  .ratio.ok { color: var(--ok); background: var(--ok-bg); }
+  .ratio.warn { color: var(--warn); background: var(--warn-bg); border-color: var(--warn-line); }
 
   .autobtn {
     font: inherit;
@@ -679,6 +694,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     /* ---- colour ---- */
     { tab: "colour", type: "group", label: "Brand" },
     { tab: "colour", type: "colour", key: "brand", label: "Brand colour",
+      contrast: () => [state.brand, "#ffffff"],
       hint: "Everything below follows this until you override it." },
 
     { tab: "colour", type: "group", label: "Statement title bar" },
@@ -686,21 +702,28 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       options: [["filled", "Solid brand bar, reversed text"], ["tinted", "Tinted bar, brand text"],
                 ["plain", "White bar, brand text"], ["minimal", "No bar — heading only"]] },
     { tab: "colour", type: "colour", key: "barBg", label: "Bar background", derived: () => derive.barBg(),
+      contrast: () => [derive.barText(), derive.barBg()],
       showIf: () => state.barStyle !== "minimal" },
-    { tab: "colour", type: "colour", key: "barText", label: "Bar text", derived: () => derive.barText() },
+    { tab: "colour", type: "colour", key: "barText", label: "Bar text", derived: () => derive.barText(),
+      contrast: () => [derive.barText(), derive.barBg()] },
 
     { tab: "colour", type: "group", label: "Section bars" },
     { tab: "colour", type: "toggle", key: "sectionBarsMatch", label: 'Match the title bar treatment' },
     { tab: "colour", type: "colour", key: "sectionBg", label: "Section bar background", derived: () => derive.sectionBg(),
+      contrast: () => [derive.sectionText(), derive.sectionBg()],
       showIf: () => !state.sectionBarsMatch },
     { tab: "colour", type: "colour", key: "sectionText", label: "Section bar text", derived: () => derive.sectionText(),
+      contrast: () => [derive.sectionText(), derive.sectionBg()],
       showIf: () => !state.sectionBarsMatch },
 
     { tab: "colour", type: "group", label: "Elsewhere" },
-    { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour() },
+    { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour(),
+      contrast: () => [derive.dateColour(), "#ffffff"] },
     { tab: "colour", type: "colour", key: "accentColour", label: "ISA form rules and headings", derived: () => derive.accentColour(),
+      contrast: () => [derive.accentColour(), "#ffffff"],
       hint: "The underline beneath the form title, section box borders, and its headings." },
-    { tab: "colour", type: "colour", key: "bodyTextColour", label: "Body text" },
+    { tab: "colour", type: "colour", key: "bodyTextColour", label: "Body text",
+      contrast: () => [state.bodyTextColour, "#ffffff"] },
 
     /* ---- type ---- */
     { tab: "type", type: "group", label: "Typeface" },
@@ -733,8 +756,10 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     { tab: "table", type: "select", key: "tableHeaderStyle", label: "Treatment",
       options: [["brandText", "Brand text on white"], ["solid", "Reversed text on brand"],
                 ["subtle", "Dark text on light grey"], ["rule", "Brand text with a brand underline"]] },
-    { tab: "table", type: "colour", key: "tableHeaderBg", label: "Header background", derived: () => derive.tableHeaderBg() },
-    { tab: "table", type: "colour", key: "tableHeaderText", label: "Header text", derived: () => derive.tableHeaderText() },
+    { tab: "table", type: "colour", key: "tableHeaderBg", label: "Header background", derived: () => derive.tableHeaderBg(),
+      contrast: () => [derive.tableHeaderText(), derive.tableHeaderBg()] },
+    { tab: "table", type: "colour", key: "tableHeaderText", label: "Header text", derived: () => derive.tableHeaderText(),
+      contrast: () => [derive.tableHeaderText(), derive.tableHeaderBg()] },
     { tab: "table", type: "toggle", key: "upperTableHeader", label: "Column names in capitals" },
     { tab: "table", type: "range", key: "headerRadius", label: "Header corner rounding", min: 0, max: 14, step: 1,
       format: v => v === 0 ? "square" : v + "px" },
@@ -747,6 +772,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       showIf: () => state.rowLines },
     { tab: "table", type: "toggle", key: "zebra", label: "Shade alternate rows" },
     { tab: "table", type: "colour", key: "zebraColour", label: "Shading colour", derived: () => derive.zebraColour(),
+      contrast: () => [state.bodyTextColour, derive.zebraColour()],
       showIf: () => state.zebra },
 
     /* ---- layout ---- */
@@ -1014,10 +1040,17 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       cashSummary: true,
       rows: [
         ["01 Jul 2026", "Holding account", "Balance brought forward", "", "", "£1,043.24"],
-        ["03 Jul 2026", "Holding account", "Deposit from nominated account", "£5,000.00", "", "£6,043.24"],
-        ["05 Jul 2026", "Easy Access Saver", "Transfer to Easy Access Saver", "", "£5,000.00", "£1,043.24"],
-        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£1,081.43"],
-        ["25 Jul 2026", "1 Year Fixed Saver", "1 Year Fixed Saver reached maturity", "£123.23", "", "£1,204.66"],
+        ["02 Jul 2026", "Holding account", "Deposit from nominated account", "£5,000.00", "", "£6,043.24"],
+        ["03 Jul 2026", "Easy Access Saver", "Transfer to Easy Access Saver", "", "£5,000.00", "£1,043.24"],
+        ["06 Jul 2026", "Holding account", "Deposit from nominated account", "£2,500.00", "", "£3,543.24"],
+        ["07 Jul 2026", "95 Day Notice Saver", "Transfer to 95 Day Notice Saver", "", "£2,500.00", "£1,043.24"],
+        ["10 Jul 2026", "Easy Access Saver", "Interest paid", "£12.44", "", "£1,055.68"],
+        ["14 Jul 2026", "Holding account", "Withdrawal to nominated account", "", "£200.00", "£855.68"],
+        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£893.87"],
+        ["21 Jul 2026", "Holding account", "Deposit from nominated account", "£1,000.00", "", "£1,893.87"],
+        ["22 Jul 2026", "1 Year Fixed Saver", "Transfer to 1 Year Fixed Saver", "", "£1,000.00", "£893.87"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "1 Year Fixed Saver reached maturity", "£123.23", "", "£1,017.10"],
+        ["28 Jul 2026", "Holding account", "Correction", "£187.56", "", "£1,204.66"],
         ["31 Jul 2026", "Holding account", "Withdrawal to nominated account", "", "£0.56", "£1,204.10"]
       ]
     },
@@ -1026,9 +1059,14 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       rows: [
         ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
         ["03 Jul 2026", "Easy Access Saver", "Deposit to Easy Access Saver", "£5,000.00", "", "£27,006.56"],
-        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£27,044.75"],
-        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£27,167.98"],
-        ["31 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£5,000.00", "£22,167.98"]
+        ["07 Jul 2026", "95 Day Notice Saver", "Deposit to 95 Day Notice Saver", "£2,500.00", "", "£29,506.56"],
+        ["10 Jul 2026", "Easy Access Saver", "Interest paid", "£12.44", "", "£29,519.00"],
+        ["14 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£200.00", "£29,319.00"],
+        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£29,357.19"],
+        ["22 Jul 2026", "1 Year Fixed Saver", "Deposit to 1 Year Fixed Saver", "£1,000.00", "", "£30,357.19"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£30,480.42"],
+        ["28 Jul 2026", "95 Day Notice Saver", "Correction", "", "£0.02", "£30,480.40"],
+        ["31 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£5,000.00", "£25,480.40"]
       ]
     },
     direct: {
@@ -1036,10 +1074,15 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       rows: [
         ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
         ["03 Jul 2026", "Easy Access Saver", "Deposit to Easy Access Saver", "£5,000.00", "", "£27,006.56"],
-        ["18 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£38.19", "", "£27,044.75"],
-        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£27,167.98"],
-        ["28 Jul 2026", "95 Day Notice Saver", "Withdrawal from 95 Day Notice Saver", "", "£1,000.00", "£26,167.98"],
-        ["31 Jul 2026", "Easy Access Saver", "Correction", "", "£0.02", "£26,167.96"]
+        ["07 Jul 2026", "95 Day Notice Saver", "Deposit to 95 Day Notice Saver", "£2,500.00", "", "£29,506.56"],
+        ["10 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£12.44", "", "£29,519.00"],
+        ["14 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£200.00", "£29,319.00"],
+        ["18 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£38.19", "", "£29,357.19"],
+        ["22 Jul 2026", "1 Year Fixed Saver", "Deposit to 1 Year Fixed Saver", "£1,000.00", "", "£30,357.19"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£30,480.42"],
+        ["28 Jul 2026", "95 Day Notice Saver", "Withdrawal from 95 Day Notice Saver", "", "£1,000.00", "£29,480.42"],
+        ["30 Jul 2026", "1 Year Fixed Saver", "Income from 1 Year Fixed Saver", "£64.10", "", "£29,544.52"],
+        ["31 Jul 2026", "Easy Access Saver", "Correction", "", "£0.02", "£29,544.50"]
       ]
     },
     trustHidden: {
@@ -1047,7 +1090,11 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       rows: [
         ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
         ["03 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£5,000.00", "", "£27,006.56"],
-        ["31 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£1,500.00", "£25,506.56"]
+        ["09 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£2,500.00", "", "£29,506.56"],
+        ["14 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£200.00", "£29,306.56"],
+        ["21 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£1,000.00", "", "£30,306.56"],
+        ["27 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£1,300.00", "£29,006.56"],
+        ["31 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£3,500.00", "£25,506.56"]
       ]
     }
   };
@@ -1199,6 +1246,24 @@ ${rows}
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
   }
 
+  const MIN_CONTRAST = 4.5;
+  const TAB_LABELS = { colour: "Colour", type: "Type", table: "Table", layout: "Layout", preview: "Preview" };
+
+  /* Deduplicated on the colour pair: a background and its text both carry a
+     chip, but they are one failure. */
+  function contrastFailures() {
+    const seen = new Set(), out = [];
+    for (const spec of CONTROLS) {
+      if (!spec.contrast || (spec.showIf && !spec.showIf())) continue;
+      const [fg, bg] = spec.contrast();
+      if (!fg || !bg || seen.has(fg + bg)) continue;
+      seen.add(fg + bg);
+      const ratio = contrastRatio(fg, bg);
+      if (ratio < MIN_CONTRAST) out.push({ spec, ratio });
+    }
+    return out;
+  }
+
   function buildChecks() {
     const items = [];
 
@@ -1214,32 +1279,12 @@ ${rows}
         "That font URL was not accepted. It needs to be a plain https address ending in the .ttf file, with no spaces or brackets." });
     }
 
-    const barBg = derive.barBg();
-    if (barBg) {
-      const ratio = contrastRatio(derive.barText(), barBg);
-      if (ratio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-        `Title bar text sits at ${ratio.toFixed(1)}:1 against the bar — below the 4.5:1 readability threshold.` });
-    }
-
-    const sectionBg = derive.sectionBg();
-    if (sectionBg) {
-      const ratio = contrastRatio(derive.sectionText(), sectionBg);
-      if (ratio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-        `Section heading text sits at ${ratio.toFixed(1)}:1 against its bar — below the 4.5:1 readability threshold.` });
-    }
-
-    const brandOnWhite = contrastRatio(state.brand, "#ffffff");
-    if (brandOnWhite < 3) items.push({ tone: "warn", marker: "Contrast", text:
-      `Your brand colour is only ${brandOnWhite.toFixed(1)}:1 against white, so headings and the period line will look washed out in print.` });
-
-    const headerRatio = contrastRatio(derive.tableHeaderText(), derive.tableHeaderBg());
-    if (headerRatio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-      `Transactions header text reaches only ${headerRatio.toFixed(1)}:1 on its background.` });
-
-    if (state.zebra) {
-      const zebraRatio = contrastRatio(state.bodyTextColour, derive.zebraColour());
-      if (zebraRatio < 4.5) items.push({ tone: "warn", marker: "Contrast", text:
-        `Text on the shaded rows reaches only ${zebraRatio.toFixed(1)}:1. Lighten the shading.` });
+    const failures = contrastFailures();
+    if (failures.length) {
+      const tabs = [...new Set(failures.map(f => TAB_LABELS[f.spec.tab]))];
+      items.push({ tone: "warn", marker: "Contrast", text:
+        failures.map(f => `<strong>${escapeHtml(f.spec.label)}</strong> at ${f.ratio.toFixed(1)}:1`).join(", ") +
+        ` — below ${MIN_CONTRAST}:1. Amber chips on the ${tabs.join(" and ")} tab${tabs.length > 1 ? "s" : ""} show every control the same pair affects.` });
     }
 
     if (state.zebra && state.rowLines) items.push({ tone: "info", marker: "Rows", text:
@@ -1284,6 +1329,13 @@ ${rows}
       out.className = "readout";
       labelRow.appendChild(out);
       extra.readout = out;
+    }
+
+    if (spec.contrast) {
+      const chip = document.createElement("span");
+      chip.className = "ratio";
+      labelRow.appendChild(chip);
+      extra.chip = chip;
     }
 
     if (spec.derived) {
@@ -1438,6 +1490,18 @@ ${rows}
 
       const derived = spec.derived ? spec.derived() : null;
       const isAuto = spec.derived && state[key] === null;
+
+      if (node.chip) {
+        const [fg, bg] = spec.contrast();
+        node.chip.hidden = !fg || !bg;
+        if (fg && bg) {
+          const ratio = contrastRatio(fg, bg);
+          const passes = ratio >= MIN_CONTRAST;
+          node.chip.textContent = ratio.toFixed(1) + ":1";
+          node.chip.className = "ratio " + (passes ? "ok" : "warn");
+          node.chip.title = (passes ? "Meets the " : "Below the ") + MIN_CONTRAST + ":1 readability threshold.";
+        }
+      }
 
       if (node.auto) {
         node.auto.setAttribute("aria-pressed", String(isAuto));

@@ -9,7 +9,8 @@ Open `index.html` in any browser. Nothing is uploaded, and nothing leaves your m
 ## How to use it
 
 1. Pick the layout closest to what you want under **Start from**, then work through the
-   **Colour**, **Type**, **Table** and **Layout** tabs.
+   **Colour**, **Type**, **Table** and **Layout** tabs. Trying another layout does not lose your
+   work — it is kept under **Your changes**, at the top of the same list.
 2. Anything marked **Auto** follows your brand colour. Click the pill to set it yourself; click
    again to go back to following the brand.
 3. Every colour shows its contrast against whatever sits behind it. Green passes; amber is below

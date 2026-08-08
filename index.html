@@ -615,7 +615,7 @@ span.pagecount:before { content: counter(pages); }
     { tab: "identity", type: "url", key: "logoUrl", label: "Logo image (preview only)", placeholder: "https://…/logo.png",
       hint: "Your logo is not part of this stylesheet — we store it separately." },
     { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
-      options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
+      options: [["custom", "Your changes"], ["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
                 ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]],
       hint: "Layouts other partners use, in a neutral colour. Pick the closest, then make it yours." },
@@ -1372,7 +1372,12 @@ ${rows}
 
       if (spec.showIf) wrap.hidden = !spec.showIf();
 
-      if (spec.key === "preset") continue;
+      if (spec.key === "preset") {
+        const scratch = input.querySelector('option[value="custom"]');
+        if (scratch) scratch.hidden = !working && currentPreset !== "custom";
+        input.value = currentPreset;
+        continue;
+      }
 
       const derived = spec.derived ? spec.derived() : null;
       const isAuto = spec.derived && state[key] === null;
@@ -1431,6 +1436,12 @@ ${rows}
 
   const history = { past: [], future: [] };
 
+  /* Anything the user has edited, parked so that trying a preset does not
+     throw it away. Held apart from the presets themselves: it is a scratch
+     slot, not a ninth layout, and it never goes into a shared link. */
+  let working = null;
+  let currentPreset = "";
+
   function snapshot() { return JSON.stringify(state); }
 
   function pushHistory(previous) {
@@ -1443,6 +1454,7 @@ ${rows}
   let pending = null;
 
   function commit(record = true) {
+    currentPreset = "custom";
     if (record) {
       pushHistory(pending || snapshot());
       pending = null;
@@ -1453,20 +1465,30 @@ ${rows}
   }
 
   function applyPreset(value) {
-    const preset = PRESETS[value];
+    if (value === currentPreset) return;
     pushHistory(snapshot());
-    const keep = {
-      partner: state.partner,
-      logoUrl: state.logoUrl,
-      previewModel: state.previewModel,
-      previewHoldingAccount: state.previewHoldingAccount
-    };
-    state = Object.assign({}, DEFAULTS, keep, preset || {});
+
+    if (currentPreset === "custom") working = JSON.parse(snapshot());
+
+    if (value === "custom") {
+      if (!working) return;
+      state = Object.assign({}, working);
+    } else {
+      const keep = {
+        partner: state.partner,
+        logoUrl: state.logoUrl,
+        previewModel: state.previewModel,
+        previewHoldingAccount: state.previewHoldingAccount
+      };
+      state = Object.assign({}, DEFAULTS, keep, PRESETS[value] || {});
+    }
+
+    currentPreset = value;
     render();
   }
 
   function remember() {
-    try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+    try { localStorage.setItem(STATE_KEY, JSON.stringify({ state, working, preset: currentPreset })); }
     catch (err) { /* storage blocked or full; the session still works */ }
   }
 
@@ -1475,7 +1497,13 @@ ${rows}
   function recall() {
     try {
       const raw = localStorage.getItem(STATE_KEY);
-      return raw ? sanitiseState(JSON.parse(raw)) : null;
+      if (!raw) return null;
+      const saved = JSON.parse(raw);
+      return {
+        state: sanitiseState(saved.state),
+        working: saved.working ? sanitiseState(saved.working) : null,
+        preset: typeof saved.preset === "string" ? saved.preset : "custom"
+      };
     } catch (err) {
       return null;
     }
@@ -1605,7 +1633,9 @@ ${rows}
 
   el("resetBtn").addEventListener("click", () => {
     pushHistory(snapshot());
+    if (currentPreset === "custom") working = JSON.parse(snapshot());
     state = Object.assign({}, DEFAULTS);
+    currentPreset = "";
     render();
   });
 
@@ -1613,6 +1643,7 @@ ${rows}
     if (!history.past.length) return;
     history.future.push(snapshot());
     state = JSON.parse(history.past.pop());
+    currentPreset = "custom";
     render();
   });
 
@@ -1620,6 +1651,7 @@ ${rows}
     if (!history.future.length) return;
     history.past.push(snapshot());
     state = JSON.parse(history.future.pop());
+    currentPreset = "custom";
     render();
   });
 
@@ -1640,6 +1672,7 @@ ${rows}
     const decoded = decodeState(location.hash.slice(3));
     if (!decoded) return false;
     state = decoded;
+    currentPreset = "custom";
     return true;
   }
 
@@ -1655,7 +1688,11 @@ ${rows}
 
   if (!applyHash()) {
     const saved = recall();
-    if (saved) state = saved;
+    if (saved) {
+      state = saved.state;
+      working = saved.working;
+      currentPreset = saved.preset;
+    }
   }
 
   render();

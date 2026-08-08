@@ -336,11 +336,13 @@
       <button class="tab" type="button" role="tab" data-railtab="type" aria-selected="false">Type</button>
       <button class="tab" type="button" role="tab" data-railtab="table" aria-selected="false">Table</button>
       <button class="tab" type="button" role="tab" data-railtab="layout" aria-selected="false">Layout</button>
+      <button class="tab" type="button" role="tab" data-railtab="preview" aria-selected="false">Preview</button>
     </div>
     <div class="panel" id="panel-colour" role="tabpanel"></div>
     <div class="panel" id="panel-type" role="tabpanel" hidden></div>
     <div class="panel" id="panel-table" role="tabpanel" hidden></div>
     <div class="panel" id="panel-layout" role="tabpanel" hidden></div>
+    <div class="panel" id="panel-preview" role="tabpanel" hidden></div>
   </form>
 
   <main class="stage">
@@ -490,6 +492,9 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
   const DEFAULTS = {
     partner: "acme",
     logoUrl: "",
+
+    previewModel: "trustIndividual",
+    previewHoldingAccount: true,
 
     brand: "#26456b",
     barStyle: "filled",
@@ -670,8 +675,6 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
                 ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]],
       hint: "Layouts other partners use, in a neutral colour. Pick the closest, then make it yours." },
-    { tab: "identity", type: "url", key: "logoUrl", label: "Logo image (preview only)", placeholder: "https://…/logo.png",
-      hint: "Your logo is not part of this stylesheet — we store it separately." },
 
     /* ---- colour ---- */
     { tab: "colour", type: "group", label: "Brand" },
@@ -765,7 +768,25 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     { tab: "layout", type: "range", key: "summaryWidth", label: "Account summary width", min: 40, max: 100, step: 5, unit: "%" },
     { tab: "layout", type: "toggle", key: "addressTight", label: "Tighten the address block" },
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
-      format: v => v === 0 ? "none" : v + "px" }
+      format: v => v === 0 ? "none" : v + "px" },
+
+    /* ---- preview ---- *
+     * Proof-only. Nothing on this tab reaches generateCss(); it changes which
+     * blocks and which wording the sample document shows, because the four
+     * arrangements below produce visibly different statements from the same
+     * stylesheet. */
+    { tab: "preview", type: "group", label: "Sample document" },
+    { tab: "preview", type: "select", key: "previewModel", label: "Statement type",
+      options: [["trustIndividual", "Individual — holding account shown"],
+                ["trustPooled", "Pooled"],
+                ["direct", "Direct"],
+                ["trustHidden", "Individual — holding account hidden"]],
+      hint: "Changes the sample only, never the stylesheet. Each arrangement lists a different set of transactions, so check the one your customers get." },
+    { tab: "preview", type: "toggle", key: "previewHoldingAccount", label: "Show holding account sort code and number" },
+
+    { tab: "preview", type: "group", label: "Logo" },
+    { tab: "preview", type: "url", key: "logoUrl", label: "Logo image", placeholder: "https://…/logo.png",
+      hint: "Your logo is not part of this stylesheet — we store it separately. This is only so the proof looks right." }
   ];
 
   /* ================================================================== *
@@ -985,27 +1006,84 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
    * Proof documents
    * ================================================================== */
 
+  /* Each arrangement is served by a different transaction provider, so the
+     descriptions below are that provider's own wording rather than a
+     paraphrase — description length is what sizes the column. */
+  const PREVIEW_MODELS = {
+    trustIndividual: {
+      cashSummary: true,
+      rows: [
+        ["01 Jul 2026", "Holding account", "Balance brought forward", "", "", "£1,043.24"],
+        ["03 Jul 2026", "Holding account", "Deposit from nominated account", "£5,000.00", "", "£6,043.24"],
+        ["05 Jul 2026", "Easy Access Saver", "Transfer to Easy Access Saver", "", "£5,000.00", "£1,043.24"],
+        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£1,081.43"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "1 Year Fixed Saver reached maturity", "£123.23", "", "£1,204.66"],
+        ["31 Jul 2026", "Holding account", "Withdrawal to nominated account", "", "£0.56", "£1,204.10"]
+      ]
+    },
+    trustPooled: {
+      cashSummary: false,
+      rows: [
+        ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
+        ["03 Jul 2026", "Easy Access Saver", "Deposit to Easy Access Saver", "£5,000.00", "", "£27,006.56"],
+        ["18 Jul 2026", "Easy Access Saver", "Interest paid", "£38.19", "", "£27,044.75"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£27,167.98"],
+        ["31 Jul 2026", "Easy Access Saver", "Withdrawal from Easy Access Saver", "", "£5,000.00", "£22,167.98"]
+      ]
+    },
+    direct: {
+      cashSummary: false,
+      rows: [
+        ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
+        ["03 Jul 2026", "Easy Access Saver", "Deposit to Easy Access Saver", "£5,000.00", "", "£27,006.56"],
+        ["18 Jul 2026", "Easy Access Saver", "Income from Easy Access Saver", "£38.19", "", "£27,044.75"],
+        ["25 Jul 2026", "1 Year Fixed Saver", "Maturity of 1 Year Fixed Saver", "£123.23", "", "£27,167.98"],
+        ["28 Jul 2026", "95 Day Notice Saver", "Withdrawal from 95 Day Notice Saver", "", "£1,000.00", "£26,167.98"],
+        ["31 Jul 2026", "Easy Access Saver", "Correction", "", "£0.02", "£26,167.96"]
+      ]
+    },
+    trustHidden: {
+      cashSummary: false,
+      rows: [
+        ["01 Jul 2026", "Easy Access Saver", "Balance brought forward", "", "", "£22,006.56"],
+        ["03 Jul 2026", "Easy Access Saver", "Deposit from nominated account", "£5,000.00", "", "£27,006.56"],
+        ["31 Jul 2026", "Easy Access Saver", "Withdrawal to nominated account", "", "£1,500.00", "£25,506.56"]
+      ]
+    }
+  };
+
   function statementBody(logo) {
+    const model = PREVIEW_MODELS[state.previewModel] || PREVIEW_MODELS.trustIndividual;
+
+    const holdingAccount = state.previewHoldingAccount ? `
+  <div id="holding-account-details">
+    <p>Holding account details: sort code <span>00-00-00</span>, account number <span>81043327</span></p>
+  </div>` : "";
+
+    const cashSummary = model.cashSummary ? `
+      <table class="account-list">
+        <tr style="height:30px"><td style="font-weight:bold">Cash</td></tr>
+        <tr><td class="account-name">Holding account</td><td style="text-align:right">£1,204.10</td></tr>
+      </table>` : "";
+
+    const rows = model.rows.map(([date, account, description, credit, debit, balance]) =>
+      `      <tr><td class="transaction-date">${date}</td><td>${account}</td><td>${description}</td>` +
+      `<td class="transaction-amount">${credit}</td><td class="transaction-amount">${debit}</td>` +
+      `<td class="transaction-amount">${balance}</td></tr>`).join("\n");
+
     return `
 <div id="front-page">
   <img class="document-logo" src="${logo}" alt="logo">
   <div class="section-header statement-banner"><h1 id="statement-header">Account Statement</h1></div>
   <div id="address-details">
-    <p>Ms Priya Raman</p><p>Flat 6, Hollis House</p><p>22 Wharf Lane</p>
-    <p>Bristol</p><p>BS1 4XG</p><p>United Kingdom</p>
+    <p>Mr Smith Bond</p><p>4 Pentonville Rd</p>
+    <p>London</p><p>N1 9HF</p><p>United Kingdom</p>
   </div>
-  <div class="document-dates"><p><span>01 Jul 2026</span> to <span>31 Jul 2026</span></p></div>
-  <div id="holding-account-details">
-    <p>Holding account details: sort code <span>00-00-00</span>, account number <span>81043327</span></p>
-  </div>
+  <div class="document-dates"><p><span>01 Jul 2026</span> to <span>31 Jul 2026</span></p></div>${holdingAccount}
   <div id="account-summary">
     <div class="section-header account-summary-banner"><h2 id="account-summary-header">Account Summary</h2></div>
     <div>
-      <table class="account-list"><tr><td class="account-name">Total Balance</td><td style="text-align:right">£48,210.66</td></tr></table>
-      <table class="account-list">
-        <tr style="height:30px"><td style="font-weight:bold">Cash</td></tr>
-        <tr><td class="account-name">Holding account</td><td style="text-align:right">£1,204.10</td></tr>
-      </table>
+      <table class="account-list"><tr><td class="account-name">Total Balance</td><td style="text-align:right">£48,210.66</td></tr></table>${cashSummary}
       <table class="account-list">
         <tr style="height:30px"><td style="font-weight:bold">Savings</td></tr>
         <tr><td class="account-name">1 Year Fixed Saver </td><td style="text-align:right">£25,000.00</td></tr>
@@ -1028,12 +1106,7 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
       <th class="transaction-amount">Credit</th><th class="transaction-amount">Debit</th><th class="transaction-amount">Balance</th>
     </tr></thead>
     <tbody>
-      <tr><td class="transaction-date">01 Jul 2026</td><td>Holding account</td><td>Opening balance</td><td class="transaction-amount"></td><td class="transaction-amount"></td><td class="transaction-amount">£1,043.24</td></tr>
-      <tr><td class="transaction-date">03 Jul 2026</td><td>Holding account</td><td>Deposit received</td><td class="transaction-amount">£5,000.00</td><td class="transaction-amount"></td><td class="transaction-amount">£6,043.24</td></tr>
-      <tr><td class="transaction-date"></td><td>Easy Access Saver</td><td>Transfer to savings</td><td class="transaction-amount"></td><td class="transaction-amount">£5,000.00</td><td class="transaction-amount">£1,043.24</td></tr>
-      <tr><td class="transaction-date">18 Jul 2026</td><td>Easy Access Saver</td><td>Interest paid</td><td class="transaction-amount">£38.19</td><td class="transaction-amount"></td><td class="transaction-amount">£1,081.43</td></tr>
-      <tr><td class="transaction-date">25 Jul 2026</td><td>1 Year Fixed Saver</td><td>Interest paid</td><td class="transaction-amount">£123.23</td><td class="transaction-amount"></td><td class="transaction-amount">£1,204.66</td></tr>
-      <tr><td class="transaction-date">31 Jul 2026</td><td>Holding account</td><td>Closing balance</td><td class="transaction-amount"></td><td class="transaction-amount"></td><td class="transaction-amount">£1,204.10</td></tr>
+${rows}
     </tbody>
   </table>
 </div>`;
@@ -1055,18 +1128,18 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
     <div class="section-header"><h2>1. Your details</h2></div>
     <div class="section-content">
       <table class="form-table"><tr>
-        <td><label>Title</label><input class="w-140" type="text" value="Ms"></td>
-        <td><label>First Name(s)</label><input type="text" style="width:388px" value="Priya"></td>
-        <td><label>Last Name</label><input class="w-140" type="text" value="Raman"></td>
+        <td><label>Title</label><input class="w-140" type="text" value="Mr"></td>
+        <td><label>First Name(s)</label><input type="text" style="width:388px" value="Smith"></td>
+        <td><label>Last Name</label><input class="w-140" type="text" value="Bond"></td>
       </tr></table>
       <table class="form-table mb-10"><tr>
         <td class="w-50 valign-top">
           <label>Permanent residential address</label>
-          <input class="stacked w-form-half" type="text" value="Flat 6, Hollis House">
-          <input class="stacked w-form-half" type="text" value="22 Wharf Lane">
-          <input class="stacked w-form-half" type="text" value="Bristol">
+          <input class="stacked w-form-half" type="text" value="4 Pentonville Rd">
+          <input class="stacked w-form-half" type="text" value="London">
+          <input class="stacked w-form-half" type="text" value="">
           <label class="stacked-label">Postcode</label>
-          <input class="w-150" type="text" value="BS1 4XG">
+          <input class="w-150" type="text" value="N1 9HF">
         </td>
         <td class="valign-top pl-20">
           <label>Date of birth</label>
@@ -1432,7 +1505,12 @@ input[type="text"], input[type="tel"], input[type="number"] { border: 1px solid 
   function applyPreset(value) {
     const preset = PRESETS[value];
     pushHistory(snapshot());
-    const keep = { partner: state.partner, logoUrl: state.logoUrl };
+    const keep = {
+      partner: state.partner,
+      logoUrl: state.logoUrl,
+      previewModel: state.previewModel,
+      previewHoldingAccount: state.previewHoldingAccount
+    };
     state = Object.assign({}, DEFAULTS, keep, preset || {});
     render();
   }

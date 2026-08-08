@@ -102,6 +102,26 @@
 
   .hint { font-size: 12px; color: var(--fg-3); line-height: 1.45; }
 
+  .revertline { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .revertline .changed {
+    border: 1px solid var(--line-2);
+    border-radius: 999px;
+    padding: 1px 7px;
+    color: var(--fg-2);
+    font-size: 11px;
+  }
+  .revertline button {
+    font: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--fg-2);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+  .revertline button:hover { color: var(--fg); }
+
   select, input[type="text"], input[type="url"] {
     font: inherit;
     font-size: 13px;
@@ -615,10 +635,9 @@ span.pagecount:before { content: counter(pages); }
     { tab: "identity", type: "url", key: "logoUrl", label: "Logo image (preview only)", placeholder: "https://…/logo.png",
       hint: "Your logo is not part of this stylesheet — we store it separately." },
     { tab: "identity", type: "select", key: "preset", label: "Start from", transient: true,
-      options: [["custom", "Your changes"], ["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
+      options: [["", "Start from scratch"], ["plain", "Plain — white bars"], ["banner", "Solid banner"],
                 ["tinted", "Tinted banner"], ["bold", "Bold — banner and table in brand"],
-                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]],
-      hint: "Layouts other partners use, in a neutral colour. Pick the closest, then make it yours." },
+                ["accent", "Accent table"], ["minimal", "Minimal — no bars"], ["striped", "Striped rows"]] },
 
     /* ---- colour ---- */
     { tab: "colour", type: "group", label: "Brand",
@@ -1224,6 +1243,20 @@ ${rows}
           commit();
         });
         wrap.appendChild(input);
+
+        if (spec.key === "preset") {
+          const line = document.createElement("div");
+          line.className = "revertline";
+          const tag = document.createElement("span");
+          tag.className = "changed";
+          tag.textContent = "Changed";
+          const button = document.createElement("button");
+          button.type = "button";
+          button.addEventListener("click", revertPreset);
+          line.append(tag, button);
+          wrap.appendChild(line);
+          extra.revert = { wrap: line, button };
+        }
         break;
 
       case "radio": {
@@ -1373,9 +1406,15 @@ ${rows}
       if (spec.showIf) wrap.hidden = !spec.showIf();
 
       if (spec.key === "preset") {
-        const scratch = input.querySelector('option[value="custom"]');
-        if (scratch) scratch.hidden = !working && currentPreset !== "custom";
         input.value = currentPreset;
+        if (node.revert) {
+          const changed = isModified();
+          node.revert.wrap.hidden = !changed;
+          if (changed) {
+            const name = spec.options.find(([value]) => value === currentPreset);
+            node.revert.button.textContent = "Revert to " + (name ? name[1].split(" — ")[0] : "the start");
+          }
+        }
         continue;
       }
 
@@ -1436,10 +1475,10 @@ ${rows}
 
   const history = { past: [], future: [] };
 
-  /* Anything the user has edited, parked so that trying a preset does not
-     throw it away. Held apart from the presets themselves: it is a scratch
-     slot, not a ninth layout, and it never goes into a shared link. */
-  let working = null;
+  /* Edits stick to the layout they were made on, so trying another layout and
+     coming back does not throw them away. Keyed by layout name; an entry only
+     exists while it differs from the clean layout. */
+  const edits = {};
   let currentPreset = "";
 
   function snapshot() { return JSON.stringify(state); }
@@ -1453,8 +1492,26 @@ ${rows}
 
   let pending = null;
 
+  function cleanPreset(value) {
+    const keep = {
+      partner: state.partner,
+      logoUrl: state.logoUrl,
+      previewModel: state.previewModel,
+      previewHoldingAccount: state.previewHoldingAccount
+    };
+    return Object.assign({}, DEFAULTS, keep, PRESETS[value] || {});
+  }
+
+  function isModified() {
+    return snapshot() !== JSON.stringify(cleanPreset(currentPreset));
+  }
+
+  function park() {
+    if (isModified()) edits[currentPreset] = JSON.parse(snapshot());
+    else delete edits[currentPreset];
+  }
+
   function commit(record = true) {
-    currentPreset = "custom";
     if (record) {
       pushHistory(pending || snapshot());
       pending = null;
@@ -1467,28 +1524,22 @@ ${rows}
   function applyPreset(value) {
     if (value === currentPreset) return;
     pushHistory(snapshot());
-
-    if (currentPreset === "custom") working = JSON.parse(snapshot());
-
-    if (value === "custom") {
-      if (!working) return;
-      state = Object.assign({}, working);
-    } else {
-      const keep = {
-        partner: state.partner,
-        logoUrl: state.logoUrl,
-        previewModel: state.previewModel,
-        previewHoldingAccount: state.previewHoldingAccount
-      };
-      state = Object.assign({}, DEFAULTS, keep, PRESETS[value] || {});
-    }
-
+    park();
+    state = edits[value] ? Object.assign({}, edits[value]) : cleanPreset(value);
     currentPreset = value;
     render();
   }
 
+  function revertPreset() {
+    if (!isModified()) return;
+    pushHistory(snapshot());
+    delete edits[currentPreset];
+    state = cleanPreset(currentPreset);
+    render();
+  }
+
   function remember() {
-    try { localStorage.setItem(STATE_KEY, JSON.stringify({ state, working, preset: currentPreset })); }
+    try { localStorage.setItem(STATE_KEY, JSON.stringify({ state, edits, preset: currentPreset })); }
     catch (err) { /* storage blocked or full; the session still works */ }
   }
 
@@ -1499,10 +1550,15 @@ ${rows}
       const raw = localStorage.getItem(STATE_KEY);
       if (!raw) return null;
       const saved = JSON.parse(raw);
+      const names = new Set(SPEC.get("preset").options.map(([value]) => value));
+      const stored = {};
+      for (const [name, value] of Object.entries(saved.edits || {})) {
+        if (names.has(name)) stored[name] = sanitiseState(value);
+      }
       return {
         state: sanitiseState(saved.state),
-        working: saved.working ? sanitiseState(saved.working) : null,
-        preset: typeof saved.preset === "string" ? saved.preset : "custom"
+        edits: stored,
+        preset: names.has(saved.preset) ? saved.preset : ""
       };
     } catch (err) {
       return null;
@@ -1633,7 +1689,7 @@ ${rows}
 
   el("resetBtn").addEventListener("click", () => {
     pushHistory(snapshot());
-    if (currentPreset === "custom") working = JSON.parse(snapshot());
+    park();
     state = Object.assign({}, DEFAULTS);
     currentPreset = "";
     render();
@@ -1643,7 +1699,6 @@ ${rows}
     if (!history.past.length) return;
     history.future.push(snapshot());
     state = JSON.parse(history.past.pop());
-    currentPreset = "custom";
     render();
   });
 
@@ -1651,7 +1706,6 @@ ${rows}
     if (!history.future.length) return;
     history.past.push(snapshot());
     state = JSON.parse(history.future.pop());
-    currentPreset = "custom";
     render();
   });
 
@@ -1671,8 +1725,9 @@ ${rows}
     if (!location.hash.startsWith("#s=")) return false;
     const decoded = decodeState(location.hash.slice(3));
     if (!decoded) return false;
+    park();
     state = decoded;
-    currentPreset = "custom";
+    currentPreset = "";
     return true;
   }
 
@@ -1686,14 +1741,13 @@ ${rows}
     render();
   });
 
-  if (!applyHash()) {
-    const saved = recall();
-    if (saved) {
-      state = saved.state;
-      working = saved.working;
-      currentPreset = saved.preset;
-    }
+  const saved = recall();
+  if (saved) {
+    state = saved.state;
+    Object.assign(edits, saved.edits);
+    currentPreset = saved.preset;
   }
+  applyHash();
 
   render();
 </script>

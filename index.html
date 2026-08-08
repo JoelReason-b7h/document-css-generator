@@ -501,6 +501,12 @@ span.pagecount:before { content: counter(pages); }
     barSpaceAbove: 0,
     barSpaceBelow: 0,
     summaryWidth: 60,
+    summaryCard: false,
+    summaryCardBg: null,
+    summaryCardText: null,
+    summaryCardRadius: 12,
+    summaryCardPad: 16,
+    summaryCardGap: 10,
     addressSpaced: false,
     bodyMargin: 0
   };
@@ -596,6 +602,8 @@ span.pagecount:before { content: counter(pages); }
       if (state.sectionBarsMatch) return derive.barText();
       return state.sectionText || state.brand;
     },
+    summaryCardBg() { return state.summaryCardBg || tintOf(state.brand, 0.94); },
+    summaryCardText() { return state.summaryCardText || state.bodyTextColour; },
     dateColour() { return state.dateColour || state.brand; },
     accentColour() { return state.accentColour || state.brand; },
     zebraColour() { return state.zebraColour || tintOf(state.brand, 0.92); },
@@ -739,8 +747,22 @@ span.pagecount:before { content: counter(pages); }
     { tab: "layout", type: "range", key: "barSpaceAbove", label: "Space above", min: 0, max: 40, step: 4, unit: "px" },
     { tab: "layout", type: "range", key: "barSpaceBelow", label: "Space below", min: 0, max: 40, step: 4, unit: "px" },
 
+    { tab: "layout", type: "group", label: "Account summary" },
+    { tab: "layout", type: "range", key: "summaryWidth", label: "Width", min: 40, max: 100, step: 5, unit: "%" },
+    { tab: "layout", type: "toggle", key: "summaryCard", label: "Shade each block" },
+    { tab: "layout", type: "colour", key: "summaryCardBg", label: "Block background", derived: () => derive.summaryCardBg(),
+      contrast: () => [derive.summaryCardText(), derive.summaryCardBg()],
+      showIf: () => state.summaryCard },
+    { tab: "layout", type: "colour", key: "summaryCardText", label: "Block text", derived: () => derive.summaryCardText(),
+      contrast: () => [derive.summaryCardText(), state.summaryCard ? derive.summaryCardBg() : "#ffffff"] },
+    { tab: "layout", type: "range", key: "summaryCardRadius", label: "Corner rounding", min: 0, max: 24, step: 2,
+      format: v => v === 0 ? "square" : v + "px", showIf: () => state.summaryCard },
+    { tab: "layout", type: "range", key: "summaryCardPad", label: "Padding", min: 0, max: 28, step: 2, unit: "px",
+      showIf: () => state.summaryCard },
+    { tab: "layout", type: "range", key: "summaryCardGap", label: "Space between blocks", min: 0, max: 30, step: 2, unit: "px",
+      showIf: () => state.summaryCard },
+
     { tab: "layout", type: "group", label: "Page" },
-    { tab: "layout", type: "range", key: "summaryWidth", label: "Account summary width", min: 40, max: 100, step: 5, unit: "%" },
     { tab: "layout", type: "toggle", key: "addressSpaced", label: "Space out the address block" },
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
       format: v => v === 0 ? "none" : v + "px" },
@@ -874,7 +896,14 @@ span.pagecount:before { content: counter(pages); }
 
     blocks.push("/* Statement-specific selectors (also targets TAF via .section-header) */");
 
-    if (state.summaryWidth !== 60) blocks.push(rule(".account-list", [`width: ${state.summaryWidth}%;`]));
+    blocks.push(rule(".account-list", [
+      state.summaryWidth !== 60 ? `width: ${state.summaryWidth}%;` : null,
+      state.summaryCardText ? `color: ${state.summaryCardText};` : null,
+      state.summaryCard ? `background-color: ${cssColour(derive.summaryCardBg())};` : null,
+      state.summaryCard && state.summaryCardPad ? `padding: ${state.summaryCardPad}px;` : null,
+      state.summaryCard && state.summaryCardRadius ? `border-radius: ${state.summaryCardRadius}px;` : null,
+      state.summaryCard && state.summaryCardGap ? `margin-bottom: ${state.summaryCardGap}px;` : null
+    ]));
 
     if (state.addressSpaced) {
       blocks.push(rule("#address-details", ["line-height: 0.5;"]));

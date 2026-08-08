@@ -722,8 +722,7 @@ span.pagecount:before { content: counter(pages); }
 
     { tab: "layout", type: "group", label: "Page" },
     { tab: "layout", type: "range", key: "summaryWidth", label: "Account summary width", min: 40, max: 100, step: 5, unit: "%" },
-    { tab: "layout", type: "toggle", key: "addressSpaced", label: "Space out the address block",
-      hint: "The template stacks these lines almost on top of each other. This gives them room." },
+    { tab: "layout", type: "toggle", key: "addressSpaced", label: "Space out the address block" },
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
       format: v => v === 0 ? "none" : v + "px" },
 

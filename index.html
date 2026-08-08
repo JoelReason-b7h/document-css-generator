@@ -481,7 +481,7 @@ span.pagecount:before { content: counter(pages); }
     barSpaceAbove: 0,
     barSpaceBelow: 0,
     summaryWidth: 60,
-    addressTight: false,
+    addressSpaced: false,
     bodyMargin: 0
   };
 
@@ -493,7 +493,7 @@ span.pagecount:before { content: counter(pages); }
      colour. They set structure only — colour and type are the partner's. */
   const PRESETS = {
     plain: { brand: "#333333", barStyle: "plain", sectionBarsMatch: true, tableHeaderStyle: "brandText", logoHeight: 70 },
-    banner: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: false, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true, summaryWidth: 100, addressTight: true },
+    banner: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: false, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true, summaryWidth: 100, addressSpaced: true },
     tinted: { brand: DEMO_BRAND, barStyle: "tinted", sectionBarsMatch: true, tableHeaderStyle: "brandText", logoHeight: 30, logoContain: true },
     bold: { brand: DEMO_BRAND, barStyle: "filled", sectionBarsMatch: true, barPadY: 20, barPadX: 20, barSpaceAbove: 20, barSpaceBelow: 10, tableHeaderStyle: "solid", rowLines: true, logoHeight: 40 },
     accent: { brand: DEMO_BRAND, barStyle: "plain", barText: "#000000", sectionBarsMatch: true, tableHeaderStyle: "solid", logoHeight: 50, bodyMargin: 20 },
@@ -722,7 +722,8 @@ span.pagecount:before { content: counter(pages); }
 
     { tab: "layout", type: "group", label: "Page" },
     { tab: "layout", type: "range", key: "summaryWidth", label: "Account summary width", min: 40, max: 100, step: 5, unit: "%" },
-    { tab: "layout", type: "toggle", key: "addressTight", label: "Tighten the address block" },
+    { tab: "layout", type: "toggle", key: "addressSpaced", label: "Space out the address block",
+      hint: "The template stacks these lines almost on top of each other. This gives them room." },
     { tab: "layout", type: "range", key: "bodyMargin", label: "Content inset", min: 0, max: 40, step: 5,
       format: v => v === 0 ? "none" : v + "px" },
 
@@ -857,7 +858,7 @@ span.pagecount:before { content: counter(pages); }
 
     if (state.summaryWidth !== 60) blocks.push(rule(".account-list", [`width: ${state.summaryWidth}%;`]));
 
-    if (state.addressTight) {
+    if (state.addressSpaced) {
       blocks.push(rule("#address-details", ["line-height: 0.5;"]));
       blocks.push(rule("#address-details p:last-child", ["line-height: 1;"]));
     }

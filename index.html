@@ -474,6 +474,10 @@ span.pagecount:before { content: counter(pages); }
     builtinFont: "Helvetica, Arial, sans-serif",
     embedFamily: "",
     embedUrl: "",
+    headingFontSeparate: false,
+    headingBuiltinFont: '"Times New Roman", Times, serif',
+    headingEmbedFamily: "",
+    headingEmbedUrl: "",
     fontSize: 12,
     lineHeight: 0,
     titleSize: 0,
@@ -712,6 +716,15 @@ span.pagecount:before { content: counter(pages); }
       showIf: () => state.fontMode === "embed",
       hint: "Send us the .ttf, then paste back the URL we give you." },
 
+    { tab: "type", type: "toggle", key: "headingFontSeparate", label: "Different font for the title and headings",
+      hint: "Most brands use this for a bold cut of the same family. It is a second file, not a weight." },
+    { tab: "type", type: "select", key: "headingBuiltinFont", label: "Built-in font for headings", options: FONT_OPTIONS,
+      showIf: () => state.headingFontSeparate && state.fontMode === "builtin" },
+    { tab: "type", type: "text", key: "headingEmbedFamily", label: "Heading font family name", placeholder: "Open Sans Bold",
+      showIf: () => state.headingFontSeparate && state.fontMode === "embed" },
+    { tab: "type", type: "url", key: "headingEmbedUrl", label: "Heading TrueType (.ttf) file URL", placeholder: "https://…/YourFont-Bold.ttf",
+      showIf: () => state.headingFontSeparate && state.fontMode === "embed" },
+
     { tab: "type", type: "group", label: "Sizing" },
     { tab: "type", type: "range", key: "fontSize", label: "Base text size", min: 9, max: 16, step: 1, unit: "px" },
     { tab: "type", type: "range", key: "lineHeight", label: "Line spacing", min: 0, max: 20, step: 1,
@@ -838,8 +851,8 @@ span.pagecount:before { content: counter(pages); }
       const value = raw[key];
       const spec = SPEC.get(key);
 
-      if (key === "embedFamily") { clean[key] = safeFamily(value); continue; }
-      if (key === "embedUrl" || key === "logoUrl") { clean[key] = safeUrl(value); continue; }
+      if (key === "embedFamily" || key === "headingEmbedFamily") { clean[key] = safeFamily(value); continue; }
+      if (key === "embedUrl" || key === "headingEmbedUrl" || key === "logoUrl") { clean[key] = safeUrl(value); continue; }
       if (key === "partner") { clean[key] = String(value ?? "").slice(0, 80); continue; }
 
       if (!spec) continue;
@@ -878,6 +891,15 @@ span.pagecount:before { content: counter(pages); }
       : DEFAULTS.builtinFont;
   }
 
+  function headingFontStack() {
+    if (!state.headingFontSeparate) return null;
+    if (state.fontMode === "embed") {
+      const family = safeFamily(state.headingEmbedFamily);
+      return family ? `"${family}", Helvetica, Arial, sans-serif` : null;
+    }
+    return FONT_OPTIONS.some(([option]) => option === state.headingBuiltinFont) ? state.headingBuiltinFont : null;
+  }
+
   function rule(selector, declarations) {
     const body = declarations.filter(Boolean).map(d => "  " + d).join("\n");
     return body ? `${selector} {\n${body}\n}` : null;
@@ -910,11 +932,22 @@ span.pagecount:before { content: counter(pages); }
   function generateCss() {
     const blocks = [];
     const accent = derive.accentColour();
+    const headingFont = headingFontStack();
 
     if (state.fontMode === "embed" && safeFamily(state.embedFamily) && safeUrl(state.embedUrl)) {
       blocks.push(rule("@font-face", [
         `font-family: "${safeFamily(state.embedFamily)}";`,
         `src: url("${safeUrl(state.embedUrl)}");`,
+        "-fs-pdf-font-embed: embed;",
+        "-fs-pdf-font-encoding: Identity-H;"
+      ]));
+    }
+
+    if (state.headingFontSeparate && state.fontMode === "embed"
+        && safeFamily(state.headingEmbedFamily) && safeUrl(state.headingEmbedUrl)) {
+      blocks.push(rule("@font-face", [
+        `font-family: "${safeFamily(state.headingEmbedFamily)}";`,
+        `src: url("${safeUrl(state.headingEmbedUrl)}");`,
         "-fs-pdf-font-embed: embed;",
         "-fs-pdf-font-encoding: Identity-H;"
       ]));
@@ -958,6 +991,7 @@ span.pagecount:before { content: counter(pages); }
 
     blocks.push(rule(".section-header h2", [
       `color: ${derive.sectionText()};`,
+      headingFont ? `font-family: ${headingFont};` : null,
       state.headingSize ? `font-size: ${state.headingSize}px;` : null,
       state.headingWeight ? `font-weight: ${state.headingWeight};` : null,
       state.upperSections ? "text-transform: uppercase;" : null
@@ -975,6 +1009,7 @@ span.pagecount:before { content: counter(pages); }
        the TAF `h1 { color: … }` below would recolour it. */
     blocks.push(rule("#statement-header", [
       `color: ${derive.barText()};`,
+      headingFont ? `font-family: ${headingFont};` : null,
       state.titleSize ? `font-size: ${state.titleSize}px;` : null,
       state.headingWeight ? `font-weight: ${state.headingWeight};` : null,
       state.upperSections ? "text-transform: uppercase;" : null
@@ -1243,6 +1278,14 @@ ${rows}
       items.push({ tone: "warn", marker: "Contrast", text:
         failures.map(f => `<strong>${escapeHtml(f.spec.label)}</strong> at ${f.ratio.toFixed(1)}:1`).join(", ") +
         ` — below ${MIN_CONTRAST}:1. Amber chips on the ${tabs.join(" and ")} tab${tabs.length > 1 ? "s" : ""} show every control the same pair affects.` });
+    }
+
+    if (state.headingFontSeparate && state.fontMode === "embed" && !headingFontStack()) {
+      items.push({ tone: "warn", marker: "Type", text:
+        "Name the heading font family, or the title and section headings will use the body font." });
+    } else if (state.headingFontSeparate && state.fontMode === "embed" && !safeUrl(state.headingEmbedUrl)) {
+      items.push({ tone: "warn", marker: "Type", text:
+        `<strong>${escapeHtml(safeFamily(state.headingEmbedFamily))} will not appear in the PDF yet.</strong> A second font is a second file — send us the bold .ttf as well and paste back the URL we give you.` });
     }
 
     if (state.addressPinned && state.logoAlign === "right") items.push({ tone: "warn", marker: "Address", text:

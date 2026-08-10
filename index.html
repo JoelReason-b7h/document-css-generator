@@ -457,6 +457,7 @@ span.pagecount:before { content: counter(pages); }
 
     previewModel: "trustIndividual",
     previewHoldingAccount: true,
+    previewLongAddress: false,
 
     brand: "#26456b",
     barStyle: "filled",
@@ -801,7 +802,8 @@ span.pagecount:before { content: counter(pages); }
                 ["direct", "Direct"],
                 ["trustHidden", "Individual — holding balance hidden"]],
       hint: "Changes the sample document only, never the stylesheet. Each arrangement lists a different set of transactions, so check the one your customers get." },
-    { tab: "sample", type: "toggle", key: "previewHoldingAccount", label: "Holding account details" }
+    { tab: "sample", type: "toggle", key: "previewHoldingAccount", label: "Holding account details" },
+    { tab: "sample", type: "toggle", key: "previewLongAddress", label: "Longest address" }
   ];
 
   /* ================================================================== *
@@ -1113,7 +1115,29 @@ span.pagecount:before { content: counter(pages); }
     }
   };
 
+  /* The statement prints seven paragraphs here and never leaves one out, so a
+     customer with nothing in lines two and four still gets two empty ones. The
+     order is name, then the four address lines, then postcode and country; the
+     third line holds the town and the fourth the county. No title is printed —
+     the name is first, middle and last only, and a joint account puts both
+     names on this line separated by an ampersand, which is the longest single
+     line the block ever has to carry. */
+  const ADDRESSES = {
+    typical: ["Smith Bond", "4 Pentonville Rd", "", "London", "", "N1 9HF", "GB"],
+    longest: [
+      "Alexander Montgomery-Fitzwilliam &amp; Christabel Montgomery-Fitzwilliam",
+      "Flat 12, Wellington Court, 145-147 Kingsway Parade",
+      "Kingswood Business Village",
+      "Kingston upon Thames",
+      "Greater London",
+      "KT2 6QL",
+      "GB"
+    ]
+  };
+
   function statementBody(logo) {
+    const address = (state.previewLongAddress ? ADDRESSES.longest : ADDRESSES.typical)
+      .map(line => `\n    <p>${line}</p>`).join("");
     const model = PREVIEW_MODELS[state.previewModel] || PREVIEW_MODELS.trustIndividual;
 
     const holdingAccount = state.previewHoldingAccount ? `
@@ -1136,9 +1160,7 @@ span.pagecount:before { content: counter(pages); }
 <div id="front-page">
   <img class="document-logo" src="${logo}" alt="logo">
   <div class="section-header statement-banner"><h1 id="statement-header">Account Statement</h1></div>
-  <div id="address-details">
-    <p>Mr Smith Bond</p><p>4 Pentonville Rd</p>
-    <p>London</p><p>N1 9HF</p><p>United Kingdom</p>
+  <div id="address-details">${address}
   </div>
   <div class="document-dates"><p><span>01 Jul 2026</span> to <span>31 Jul 2026</span></p></div>${holdingAccount}
   <div id="account-summary">
@@ -1567,7 +1589,8 @@ ${rows}
       partner: state.partner,
       logoUrl: state.logoUrl,
       previewModel: state.previewModel,
-      previewHoldingAccount: state.previewHoldingAccount
+      previewHoldingAccount: state.previewHoldingAccount,
+      previewLongAddress: state.previewLongAddress
     };
     return Object.assign({}, DEFAULTS, keep, PRESETS[value] || {});
   }

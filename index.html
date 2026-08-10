@@ -505,6 +505,7 @@ span.pagecount:before { content: counter(pages); }
     barRadius: 0,
     barSpaceAbove: 0,
     barSpaceBelow: 0,
+    titleAlign: "left",
     summaryWidth: 60,
     summaryCard: false,
     summaryCardBg: null,
@@ -770,6 +771,10 @@ span.pagecount:before { content: counter(pages); }
     { tab: "layout", type: "select", key: "logoAlign", label: "Position",
       options: [["left", "Left"], ["center", "Centred"], ["right", "Right"]] },
 
+    { tab: "layout", type: "group", label: "Statement title" },
+    { tab: "layout", type: "select", key: "titleAlign", label: "Position",
+      options: [["left", "Left"], ["center", "Centred"], ["right", "Right"]] },
+
     { tab: "layout", type: "group", label: "Bars" },
     { tab: "layout", type: "range", key: "barPadY", label: "Height", min: 0, max: 30, step: 2, unit: "px" },
     { tab: "layout", type: "range", key: "barPadX", label: "Side padding", min: 0, max: 30, step: 2, unit: "px" },
@@ -1010,6 +1015,7 @@ span.pagecount:before { content: counter(pages); }
     blocks.push(rule("#statement-header", [
       `color: ${derive.barText()};`,
       headingFont ? `font-family: ${headingFont};` : null,
+      state.titleAlign !== "left" ? `text-align: ${state.titleAlign};` : null,
       state.titleSize ? `font-size: ${state.titleSize}px;` : null,
       state.headingWeight ? `font-weight: ${state.headingWeight};` : null,
       state.upperSections ? "text-transform: uppercase;" : null

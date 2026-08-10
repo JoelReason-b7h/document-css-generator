@@ -19,8 +19,11 @@ Open `index.html` in any browser. Nothing is uploaded, and nothing leaves your m
 4. Set **Sample**, above the preview, to the statement your customers get. It changes the sample
    document only, never the stylesheet, but the four arrangements list different transactions and
    the longest description is what decides how wide your columns need to be.
-5. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
-6. Download the stylesheet and send it to your Bondsmith contact along with your logo.
+5. Turn on **Longest address** beside it before you settle the address block. It swaps in the widest
+   name and address we accept — a joint account puts both customers on one line, which is by some
+   way the longest line the block ever carries.
+6. Watch the notices above the preview. They flag choices that will not survive the move to PDF.
+7. Download the stylesheet and send it to your Bondsmith contact along with your logo.
 
 Your settings are kept in the browser, so closing the tab and coming back does not lose them.
 

@@ -361,7 +361,7 @@
     <button class="action" type="button" id="redoBtn" title="Redo (Ctrl+Shift+Z)">Redo</button>
     <button class="action" type="button" id="resetBtn">Reset</button>
     <span class="sep"></span>
-    <button class="action" type="button" id="shareBtn">Copy link</button>
+    <button class="action" type="button" id="shareBtn">Copy shareable link</button>
     <button class="action" type="button" id="copyBtn">Copy CSS</button>
     <button class="action primary" type="button" id="downloadBtn">Download CSS</button>
   </div>
@@ -683,6 +683,13 @@ span.pagecount:before { content: counter(pages); }
       contrast: () => [derive.sectionText(), derive.sectionBg()],
       showIf: () => !state.sectionBarsMatch },
 
+    { tab: "colour", type: "group", label: "Account summary" },
+    { tab: "colour", type: "colour", key: "summaryCardBg", label: "Block background", derived: () => derive.summaryCardBg(),
+      contrast: () => [derive.summaryCardText(), derive.summaryCardBg()],
+      showIf: () => state.summaryCard },
+    { tab: "colour", type: "colour", key: "summaryCardText", label: "Block text", derived: () => derive.summaryCardText(),
+      contrast: () => [derive.summaryCardText(), state.summaryCard ? derive.summaryCardBg() : "#ffffff"] },
+
     { tab: "colour", type: "group", label: "Elsewhere" },
     { tab: "colour", type: "colour", key: "dateColour", label: "Statement period line", derived: () => derive.dateColour(),
       contrast: () => [derive.dateColour(), "#ffffff"] },
@@ -760,11 +767,6 @@ span.pagecount:before { content: counter(pages); }
     { tab: "layout", type: "group", label: "Account summary" },
     { tab: "layout", type: "range", key: "summaryWidth", label: "Width", min: 40, max: 100, step: 5, unit: "%" },
     { tab: "layout", type: "toggle", key: "summaryCard", label: "Shade each block" },
-    { tab: "layout", type: "colour", key: "summaryCardBg", label: "Block background", derived: () => derive.summaryCardBg(),
-      contrast: () => [derive.summaryCardText(), derive.summaryCardBg()],
-      showIf: () => state.summaryCard },
-    { tab: "layout", type: "colour", key: "summaryCardText", label: "Block text", derived: () => derive.summaryCardText(),
-      contrast: () => [derive.summaryCardText(), state.summaryCard ? derive.summaryCardBg() : "#ffffff"] },
     { tab: "layout", type: "range", key: "summaryCardRadius", label: "Corner rounding", min: 0, max: 24, step: 2,
       format: v => v === 0 ? "square" : v + "px", showIf: () => state.summaryCard },
     { tab: "layout", type: "range", key: "summaryCardPad", label: "Padding", min: 0, max: 28, step: 2, unit: "px",
@@ -778,7 +780,8 @@ span.pagecount:before { content: counter(pages); }
       format: v => v === 0 ? "as it comes" : v + "px" },
     { tab: "layout", type: "toggle", key: "addressPinned", label: "Pin it to the top of the page",
       hint: "Pinned, it no longer pushes what follows down the page." },
-    { tab: "layout", type: "range", key: "addressTop", label: "Distance from the top", min: 0, max: 160, step: 4, unit: "px",
+    { tab: "layout", type: "range", key: "addressTop", label: "Distance from the top", min: 0, max: 220, step: 4, unit: "px",
+      format: v => v === addressTop() ? v + "px" : `${addressTop()}px, clearing the logo`,
       showIf: () => state.addressPinned },
     { tab: "layout", type: "range", key: "addressRight", label: "Distance from the right", min: 0, max: 80, step: 4, unit: "px",
       showIf: () => state.addressPinned },
@@ -878,6 +881,15 @@ span.pagecount:before { content: counter(pages); }
     return body ? `${selector} {\n${body}\n}` : null;
   }
 
+  /* A logo on the right shares the corner the address is pinned to, and the
+     address is out of the flow so nothing stops them landing on top of each
+     other. Drop the address below the logo rather than move the logo. */
+  function addressTop() {
+    if (state.logoAlign !== "right") return state.addressTop;
+    const belowLogo = state.bodyMargin + state.logoHeight + (state.logoContain ? 24 : 0) + 8;
+    return Math.max(state.addressTop, belowLogo);
+  }
+
   function barPadding() {
     const { barPadY: y, barPadX: x } = state;
     if (!y && !x) return "padding: 0;";
@@ -928,8 +940,9 @@ span.pagecount:before { content: counter(pages); }
     blocks.push(rule("#address-details", [
       state.addressSpaced ? "line-height: 0.5;" : null,
       state.addressWidth ? `width: ${state.addressWidth}px;` : null,
+      state.addressWidth && !state.addressPinned ? "float: right;" : null,
       state.addressPinned ? "position: absolute;" : null,
-      state.addressPinned ? `top: ${state.addressTop}px;` : null,
+      state.addressPinned ? `top: ${addressTop()}px;` : null,
       state.addressPinned ? `right: ${state.addressRight}px;` : null
     ]));
 
@@ -1209,6 +1222,9 @@ ${rows}
         failures.map(f => `<strong>${escapeHtml(f.spec.label)}</strong> at ${f.ratio.toFixed(1)}:1`).join(", ") +
         ` — below ${MIN_CONTRAST}:1. Amber chips on the ${tabs.join(" and ")} tab${tabs.length > 1 ? "s" : ""} show every control the same pair affects.` });
     }
+
+    if (state.addressPinned && state.logoAlign === "right") items.push({ tone: "warn", marker: "Address", text:
+      "With the logo in the same corner, the address drops below it and can land on the statement period line. A pinned address sits over the page rather than in it, so nothing moves out of its way, and a longer address makes this worse. Switching the pin off puts the address below the logo instead, where it cannot overlap anything." });
 
     if (state.zebra && state.rowLines) items.push({ tone: "info", marker: "Rows", text:
       "Shaded rows and hairlines together can look busy on a long statement. Most partners use one or the other." });

@@ -28,8 +28,8 @@ The stylesheet also covers the ISA transfer authority form, which has no preview
 **ISA form rules and headings** colour on the **Colour** tab is what sets its title underline,
 section borders and headings.
 
-**Copy link** puts your settings in the URL, which is the easiest way to show someone else what you
-are proposing — open the link and the controls come back exactly as you left them.
+**Copy shareable link** puts your settings in the URL, which is the easiest way to show someone else
+what you are proposing — open the link and the controls come back exactly as you left them.
 
 Ask us for a sample document before we switch the branding on for your customers.
 
